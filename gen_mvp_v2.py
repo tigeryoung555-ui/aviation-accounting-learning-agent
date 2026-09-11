@@ -3,8 +3,10 @@
 """生成民航会计学习智能体MVP v2 - 全功能版"""
 import json
 
-# 读取题库
-with open('/home/user/.super_doubao/super-doubao-runtime/workspace/aviation_accounting_mvp/questions.json','r',encoding='utf-8') as f:
+# 读取题库（脚本同目录，兼容任意部署路径）
+import os
+_BASE = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(_BASE, 'questions.json'), 'r', encoding='utf-8') as f:
     questions = json.load(f)
 
 # 知识库（用于AI答疑RAG检索）
@@ -848,6 +850,18 @@ renderDashboard();
 </body>
 </html>'''
 
+# 合并旧版物流题库补充的章节与知识库（若存在，不强制）
+try:
+    with open(os.path.join(_BASE, 'chapter_content_extra.json'), encoding='utf-8') as _f:
+        CHAPTER_CONTENT.update(json.load(_f))
+except FileNotFoundError:
+    pass
+try:
+    with open(os.path.join(_BASE, 'kb_extra.json'), encoding='utf-8') as _f:
+        KNOWLEDGE_BASE.extend(json.load(_f))
+except FileNotFoundError:
+    pass
+
 # 替换占位符
 chapter_options = ''.join(f'<option value="{ch}">{ch}</option>' for ch in CHAPTER_CONTENT.keys())
 html = html_template.replace('__CHAPTER_OPTIONS__', chapter_options)
@@ -855,7 +869,7 @@ html = html.replace('__QUESTIONS_JSON__', json.dumps(questions, ensure_ascii=Fal
 html = html.replace('__KB_JSON__', json.dumps(KNOWLEDGE_BASE, ensure_ascii=False, indent=2))
 html = html.replace('__CHAPTER_JSON__', json.dumps(CHAPTER_CONTENT, ensure_ascii=False, indent=2))
 
-output_path = '/home/user/.super_doubao/super-doubao-runtime/workspace/aviation_accounting_mvp/index.html'
+output_path = os.path.join(_BASE, 'index.html')
 with open(output_path, 'w', encoding='utf-8') as f:
     f.write(html)
 
