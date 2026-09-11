@@ -190,6 +190,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_json(200, {})
 
     def do_GET(self):
+        if self.path == "/" or self.path == "/health":
+            self.send_json(200, {"status": "ok"})
+            return
         if self.path == "/api/config":
             cfg = load_config()
             configured = bool(cfg.get("api_base") and cfg.get("api_key"))
