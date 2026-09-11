@@ -2,6 +2,7 @@ services:
   - type: web
     name: minhang-ai-proxy
     runtime: python
+    rootDir: backend
     plan: free
     region: oregon            # 可改为 singapore 等离国内更近的区
     buildCommand: "pip install -r requirements.txt"
