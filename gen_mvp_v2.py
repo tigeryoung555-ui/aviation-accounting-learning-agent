@@ -290,6 +290,10 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .ai-suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;}
 .ai-suggestion{padding:5px 12px;background:var(--primary-light);color:var(--primary);border-radius:14px;font-size:12px;cursor:pointer;transition:all 0.2s;}
 .ai-suggestion:hover{background:var(--primary);color:#fff;}
+.ai-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-light);margin-left:10px;}
+.ai-status::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-light);}
+.ai-status.online::before{background:var(--success);}
+.ai-status.offline::before{background:var(--warning);}
 /* 教师端 */
 .teacher-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
 .t-stat{background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
@@ -374,7 +378,7 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 </div>
 
 <div id="view-ai" class="view hidden">
-<div class="page-header"><h2>AI答疑助手</h2><p>基于民航会计知识库的检索增强答疑（RAG），输入问题获取专业解答</p></div>
+<div class="page-header"><h2>AI答疑助手</h2><span class="ai-status" id="aiStatus">检测中…</span><p>基于民航会计知识库的检索增强答疑（RAG），输入问题获取专业解答。可选接入本地LLM后端获得生成式回答。</p></div>
 <div class="card" style="padding:0;overflow:hidden;">
 <div class="ai-suggestions" id="aiSuggestions"></div>
 <div class="ai-messages" id="aiMessages"></div>
@@ -653,52 +657,127 @@ function bindQuizEvents(q){
   });
 }
 
-// ===== AI答疑（RAG检索增强）=====
+// ===== AI答疑（RAG检索增强 + 可选真实LLM后端）=====
+let AI_BACKEND_AVAILABLE=null;
+const AI_FAQ={
+  '航油成本占比多少':['航油成本通常是航空公司最大的单一成本项目，占营业成本的25%-35%，甚至更高。','它受国际油价、航线结构、机队燃油效率、航距等多因素影响。'],
+  '飞机租赁一般采用说明方式':['飞机租赁在民航会计中通常采用融资租赁或经营租赁两种方式。','融资租赁需确认使用权资产和租赁负债，按实际利率法计提折旧和利息；经营租赁则将租金按直线法计入当期成本费用。'],
+  '飞机折旧为什么用两种方法':['飞机折旧常结合年限平均法（直线法）和飞行小时法。','直线法按预计使用年限平均分摊；飞行小时法按实际飞行小时与预计总飞行小时比例分摊，更匹配航空资产的使用强度。'],
+  '常旅客里程怎么确认收入':['常旅客奖励里程在授予时按公允价值计入递延收益（合同负债）。','待会员实际兑换并使用里程时，再按比例确认为运输收入。'],
+  '什么是BSP结算':['BSP（Billing and Settlement Plan，开账与结算计划）是IATA推出的全球航空客票销售结算系统。','它通过中性票证和统一结算，简化航空公司与代理人之间的票款清算。'],
+  'C检费用资本化还是费用化':['例行C检等定期检查通常按计划维修费用资本化或按受益期摊销。','具体需结合企业会计政策和C检支出的经济实质判断：若形成未来经济利益则资本化，否则费用化。']
+};
+async function checkAIStatus(){
+  const badge=document.getElementById('aiStatus');
+  try{
+    const r=await fetch('http://localhost:8000/api/config',{method:'GET',signal:AbortSignal.timeout(2500)});
+    const j=await r.json();
+    AI_BACKEND_AVAILABLE=!!j.configured;
+    if(badge){badge.className='ai-status '+(AI_BACKEND_AVAILABLE?'online':'offline');badge.textContent=AI_BACKEND_AVAILABLE?'LLM 在线':'本地模式';}
+  }catch(e){
+    AI_BACKEND_AVAILABLE=false;
+    if(badge){badge.className='ai-status offline';badge.textContent='本地模式';}
+  }
+}
 function renderAI(){
   const msgs=document.getElementById('aiMessages');
   if(msgs.children.length===0){
-    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。</div>`;
+    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。本地模式下使用知识库RAG；若启动本地LLM代理，可获得更强的生成式回答。</div>`;
   }
   const sug=document.getElementById('aiSuggestions');
   const suggestions=['飞机折旧为什么用两种方法？','常旅客里程怎么确认收入？','航油成本占比多少？','什么是BSP结算？','使用权资产怎么计量？','C检费用资本化还是费用化？'];
   sug.innerHTML=suggestions.map(s=>`<span class="ai-suggestion" onclick="document.getElementById('aiInput').value='${s}';sendAI();">${s}</span>`).join('');
+  if(AI_BACKEND_AVAILABLE===null)checkAIStatus();
 }
-function sendAI(){
+async function sendAI(){
   const input=document.getElementById('aiInput');
   const q=input.value.trim();
   if(!q)return;
   const msgs=document.getElementById('aiMessages');
   msgs.innerHTML+=`<div class="ai-msg user">${q}</div>`;
   input.value='';
-  // RAG检索：关键词匹配知识库
-  setTimeout(()=>{
-    const answer=ragSearch(q);
-    msgs.innerHTML+=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
-    msgs.scrollTop=msgs.scrollHeight;
-  },500);
+  msgs.scrollTop=msgs.scrollHeight;
+  const loadingId='ai-loading-'+Date.now();
+  msgs.innerHTML+=`<div class="ai-msg bot" id="${loadingId}">正在思考……</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  let answer=null;
+  // 优先尝试真实LLM后端
+  if(AI_BACKEND_AVAILABLE!==false){
+    try{
+      const r=await fetch('http://localhost:8000/api/chat',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({message:q,source:'aviation-mvp'}),
+        signal:AbortSignal.timeout(20000)
+      });
+      if(r.ok){
+        const j=await r.json();
+        answer={text:j.answer||j.text||'(无返回)',sources:j.sources||['LLM生成']};
+        AI_BACKEND_AVAILABLE=true;
+      }
+    }catch(e){AI_BACKEND_AVAILABLE=false;}
+  }
+  if(!answer) answer=ragSearch(q);
+  document.getElementById(loadingId).outerHTML=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='aiInput')sendAI();});
 
+function expandQuery(query){
+  const synonyms={
+    '折旧':['折旧','折旧方法','depreciation','损耗','年限平均','直线法','飞行小时法'],
+    '租赁':['租赁','融资租赁','经营租赁','使用权资产','租赁负债','租金'],
+    '航油':['航油','燃油','油料','航空煤油','燃油成本','油料成本'],
+    '收入':['收入','确认收入','营业收入','运输收入','客运收入','货运收入'],
+    'BSP':['BSP','开账与结算计划','票款结算','代理人结算','票证结算'],
+    'C检':['C检','定期检查','维修','大修','资本化','费用化'],
+    '常旅客':['常旅客','里程','奖励里程','递延收益','合同负债','积分']
+  };
+  const words=query.split(/[\s，。？、！；：.?!;:]+/).filter(w=>w.length>=2);
+  const expanded=new Set(words);
+  words.forEach(w=>{
+    for(const k in synonyms){ if(w.includes(k)||k.includes(w)) synonyms[k].forEach(s=>expanded.add(s)); }
+  });
+  return Array.from(expanded);
+}
+function scoreKB(query,kb,qWords){
+  let score=0;
+  const text=(kb.chapter||'')+' '+(kb.title||'')+' '+(kb.content||'')+' '+(kb.keywords?kb.keywords.join(' '):'');
+  const lower=text.toLowerCase();
+  const qlower=query.toLowerCase();
+  // 整词命中标题权重高
+  kb.keywords.forEach(kw=>{ if(qlower.includes(kw.toLowerCase())) score+=5; });
+  // 分词在内容中出现
+  qWords.forEach(w=>{
+    if(kb.title.toLowerCase().includes(w.toLowerCase())) score+=3;
+    if(lower.includes(w.toLowerCase())) score+=2;
+  });
+  return score;
+}
 function ragSearch(query){
-  // 简单RAG：对知识库每条计算关键词匹配分
-  const qWords=query.split(/[\s，。？、]+/).filter(w=>w.length>=2);
-  let scored=KNOWLEDGE_BASE.map(kb=>{
-    let score=0;
-    kb.keywords.forEach(kw=>{if(query.includes(kw)||qWords.some(w=>kw.includes(w)||w.includes(kw)))score++;});
-    return{...kb,score};
-  }).filter(k=>k.score>0).sort((a,b)=>b.score-a.score);
-  if(scored.length===0){
-    // 模糊匹配：搜索题目解析
-    const matchedQ=QUESTIONS.find(q=>q.explain&&q.explain.includes(query.substring(0,4)));
-    if(matchedQ){
-      return{text:`根据题库相关内容：\n\n${matchedQ.explain}\n\n这是「${matchedQ.ch}」中「${matchedQ.type}」的相关解析。如需更详细解答，请补充具体场景。`,sources:['题库-'+matchedQ.id]};
-    }
-    return{text:'抱歉，我在知识库中未找到与该问题直接相关的内容。请尝试换一种问法，或咨询以下常见问题：飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁、航线成本核算等。',sources:['知识库未命中']};
+  // 1. 优先FAQ
+  const qKey=Object.keys(AI_FAQ).find(k=>query.toLowerCase().includes(k.toLowerCase()));
+  if(qKey){
+    return{text:'<p>'+AI_FAQ[qKey].join('</p><p>')+'</p>',sources:['常见问题库']};
   }
-  // 取top2-3条知识拼接回答
+  // 2. 知识库检索
+  const qWords=expandQuery(query);
+  let scored=KNOWLEDGE_BASE.map(kb=>{return{...kb,score:scoreKB(query,kb,qWords)}}).filter(k=>k.score>0).sort((a,b)=>b.score-a.score);
+  if(scored.length===0){
+    // 3. 题目解析 fallback
+    const qlower=query.toLowerCase();
+    const matchedQ=QUESTIONS.filter(q=>q.explain&&q.explain.length>10).sort((a,b)=>{
+      const ta=(a.q||'')+' '+(a.explain||''); const tb=(b.q||'')+' '+(b.explain||'');
+      let sa=0,sb=0; qWords.forEach(w=>{ if(ta.toLowerCase().includes(w.toLowerCase())) sa++; if(tb.toLowerCase().includes(w.toLowerCase())) sb++; });
+      return sb-sa;
+    })[0];
+    if(matchedQ && qWords.some(w=>(matchedQ.q+matchedQ.explain).toLowerCase().includes(w.toLowerCase()))){
+      return{text:`<p>根据题库中「${matchedQ.ch}」的${matchedQ.type}，可参考以下解析：</p><blockquote>${matchedQ.explain}</blockquote><p>若需针对具体场景深入分析，可补充背景后再次提问。</p>`,sources:['题库-'+matchedQ.id]};
+    }
+    return{text:'<p>抱歉，我在知识库和题库中暂未找到与该问题直接匹配的内容。建议尝试：</p><ul><li>换一种更具体的问法，例如「融资租赁飞机的折旧方法」；</li><li>点击上方常见问题快速体验；</li><li>启动本地LLM代理后，模型可基于知识库生成更开放的回答。</li></ul>',sources:['知识库未命中']};
+  }
   const top=scored.slice(0,3);
-  const text=top.map((k,i)=>`<strong>${i+1}. ${k.title}</strong>\n${k.content}`).join('\n\n');
+  const text='<p>根据民航运输企业会计知识库，为您整理以下要点：</p>'+top.map((k,i)=>`<p><strong>${i+1}. ${k.title}</strong><br>${k.content}</p>`).join('')+'<p style="font-size:12px;color:var(--text-light)">以上基于教材与题库知识库，仅供参考。</p>';
   return{text:text,sources:top.map(k=>k.chapter+'·'+k.title)};
 }
 

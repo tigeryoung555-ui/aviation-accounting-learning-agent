@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="zh-CN" data-page-node-id="O9zWrZjbBajSva6C8rERIn">
+<head data-page-node-id="tcQAXDo3BExmRq4vL8Zxdl">
+<meta charset="UTF-8" data-page-node-id="UF0w13DQU8x5KfN4HeuVRe">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="eDGX3ACl1Vc1Xyh14vMR8B">
 <title>民航运输企业会计学习智能体 v2.0</title>
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" data-page-node-id="iAaMZeStpYMJ9mlGwRQoqR">
 <style>
 :root{--primary:#1a56a4;--primary-light:#e8f0fb;--primary-dark:#0f3d7a;--accent:#00a0b0;--success:#22a06b;--warning:#e8a317;--danger:#d94040;--bg:#f4f6fa;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--shadow:0 2px 12px rgba(26,86,164,0.08);}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -122,6 +122,10 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .ai-suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;}
 .ai-suggestion{padding:5px 12px;background:var(--primary-light);color:var(--primary);border-radius:14px;font-size:12px;cursor:pointer;transition:all 0.2s;}
 .ai-suggestion:hover{background:var(--primary);color:#fff;}
+.ai-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-light);margin-left:10px;}
+.ai-status::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-light);}
+.ai-status.online::before{background:var(--success);}
+.ai-status.offline::before{background:var(--warning);}
 /* 教师端 */
 .teacher-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
 .t-stat{background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
@@ -152,144 +156,144 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .toast.success{background:var(--success);}.toast.error{background:var(--danger);}.toast.info{background:var(--primary);}
 </style>
 </head>
-<body>
-<div class="app">
-<aside class="sidebar">
-<div class="logo"><h1>民航运输企业会计</h1><p>学习智能体 v2.0</p></div>
-<div class="role-tabs">
-<div class="role-tab active" data-role="student">学生端</div>
-<div class="role-tab" data-role="teacher">教师端</div>
+<body data-page-node-id="QNhlKkUqFA1Nju78YD4wop">
+<div class="app" data-page-node-id="C2vkAEU8eEKzWRIDImzXuB">
+<aside class="sidebar" data-page-node-id="H4VlHmKsEuCstYniCS165D">
+<div class="logo" data-page-node-id="QLEiWx0o0FbIxWOxqN9N9S"><h1 data-page-node-id="lifN1yLv8fepFNT2tKXrb0">民航运输企业会计</h1><p data-page-node-id="fngmswOkETAoMIVr1AFNNH">学习智能体 v2.0</p></div>
+<div class="role-tabs" data-page-node-id="TA4Her0cyvdiX05h8swFCV">
+<div class="role-tab active" data-role="student" data-page-node-id="p5pI34QbkC1thM71QQ4Um1">学生端</div>
+<div class="role-tab" data-role="teacher" data-page-node-id="SvTJDLZcsD2LcfnOsEpYSK">教师端</div>
 </div>
-<nav class="nav" id="studentNav">
-<div class="nav-section">学习中心</div>
-<div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>学习仪表盘</span></div>
-<div class="nav-item" data-view="knowledge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>知识学习</span></div>
-<div class="nav-item" data-view="quiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>智能练习</span><span class="nav-badge" id="quizBadge">0</span></div>
-<div class="nav-item" data-view="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>AI答疑</span></div>
-<div class="nav-item" data-view="score"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>成绩分析</span></div>
-<div class="nav-item" data-view="wrong"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>错题本</span></div>
+<nav class="nav" id="studentNav" data-page-node-id="HDudaKiorkESm7nvRZhTah">
+<div class="nav-section" data-page-node-id="FU55lTqARdgC8q8ES0UhDl">学习中心</div>
+<div class="nav-item active" data-view="dashboard" data-page-node-id="1QGLj9dj5Id7q9EpFY0dMW"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="aoGosAM23XH4JJKWF0Fqvv"><rect x="3" y="3" width="7" height="7" data-page-node-id="GpZlZp8gZENy7mgoczEDWf"/><rect x="14" y="3" width="7" height="7" data-page-node-id="NHXJZGZs7AEkw1UoHaoQ6X"/><rect x="14" y="14" width="7" height="7" data-page-node-id="vLvwe2sIM9zI84x2KFK8wx"/><rect x="3" y="14" width="7" height="7" data-page-node-id="lH28FmCidgzcAhqv7rQK3F"/></svg><span data-page-node-id="wHMg0AjpeTjungPnd6pAtd">学习仪表盘</span></div>
+<div class="nav-item" data-view="knowledge" data-page-node-id="SFdXO94VADKFjTGdpFPFvY"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="wEcYep3GgR6sHPvI1bdym3"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" data-page-node-id="eA9JWpA7CvsTL7vfZmjQbR"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" data-page-node-id="IfCCXX93WLngusa26VlEWE"/></svg><span data-page-node-id="P45SrXjempPLR9GBDThNWl">知识学习</span></div>
+<div class="nav-item" data-view="quiz" data-page-node-id="Sus6mRRLgBc8WWV4QgYSz5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="tIS8qNEOHpdFm1ChMCCV0y"><path d="M9 11l3 3L22 4" data-page-node-id="pjdLrIDWuIKQvWu6wKxyCE"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" data-page-node-id="19R5orQfIHJJpwZlASAHzN"/></svg><span data-page-node-id="Y5qDmHY2nIfFPsxFA0ytp2">智能练习</span><span class="nav-badge" id="quizBadge" data-page-node-id="Ov4BWhvY5woavHQ10DBLkS">0</span></div>
+<div class="nav-item" data-view="ai" data-page-node-id="A51cQLJMOUTpd37RXI8Mc6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="DTRtvmgVs8tRNhDwH5g40M"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-page-node-id="QZBvUNOHr6iY7vM0XP3gWi"/></svg><span data-page-node-id="1i4CCSLljBOJdJXArFyfmF">AI答疑</span></div>
+<div class="nav-item" data-view="score" data-page-node-id="RpcAcudNiKWwiBKVI5VUtj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="PlyuHqjO5ydpoINEehdYjO"><path d="M18 20V10" data-page-node-id="e8e92cnIhoZ1HN9G7RMslA"/><path d="M12 20V4" data-page-node-id="8RU1jO5E1x3NOc8ib2ucgF"/><path d="M6 20v-6" data-page-node-id="xBZoaHy90eNeC53eIWcGDX"/></svg><span data-page-node-id="5cchB6Ul3Xu26IJc3H7Lfw">成绩分析</span></div>
+<div class="nav-item" data-view="wrong" data-page-node-id="3nTFIjn2da3mBLwI7y8e5u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="ww0F3EPxRdWFE3NHOk0Jhr"><circle cx="12" cy="12" r="10" data-page-node-id="AYFtTtGdmilJ3a7AA1kJLS"/><line x1="15" y1="9" x2="9" y2="15" data-page-node-id="oQT5TbN75HKotHtCWBK0wO"/><line x1="9" y1="9" x2="15" y2="15" data-page-node-id="BlDUh7FzaBqga2BslVT7G9"/></svg><span data-page-node-id="PYimyniSU0mmZ9CtgXZWCN">错题本</span></div>
 </nav>
-<nav class="nav hidden" id="teacherNav">
-<div class="nav-section">教学管理</div>
-<div class="nav-item" data-view="t-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>教学概览</span></div>
-<div class="nav-item" data-view="t-bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>题库管理</span></div>
-<div class="nav-item" data-view="t-exam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg><span>自动组卷</span></div>
-<div class="nav-item" data-view="t-class"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>班级成绩</span></div>
+<nav class="nav hidden" id="teacherNav" data-page-node-id="vKFoBMd8M6VERPnCN2ixaC">
+<div class="nav-section" data-page-node-id="N4mShGr8WfWwSI0NAmEhhp">教学管理</div>
+<div class="nav-item" data-view="t-dashboard" data-page-node-id="bUqq8ND2foDcXqCN6piRKl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="WdxaGdA1BTMBhoJFVuQNHy"><rect x="3" y="3" width="7" height="7" data-page-node-id="RngrexkUQvJEsejDVUYhAi"/><rect x="14" y="3" width="7" height="7" data-page-node-id="hXZyRNxh7VuZ8dsQKQ4T6E"/><rect x="14" y="14" width="7" height="7" data-page-node-id="PX5elwKkBCU2GHJj3N4ac3"/><rect x="3" y="14" width="7" height="7" data-page-node-id="oXvjyUe04wNgc3Wawj3GvC"/></svg><span data-page-node-id="HS4vILfbYxOSeRclQkK8FH">教学概览</span></div>
+<div class="nav-item" data-view="t-bank" data-page-node-id="ogdD8M5mK3AYOBhwlmdNv7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="vOZSkMvfleNFutt4aoP1jI"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" data-page-node-id="tc80hNlKmeEzj0EPWUaUBj"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" data-page-node-id="ft1KBkFhpeKN9Djp1cc4Zs"/></svg><span data-page-node-id="btXvC6nYBqQDbGh4TUla3v">题库管理</span></div>
+<div class="nav-item" data-view="t-exam" data-page-node-id="aZckI2yvWhUp4f2QJdr67Q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="updW13x6YJDuFkFhDCFQkR"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" data-page-node-id="B8BWYpupRCYDtXRqiHgNAe"/><polyline points="14 2 14 8 20 8" data-page-node-id="iB3KubDGdtiJ2mh4X35CGJ"/><line x1="9" y1="15" x2="15" y2="15" data-page-node-id="bsMK8aSNJ0oVoiAOOw1l4B"/></svg><span data-page-node-id="XV45Wo3USLNdWUx0Ae7LMj">自动组卷</span></div>
+<div class="nav-item" data-view="t-class" data-page-node-id="3JvUyIWe8dMG1Rj18G3bqh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-page-node-id="3GuNCWWNpIvQYjSaAa6uiZ"><path d="M18 20V10" data-page-node-id="bO0yW2jYMroPlgT31N5m9x"/><path d="M12 20V4" data-page-node-id="tCBFjpzkbBpAxz3agGNQVX"/><path d="M6 20v-6" data-page-node-id="JUswOYvjWjMElxRD0IMtsi"/></svg><span data-page-node-id="3jc65fBBPeK2GxyxSyCGGX">班级成绩</span></div>
 </nav>
 </aside>
-<main class="main">
+<main class="main" data-page-node-id="fJauJYYU4zakpW53HLZpI6">
 <!-- 学生端视图 -->
-<div id="view-dashboard" class="view">
-<div class="page-header"><h2>学习仪表盘</h2><p>掌握你的学习进度，民航运输企业会计智能体为你护航</p></div>
-<div class="stats-grid">
-<div class="stat-card blue"><div class="label">题库总量</div><div class="value" id="statTotal">0</div><div class="sub">10章39个知识点</div></div>
-<div class="stat-card teal"><div class="label">已完成练习</div><div class="value" id="statDone">0</div><div class="sub">累计答题次数</div></div>
-<div class="stat-card green"><div class="label">正确率</div><div class="value" id="statRate">0%</div><div class="sub">客观题自动评阅</div></div>
-<div class="stat-card orange"><div class="label">错题数</div><div class="value" id="statWrong">0</div><div class="sub">待复习巩固</div></div>
+<div id="view-dashboard" class="view" data-page-node-id="mqbgQxv8TErLkBHniwhw6I">
+<div class="page-header" data-page-node-id="GgkoyyVAMcrWOteAsWyA7p"><h2 data-page-node-id="EQY5aHuoMnU8IFaSaxxkPu">学习仪表盘</h2><p data-page-node-id="aFN5yNByFuFmZUlEuSqKSg">掌握你的学习进度，民航运输企业会计智能体为你护航</p></div>
+<div class="stats-grid" data-page-node-id="WyH2vWsWBXzYn9JNrQho60">
+<div class="stat-card blue" data-page-node-id="Wfl6XwJBh6D1GDi7eojc5h"><div class="label" data-page-node-id="u1KWbMkFsAfl3GS2WvRTox">题库总量</div><div class="value" id="statTotal" data-page-node-id="t7sHtxxcEBg3oFjM7jsST7">0</div><div class="sub" data-page-node-id="e3ujpxJXK2DdOPAsptYX8t">10章39个知识点</div></div>
+<div class="stat-card teal" data-page-node-id="kfxpngZAyaAGX1vMArBoLn"><div class="label" data-page-node-id="9qeC2cyx3K3M2F5wZyay2O">已完成练习</div><div class="value" id="statDone" data-page-node-id="O25YfESL2CubQ3mvaNG3ht">0</div><div class="sub" data-page-node-id="Olu8yyZUA67OstNSz18x4v">累计答题次数</div></div>
+<div class="stat-card green" data-page-node-id="oB4ZzuezRnU3LgFxXzKZre"><div class="label" data-page-node-id="yeg75gOmdNuliYpZhfwCcQ">正确率</div><div class="value" id="statRate" data-page-node-id="DkkIsqL0SvGVHWx3ytslj1">0%</div><div class="sub" data-page-node-id="0udawwSEAmnD9slCl11h0Q">客观题自动评阅</div></div>
+<div class="stat-card orange" data-page-node-id="9fvAfiPxfvh1wImjZfAmxV"><div class="label" data-page-node-id="JkMDRb1Bd5ZC3g6hmWFGOG">错题数</div><div class="value" id="statWrong" data-page-node-id="INMlKm4DNw8K50UUeWTKoz">0</div><div class="sub" data-page-node-id="vT2uMquteCpwEtF7iaY6Ag">待复习巩固</div></div>
 </div>
-<div class="card"><h3>课程章节（点击进入学习）</h3><div class="chapter-list" id="chapterList"></div></div>
-</div>
-
-<div id="view-knowledge" class="view hidden">
-<div class="page-header"><h2>知识学习</h2><p>系统学习民航运输企业会计10章核心知识</p></div>
-<div id="knowledgeChapterSelect" style="margin-bottom:16px;"></div>
-<div class="card" id="knowledgeContent"></div>
+<div class="card" data-page-node-id="EGT6coyENW81gLWsNPckVr"><h3 data-page-node-id="s28CZFpx5pRXvJH8f3oI2Y">课程章节（点击进入学习）</h3><div class="chapter-list" id="chapterList" data-page-node-id="26QDJg6QO7OfafOYrBy7zq"></div></div>
 </div>
 
-<div id="view-quiz" class="view hidden">
-<div class="page-header"><h2>智能练习</h2><p>206题全量题库 · 客观题自动评阅 · 主观题关键词初评</p></div>
-<div class="quiz-header">
-<div class="quiz-filters" id="chapterFilter"></div>
-<div class="quiz-filters" id="typeFilter"></div>
-</div>
-<div id="quizList"></div>
+<div id="view-knowledge" class="view hidden" data-page-node-id="M1OCx8qTluCbgZM8oX6JBj">
+<div class="page-header" data-page-node-id="HI42vj6F06cZEfQSF1oSBP"><h2 data-page-node-id="FgMGV3VQDmkpv9HvTUfoAD">知识学习</h2><p data-page-node-id="5phxUpzlRfvdoeJwIGLBkr">系统学习民航运输企业会计10章核心知识</p></div>
+<div id="knowledgeChapterSelect" style="margin-bottom:16px;" data-page-node-id="e1Y9mkUVDkJfuT0tCDJC1Y"></div>
+<div class="card" id="knowledgeContent" data-page-node-id="J3sgmn2ytR1xoYUtBMfeTg"></div>
 </div>
 
-<div id="view-ai" class="view hidden">
-<div class="page-header"><h2>AI答疑助手</h2><p>基于民航会计知识库的检索增强答疑（RAG），输入问题获取专业解答</p></div>
-<div class="card" style="padding:0;overflow:hidden;">
-<div class="ai-suggestions" id="aiSuggestions"></div>
-<div class="ai-messages" id="aiMessages"></div>
-<div class="ai-input">
-<input type="text" id="aiInput" placeholder="输入你的问题，如：飞机折旧为什么用两种方法？">
-<button class="btn btn-primary" onclick="sendAI()">发送</button>
+<div id="view-quiz" class="view hidden" data-page-node-id="wtwkGni49z3G0G7La8piGJ">
+<div class="page-header" data-page-node-id="oR193atiTVBcgEEXbaOrEN"><h2 data-page-node-id="WwuEdE9bCF0oqL8f4caysb">智能练习</h2><p data-page-node-id="vZc71L3cASL8lf6LcbyGqC">206题全量题库 · 客观题自动评阅 · 主观题关键词初评</p></div>
+<div class="quiz-header" data-page-node-id="6hKDDghu0frP6SOu3zlC0S">
+<div class="quiz-filters" id="chapterFilter" data-page-node-id="8g0BUmTAnv8whvUntxzE5C"></div>
+<div class="quiz-filters" id="typeFilter" data-page-node-id="AHP0aECdEIeHibetOoXlsH"></div>
+</div>
+<div id="quizList" data-page-node-id="f8ViBB0iIfw6wlnlFuFb0I"></div>
+</div>
+
+<div id="view-ai" class="view hidden" data-page-node-id="Y1D7N1BV5vRGtSvgG6esx0">
+<div class="page-header" data-page-node-id="9Yi3PCdRqwVM9HDFjlyfTk"><h2 data-page-node-id="PMMdWQSKkx64wSC0ljWZB6">AI答疑助手</h2><span class="ai-status" id="aiStatus" data-page-node-id="zdA9E8Visn7kO59ir9B9hV">检测中…</span><p data-page-node-id="xAxp7UyI4ULPsBUEQXrbCy">基于民航会计知识库的检索增强答疑（RAG），输入问题获取专业解答。可选接入本地LLM后端获得生成式回答。</p></div>
+<div class="card" style="padding:0;overflow:hidden;" data-page-node-id="AWUqBlCYRpEOpbUBpvEUBW">
+<div class="ai-suggestions" id="aiSuggestions" data-page-node-id="Nk8XgTkLiWF7Zjh01CIFxQ"></div>
+<div class="ai-messages" id="aiMessages" data-page-node-id="NykvrPkVfudOMe8veBCKsd"></div>
+<div class="ai-input" data-page-node-id="42Eq2XR0fXeoHgnvZ5NSzw">
+<input type="text" id="aiInput" placeholder="输入你的问题，如：飞机折旧为什么用两种方法？" data-page-node-id="YAeOMOHqTKNBLPD7VCz8YC">
+<button class="btn btn-primary" onclick="sendAI()" data-page-node-id="ZJzzd1ejuwS8LAqhiYMA6Q">发送</button>
 </div>
 </div>
 </div>
 
-<div id="view-score" class="view hidden">
-<div class="page-header"><h2>成绩分析</h2><p>自动生成个人学习成绩和知识点掌握分析</p></div>
-<div class="score-overview">
-<div class="score-card"><div class="score-num" id="totalAnswered">0</div><div class="score-label">累计答题数</div></div>
-<div class="score-card"><div class="score-num" id="totalCorrect">0</div><div class="score-label">答对题数</div></div>
-<div class="score-card"><div class="score-num" id="overallRate">0%</div><div class="score-label">综合正确率</div></div>
+<div id="view-score" class="view hidden" data-page-node-id="gkS4Ce1DuT3fgkeftd2hO1">
+<div class="page-header" data-page-node-id="8c8farZrxrHfOqxOhCWeUP"><h2 data-page-node-id="CGpsiFEYCrEyNeavm68b0y">成绩分析</h2><p data-page-node-id="eIyPSG2sE2DR7bZfg8V3Q5">自动生成个人学习成绩和知识点掌握分析</p></div>
+<div class="score-overview" data-page-node-id="feNuDRFmFBmV5WHVqzHY9j">
+<div class="score-card" data-page-node-id="qyVYmqseRMfAhpUwM1oquQ"><div class="score-num" id="totalAnswered" data-page-node-id="atViHm5fxVFeVPi1kI14zb">0</div><div class="score-label" data-page-node-id="fqebCfLXtWJ4HaBgVedBiO">累计答题数</div></div>
+<div class="score-card" data-page-node-id="2u5Ac0RK93rOvHZKeKMYou"><div class="score-num" id="totalCorrect" data-page-node-id="lFkN9YgRTdGKyNERuqDW68">0</div><div class="score-label" data-page-node-id="Q0ROs8b9865eFFfMLmy00E">答对题数</div></div>
+<div class="score-card" data-page-node-id="RnRzQcu4aCUj13hgzb6ULG"><div class="score-num" id="overallRate" data-page-node-id="9zKx89qbcittesJECdt3zL">0%</div><div class="score-label" data-page-node-id="R4C3BZqsK3a74xqIUtOHPF">综合正确率</div></div>
 </div>
-<div class="card"><h3>各章正确率</h3><div class="chapter-scores" id="chapterScores"></div></div>
-<div class="card"><h3>知识点掌握度（薄弱点优先）</h3><div id="kpMastery"></div></div>
+<div class="card" data-page-node-id="5oc4NRHgnIqsISKmaaF52a"><h3 data-page-node-id="IXUZAeXWOBV7BOiqDRkcae">各章正确率</h3><div class="chapter-scores" id="chapterScores" data-page-node-id="olDgHbU30dEaxzkrRZzZGA"></div></div>
+<div class="card" data-page-node-id="B4BkVSTtpHFrOW6AP8qjOz"><h3 data-page-node-id="h7kAiPn6FNOPFJPTZiuyY3">知识点掌握度（薄弱点优先）</h3><div id="kpMastery" data-page-node-id="C4lQyN9BBQVp8csFefXvET"></div></div>
 </div>
 
-<div id="view-wrong" class="view hidden">
-<div class="page-header"><h2>错题本</h2><p>自动归集错题，针对性复习薄弱知识点</p></div>
-<div class="wrong-list" id="wrongList"></div>
+<div id="view-wrong" class="view hidden" data-page-node-id="CaoqwbqT9rmaXqfdHjMbf8">
+<div class="page-header" data-page-node-id="8d5wcYXwjZB8S3axYloraI"><h2 data-page-node-id="POSNzPlbGbw65ITZlLkZHW">错题本</h2><p data-page-node-id="Gin2SyYSAzvbzaxfzLTOv2">自动归集错题，针对性复习薄弱知识点</p></div>
+<div class="wrong-list" id="wrongList" data-page-node-id="egf9bLAe7XvppvUNgFQhBQ"></div>
 </div>
 
 <!-- 教师端视图 -->
-<div id="view-t-dashboard" class="view hidden">
-<div class="page-header"><h2>教学概览</h2><p>题库、班级、成绩一站式管理</p></div>
-<div class="teacher-stats">
-<div class="t-stat"><div class="t-label">题库总量</div><div class="t-value" id="tTotal">0</div><div class="t-sub">覆盖10章</div></div>
-<div class="t-stat"><div class="t-label">班级人数</div><div class="t-value">45</div><div class="t-sub">模拟班级数据</div></div>
-<div class="t-stat"><div class="t-label">平均正确率</div><div class="t-value" id="tAvgRate">0%</div><div class="t-sub">班级整体</div></div>
-<div class="t-stat"><div class="t-label">已组试卷</div><div class="t-value" id="tExamCount">0</div><div class="t-sub">历史组卷</div></div>
+<div id="view-t-dashboard" class="view hidden" data-page-node-id="uDlk2313qwKFncfKPcj9Hh">
+<div class="page-header" data-page-node-id="WFABmbchgTb28bMyOfTDOC"><h2 data-page-node-id="0QGFghjTteAWuXhFpG1enS">教学概览</h2><p data-page-node-id="sTZDkTVGZdhSnh1UpuoNyM">题库、班级、成绩一站式管理</p></div>
+<div class="teacher-stats" data-page-node-id="WLMvrXcTYJk8GAxoFzfcFb">
+<div class="t-stat" data-page-node-id="nDs1bWRLzaJn1HBirwEH5H"><div class="t-label" data-page-node-id="64L4ybXHrcoQCo22s7ncED">题库总量</div><div class="t-value" id="tTotal" data-page-node-id="AyOoa4kq6vgaJZMHnrTH7D">0</div><div class="t-sub" data-page-node-id="FMQf1CL9BQZr6jyBLoRBzK">覆盖10章</div></div>
+<div class="t-stat" data-page-node-id="atUMCEY2lnQIVFl5DZMheF"><div class="t-label" data-page-node-id="dFkLiO7t5f2huK8H8GkO3W">班级人数</div><div class="t-value" data-page-node-id="TLj81mxd4kK2sx3mbsfZgq">45</div><div class="t-sub" data-page-node-id="fGcKJfMgkPun5Sl82alTtx">模拟班级数据</div></div>
+<div class="t-stat" data-page-node-id="tWcBQKjipNFSCCARyWgSHN"><div class="t-label" data-page-node-id="11yTGohngZjfDvrlDgXkPc">平均正确率</div><div class="t-value" id="tAvgRate" data-page-node-id="ZMOU9yBXun6dMzYnrqVGWz">0%</div><div class="t-sub" data-page-node-id="AwNA3BkAnWOF7MI8MCrI8Q">班级整体</div></div>
+<div class="t-stat" data-page-node-id="8EuKyJCtSNPbtVb1dn1Zhj"><div class="t-label" data-page-node-id="z1akFxXYhuoXw5mE8ZGBpJ">已组试卷</div><div class="t-value" id="tExamCount" data-page-node-id="dkbfUWChhrMO2BO0GLmGEQ">0</div><div class="t-sub" data-page-node-id="QUEGvFb0ajJONFLEeivLUW">历史组卷</div></div>
 </div>
-<div class="card"><h3>题库分布</h3><div id="bankDistribution"></div></div>
-<div class="card"><h3>班级成绩分布</h3><div class="bar-chart" id="classChart"></div></div>
-</div>
-
-<div id="view-t-bank" class="view hidden">
-<div class="page-header"><h2>题库管理</h2><p>浏览、筛选、统计全部206道题目</p></div>
-<div class="quiz-header">
-<div class="quiz-filters" id="bankChapterFilter"></div>
-<div class="quiz-filters" id="bankTypeFilter"></div>
-<div style="font-size:13px;color:var(--text-light);">共 <span id="bankCount">0</span> 题</div>
-</div>
-<div class="card" style="padding:0;"><div class="table-wrap"><table class="data-table" id="bankTable"><thead><tr><th>编号</th><th>章节</th><th>题型</th><th>难度</th><th>题干</th><th>分值</th><th>民航特色</th></tr></thead><tbody></tbody></table></div></div>
+<div class="card" data-page-node-id="2aN7t0TD7MSUyYIViPPHJV"><h3 data-page-node-id="wO3WBw73Extufit8Iae0eP">题库分布</h3><div id="bankDistribution" data-page-node-id="awHbDSogxGWgsrQskFYOyG"></div></div>
+<div class="card" data-page-node-id="7CElrgQerFwzdKCb4KEr70"><h3 data-page-node-id="WX01X0ATi8xbFptrK40pCH">班级成绩分布</h3><div class="bar-chart" id="classChart" data-page-node-id="VJxBkAnFWnYZ9IU2U2tioY"></div></div>
 </div>
 
-<div id="view-t-exam" class="view hidden">
-<div class="page-header"><h2>自动组卷</h2><p>按题型、难度、知识点约束自动生成试卷</p></div>
-<div class="card">
-<h3>组卷参数</h3>
-<div class="exam-config">
-<div class="config-group"><label>试卷名称</label><input type="text" id="examName" value="民航会计期中模拟试卷"></div>
-<div class="config-group"><label>考试时长（分钟）</label><input type="number" id="examDuration" value="90"></div>
-<div class="config-group"><label>章节范围</label><select id="examChapter"><option value="全部">全部章节</option><option value="第1章 概论">第1章 概论</option><option value="第2章 流动资产">第2章 流动资产</option><option value="第3章 飞机发动机">第3章 飞机发动机</option><option value="第4章 飞机租赁">第4章 飞机租赁</option><option value="第5章 运输成本">第5章 运输成本</option><option value="第6章 票证收入">第6章 票证收入</option><option value="第7章 负债权益">第7章 负债权益</option><option value="第8章 财务报告">第8章 财务报告</option><option value="第9章 报表分析">第9章 报表分析</option><option value="第10章 外币合并">第10章 外币合并</option><option value="第1章 物流企业会计概论">第1章 物流企业会计概论</option><option value="第2章 经营准备的管理与核算">第2章 经营准备的管理与核算</option><option value="第3章 存货的管理与核算">第3章 存货的管理与核算</option><option value="第4章 长期资产的管理与核算">第4章 长期资产的管理与核算</option><option value="第5章 成本和费用的管理与核算">第5章 成本和费用的管理与核算</option><option value="第6章 流动负债的管理与核算">第6章 流动负债的管理与核算</option><option value="第7章 收益及分配的管理与核算">第7章 收益及分配的管理与核算</option><option value="第9章 外币业务的管理与核算">第9章 外币业务的管理与核算</option><option value="第10章 新技术在物流企业会计中的应用">第10章 新技术在物流企业会计中的应用</option></select></div>
-<div class="config-group"><label>难度分布</label><select id="examDiff"><option value="balanced">均衡（易3:中5:难2）</option><option value="easy">偏易（易5:中4:难1）</option><option value="hard">偏难（易1:中4:难5）</option></select></div>
-<div class="config-group"><label>单选题数量</label><input type="number" id="nSingle" value="15" min="0"></div>
-<div class="config-group"><label>多选题数量</label><input type="number" id="nMulti" value="5" min="0"></div>
-<div class="config-group"><label>判断题数量</label><input type="number" id="nJudge" value="10" min="0"></div>
-<div class="config-group"><label>主观题数量</label><input type="number" id="nSubj" value="3" min="0"></div>
+<div id="view-t-bank" class="view hidden" data-page-node-id="N5ogoHP5zbf1l1KAx81KBa">
+<div class="page-header" data-page-node-id="UuqMCAiJ3kPMubrBflMX8b"><h2 data-page-node-id="lxMQ9VKyUmC376gVail4Vz">题库管理</h2><p data-page-node-id="adC8nmeilLDWjHAsIh4IfN">浏览、筛选、统计全部206道题目</p></div>
+<div class="quiz-header" data-page-node-id="BDMOFGsT98ZZoYISioOTtG">
+<div class="quiz-filters" id="bankChapterFilter" data-page-node-id="qeTrq9z710swVopBEKUTE8"></div>
+<div class="quiz-filters" id="bankTypeFilter" data-page-node-id="VQmZlmol4T6GXrIRHVzESt"></div>
+<div style="font-size:13px;color:var(--text-light);" data-page-node-id="srNEIakXksWLxcOhiQDJF1">共 <span id="bankCount" data-page-node-id="AqvYsYaxr2WQn5CLtxAXIm">0</span> 题</div>
 </div>
-<div style="margin-top:16px;"><button class="btn btn-primary" onclick="generateExam()">生成试卷</button>
-<button class="btn btn-outline" onclick="exportExam()">导出试卷</button></div>
-</div>
-<div class="card hidden" id="examResult"><h3>试卷预览</h3><div id="examPreview"></div></div>
+<div class="card" style="padding:0;" data-page-node-id="cpJY37DPWEIERwk8N9l6QD"><div class="table-wrap" data-page-node-id="6GBvQAvAmJgL5MhA81aC8K"><table class="data-table" id="bankTable" data-page-node-id="sYeUaWcKlgUEZdDjGyL1QD"><thead data-page-node-id="ICndEBVP6eIE2It9aKWGcg"><tr data-page-node-id="fV2ikeDmbHN7sljOYnpOlk"><th data-page-node-id="N2uXN78pCQNi0MZfhh7zXu">编号</th><th data-page-node-id="yL40dBZof8DQasIKymBl1s">章节</th><th data-page-node-id="e0GXyGuwwHYISESGKzGQBr">题型</th><th data-page-node-id="kdeDcawIcEkIPdb2MsEw07">难度</th><th data-page-node-id="pvgawUMakP6A4oxfr7ovmK">题干</th><th data-page-node-id="bNzISUo4qVZUCyUtXODYxP">分值</th><th data-page-node-id="GVQ41ZcWC2Dv1eoEvJMXhr">民航特色</th></tr></thead><tbody data-page-node-id="ONpdw7bADPjZbpMazmiEH2"></tbody></table></div></div>
 </div>
 
-<div id="view-t-class" class="view hidden">
-<div class="page-header"><h2>班级成绩分析</h2><p>模拟班级数据 · 学生成绩排名 · 知识点掌握热力图</p></div>
-<div class="score-overview">
-<div class="score-card"><div class="score-num">78.5</div><div class="score-label">班级平均分</div></div>
-<div class="score-card"><div class="score-num">85%</div><div class="score-label">及格率</div></div>
-<div class="score-card"><div class="score-num">12.3</div><div class="score-label">标准差</div></div>
+<div id="view-t-exam" class="view hidden" data-page-node-id="8QMaMHCTgGLAD8gGGoA5Mg">
+<div class="page-header" data-page-node-id="f1VZn93SXDIriLTHpdNn4R"><h2 data-page-node-id="nc4ZiuyLnUcbtDY9dG3nrj">自动组卷</h2><p data-page-node-id="PzGro3p0aGrnEUOY7bUWjK">按题型、难度、知识点约束自动生成试卷</p></div>
+<div class="card" data-page-node-id="BWmsjNz7GvFlc0ey8qgq64">
+<h3 data-page-node-id="U1zsJyJBmgdkXs1ZQCrrXX">组卷参数</h3>
+<div class="exam-config" data-page-node-id="yDrcVAmXzVViomnyxYu1FW">
+<div class="config-group" data-page-node-id="VeofzsPEwuHZQ0S2G0x9d1"><label data-page-node-id="1xrbvLRFOOymYkGCLfWvfd">试卷名称</label><input type="text" id="examName" value="民航会计期中模拟试卷" data-page-node-id="GVjjuEE0NoG0Ro1WwA7pvy"></div>
+<div class="config-group" data-page-node-id="a9XkVUgUYRYUMd2hdi7naU"><label data-page-node-id="JYJAkoVcd7NKcRkp59dQ3p">考试时长（分钟）</label><input type="number" id="examDuration" value="90" data-page-node-id="XHcP3LH3r2RYW3xXWAuhTI"></div>
+<div class="config-group" data-page-node-id="3SQKaLKsodF1MLYtz27zzz"><label data-page-node-id="l1EvBnNLW37CNAtxOn0kdW">章节范围</label><select id="examChapter" data-page-node-id="xFfW36fWaR4d0aIfD3tfjN"><option value="全部" data-page-node-id="g1ANI3tjcBF9Y5vmkDWT3a">全部章节</option><option value="第1章 概论" data-page-node-id="T5TH8hGUz8Ku1Q5ThO2j3E">第1章 概论</option><option value="第2章 流动资产" data-page-node-id="3Hxs3XBVHg1Q6eiWi1zUQy">第2章 流动资产</option><option value="第3章 飞机发动机" data-page-node-id="vCzMfr0Gfn00tgC5dudHhs">第3章 飞机发动机</option><option value="第4章 飞机租赁" data-page-node-id="EVNJoIl5IUKqps81x1p9ze">第4章 飞机租赁</option><option value="第5章 运输成本" data-page-node-id="LzAmIcrfT5sdGLRplFq2t1">第5章 运输成本</option><option value="第6章 票证收入" data-page-node-id="kaYQzFdeddALjfilF64jzD">第6章 票证收入</option><option value="第7章 负债权益" data-page-node-id="h1e0kCqeYDNi8QIBTMGF4s">第7章 负债权益</option><option value="第8章 财务报告" data-page-node-id="tazWt6L2fHmOiU0WX7HpY1">第8章 财务报告</option><option value="第9章 报表分析" data-page-node-id="Yytq5BD6N8yNFAeEwSS9ZZ">第9章 报表分析</option><option value="第10章 外币合并" data-page-node-id="wcOODUkfcFctapKaL3MD8A">第10章 外币合并</option><option value="第1章 物流企业会计概论" data-page-node-id="Cc0a7KMMspAsMEHMDHotFE">第1章 物流企业会计概论</option><option value="第2章 经营准备的管理与核算" data-page-node-id="4greUPKnYqtXv3iEowwDJB">第2章 经营准备的管理与核算</option><option value="第3章 存货的管理与核算" data-page-node-id="H2DUG54MZxw3OTOfiV3ySr">第3章 存货的管理与核算</option><option value="第4章 长期资产的管理与核算" data-page-node-id="SZPWhIJE4dXU51xIhiGyWH">第4章 长期资产的管理与核算</option><option value="第5章 成本和费用的管理与核算" data-page-node-id="7Mc6pLtoLsbF4wDI2YD2SP">第5章 成本和费用的管理与核算</option><option value="第6章 流动负债的管理与核算" data-page-node-id="eRfTfKBmdaUP20WuCgRwtF">第6章 流动负债的管理与核算</option><option value="第7章 收益及分配的管理与核算" data-page-node-id="GfJoj1dXgJt6NRZV0wHXxq">第7章 收益及分配的管理与核算</option><option value="第9章 外币业务的管理与核算" data-page-node-id="VbBHbR3jre78BysNI9HVxN">第9章 外币业务的管理与核算</option><option value="第10章 新技术在物流企业会计中的应用" data-page-node-id="lAC7RQn4T2FAHA3xAwt2ix">第10章 新技术在物流企业会计中的应用</option></select></div>
+<div class="config-group" data-page-node-id="rpq48G1KgX2zaypz3ksJ94"><label data-page-node-id="Hy3E2Ut0izMAOYnX1ffzQJ">难度分布</label><select id="examDiff" data-page-node-id="BqTYfQHHti9rLuYfneux3H"><option value="balanced" data-page-node-id="dZ6eLEzpXTbDLyG8HWpKSK">均衡（易3:中5:难2）</option><option value="easy" data-page-node-id="n7TkPlu8g8A7cW61sCVZAS">偏易（易5:中4:难1）</option><option value="hard" data-page-node-id="Fz38lgL7v0BmmfKfHtNw65">偏难（易1:中4:难5）</option></select></div>
+<div class="config-group" data-page-node-id="V3ghkhbp4iJ3J8YbaKTTEK"><label data-page-node-id="0fR1krZfdTJ6pGpDeTP90N">单选题数量</label><input type="number" id="nSingle" value="15" min="0" data-page-node-id="cJrbQ4w2LgHUq6LJ0Hxe7z"></div>
+<div class="config-group" data-page-node-id="4j2SwBYKwGmQ68Mkdpy6vr"><label data-page-node-id="u53uoJwb8hJyOVuMFFANrN">多选题数量</label><input type="number" id="nMulti" value="5" min="0" data-page-node-id="xrJ25nhAZVoGBHxrS3hHzP"></div>
+<div class="config-group" data-page-node-id="4sGucHlRbSDNlMfIUsNxr7"><label data-page-node-id="OL4ebH3PVplHs7nAbFM012">判断题数量</label><input type="number" id="nJudge" value="10" min="0" data-page-node-id="pHJvoxwSEMAGlr5FN0Gngm"></div>
+<div class="config-group" data-page-node-id="KDyaP10gBbGHMlzjCp9XwN"><label data-page-node-id="547F8zPAHu3kYWdHH1RQGn">主观题数量</label><input type="number" id="nSubj" value="3" min="0" data-page-node-id="Pq5zmOeYRGmRTAMHv4hqm1"></div>
 </div>
-<div class="card"><h3>成绩分布直方图</h3><div class="bar-chart" id="scoreDistChart"></div></div>
-<div class="card"><h3>学生成绩排名</h3><div class="table-wrap"><table class="data-table" id="classRankTable"><thead><tr><th>排名</th><th>学号</th><th>姓名</th><th>平时成绩</th><th>期中成绩</th><th>期末成绩</th><th>总评</th><th>等级</th></tr></thead><tbody></tbody></table></div></div>
-<div class="card"><h3>各章班级正确率（知识点掌握热力图）</h3><div id="classChapterRate"></div></div>
+<div style="margin-top:16px;" data-page-node-id="NC7l3FFGM53dUI2qUk7AC4"><button class="btn btn-primary" onclick="generateExam()" data-page-node-id="cG6dyy1D2a5gCkXecNakEz">生成试卷</button>
+<button class="btn btn-outline" onclick="exportExam()" data-page-node-id="dExbsMaGH3LgxQKiGhGvPA">导出试卷</button></div>
+</div>
+<div class="card hidden" id="examResult" data-page-node-id="xKKCcyWhSNNxJGqqOsPE3S"><h3 data-page-node-id="YzfFm7NViT742ToUXfJOMW">试卷预览</h3><div id="examPreview" data-page-node-id="pcV8BFndiC1iTDHhVVbaIX"></div></div>
+</div>
+
+<div id="view-t-class" class="view hidden" data-page-node-id="2gSOA6gsFIJeKgtMl5NGyl">
+<div class="page-header" data-page-node-id="5OfTJqKMXtvaE9nDw8XKHG"><h2 data-page-node-id="TJoj8RkKtR6JuOMK2UJF7R">班级成绩分析</h2><p data-page-node-id="frfctJ7UbDRjlL5VqvsdU5">模拟班级数据 · 学生成绩排名 · 知识点掌握热力图</p></div>
+<div class="score-overview" data-page-node-id="ThcddBHSxn8WMK0coHDDWu">
+<div class="score-card" data-page-node-id="KlKDbpWWaq0WTe1ISEVQoX"><div class="score-num" data-page-node-id="l4Syml63ijkd6QVErE9hkx">78.5</div><div class="score-label" data-page-node-id="WZea1bXDQIsSatEPTdaQRM">班级平均分</div></div>
+<div class="score-card" data-page-node-id="5iyFBjx0pO4xLHChXCzpjd"><div class="score-num" data-page-node-id="AJpuo7aBE208p4TfTjR55C">85%</div><div class="score-label" data-page-node-id="Z7phMgp6zniZaZRANiEgai">及格率</div></div>
+<div class="score-card" data-page-node-id="uk4Xyh5pNs1mdZ5dVBfaVU"><div class="score-num" data-page-node-id="hbxxzEESZduYJggs7thAB3">12.3</div><div class="score-label" data-page-node-id="CX7QxbzTEmoERdN4vKzmaO">标准差</div></div>
+</div>
+<div class="card" data-page-node-id="uLeruFriqpPHa0SrX5nYWY"><h3 data-page-node-id="BpE3BzHjj05Gd3Qj79djkC">成绩分布直方图</h3><div class="bar-chart" id="scoreDistChart" data-page-node-id="SJUorV5crU9y4yyELG0nEa"></div></div>
+<div class="card" data-page-node-id="J7D9SRi1H1LA4hyGIRWjj5"><h3 data-page-node-id="6z5rdj4goQrNbN9fLfp4l3">学生成绩排名</h3><div class="table-wrap" data-page-node-id="Z9C0FmStAAOFpCJdSur1hv"><table class="data-table" id="classRankTable" data-page-node-id="489p5GOsRPyEBFQxfMHHCj"><thead data-page-node-id="LTJVrflOKl49Q9Z7tydzjn"><tr data-page-node-id="XE3AAh3d8gTIF0UQxsrZfK"><th data-page-node-id="noRQCl1T8fmYkOOjYfx0gZ">排名</th><th data-page-node-id="LANrgHs8sYiAgdRKoHCmKT">学号</th><th data-page-node-id="EcnaUExa4SugF8eewOGkcO">姓名</th><th data-page-node-id="vjBqg7pEV46ZEsLFwgBbNl">平时成绩</th><th data-page-node-id="HaUjTQYphMNJUvqwxp96nF">期中成绩</th><th data-page-node-id="fcVtJt5SGjqo3NBQM8dZtl">期末成绩</th><th data-page-node-id="aae8fJXNDO7U4wDQTaBl8L">总评</th><th data-page-node-id="QW8nQ2kGSGblhKXOvRAa75">等级</th></tr></thead><tbody data-page-node-id="uuvJhdTwfApeFtRtVfOrTT"></tbody></table></div></div>
+<div class="card" data-page-node-id="9JGuwNNvBHCWxBQWqJMvEd"><h3 data-page-node-id="FvMu1m9w8miWhPvFKa2mC4">各章班级正确率（知识点掌握热力图）</h3><div id="classChapterRate" data-page-node-id="PB8YFSNX4StAYhtEW3g1oY"></div></div>
 </div>
 </main>
 </div>
-<div id="toastContainer"></div>
+<div id="toastContainer" data-page-node-id="nGsM5B2gzHc9jYDBZzUc5B"></div>
 
 <script>
 // ===== 数据 =====
@@ -514,9 +518,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
+      "飞行小时",
       "摊销",
-      "高价周转件",
-      "飞行小时"
+      "高价周转件"
     ]
   },
   {
@@ -535,11 +539,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "国际票证结算",
-      "折旧",
       "飞行小时",
+      "折旧",
       "国内票证结算",
       "航材消耗件",
+      "国际票证结算",
       "高价周转件"
     ]
   },
@@ -802,9 +806,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "材料成本差异",
       "航材消耗件",
-      "主营业务成本"
+      "主营业务成本",
+      "材料成本差异"
     ]
   },
   {
@@ -823,10 +827,10 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
+      "摊销",
       "高价周转件摊销",
       "折旧",
-      "摊销",
+      "主营业务成本",
       "高价周转件"
     ]
   },
@@ -866,15 +870,15 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "高价周转件摊销",
-      "折旧",
       "飞行小时",
-      "0.0475万元",
-      "14.25万元",
       "摊销",
-      "高价周转件",
-      "475元"
+      "0.0475万元",
+      "主营业务成本",
+      "14.25万元",
+      "475元",
+      "折旧",
+      "高价周转件摊销",
+      "高价周转件"
     ]
   },
   {
@@ -893,10 +897,10 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "摊销",
       "航材消耗件",
-      "高价周转件",
-      "飞行小时"
+      "飞行小时",
+      "摊销",
+      "高价周转件"
     ]
   },
   {
@@ -983,13 +987,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
+      "飞行小时",
+      "7.6万元",
+      "380元",
+      "折旧",
       "主营业务成本",
       "累计折旧",
-      "0.038万元",
-      "折旧",
-      "飞行小时",
-      "380元",
-      "7.6万元"
+      "0.038万元"
     ]
   },
   {
@@ -1335,9 +1339,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "年限平均法",
       "折旧",
-      "飞行小时"
+      "飞行小时",
+      "年限平均法"
     ]
   },
   {
@@ -1356,14 +1360,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "5%",
-      "累计折旧",
       "57387.5万元",
+      "2850万元",
+      "5%",
+      "237.5万元",
       "折旧",
       "2612.5万元",
-      "237.5万元",
-      "2850万元"
+      "主营业务成本",
+      "累计折旧"
     ]
   },
   {
@@ -1382,11 +1386,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "累计折旧",
       "固定资产-飞机",
-      "折旧",
       "银行存款",
-      "在建工程"
+      "在建工程",
+      "折旧",
+      "累计折旧"
     ]
   },
   {
@@ -1405,13 +1409,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "固定资产清理",
-      "1999.9万元",
-      "累计折旧",
-      "固定资产-飞机",
-      "折旧",
       "资产处置损益",
-      "银行存款"
+      "1999.9万元",
+      "固定资产清理",
+      "固定资产-飞机",
+      "银行存款",
+      "折旧",
+      "累计折旧"
     ]
   },
   {
@@ -1430,13 +1434,13 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "4491.25万元",
-      "142.5万元",
-      "折旧",
       "飞行小时",
       "0.0475万元",
+      "4491.25万元",
       "3691.25万元",
-      "166.25万元"
+      "166.25万元",
+      "折旧",
+      "142.5万元"
     ]
   },
   {
@@ -1455,9 +1459,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "资本化",
+      "飞行小时",
       "费用化",
-      "飞行小时"
+      "资本化"
     ]
   },
   {
@@ -1803,8 +1807,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "现值",
-      "实际利率法",
-      "租赁负债"
+      "租赁负债",
+      "实际利率法"
     ]
   },
   {
@@ -1823,11 +1827,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "使用权资产",
-      "租赁负债-租赁付款额",
-      "租赁负债",
       "8520万元",
-      "银行存款"
+      "租赁负债",
+      "银行存款",
+      "使用权资产",
+      "租赁负债-租赁付款额"
     ]
   },
   {
@@ -1846,14 +1850,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "使用权资产",
       "财务费用",
-      "租赁负债-租赁付款额",
-      "租赁负债",
-      "447.11万元",
-      "6%",
       "7451.76万元",
-      "租赁负债-未确认融资费用"
+      "447.11万元",
+      "租赁负债",
+      "使用权资产",
+      "租赁负债-未确认融资费用",
+      "租赁负债-租赁付款额",
+      "6%"
     ]
   },
   {
@@ -1872,11 +1876,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "使用权资产",
-      "租赁负债",
-      "0.5亿元",
       "资产处置损益",
-      "现值"
+      "租赁负债",
+      "使用权资产",
+      "现值",
+      "0.5亿元"
     ]
   },
   {
@@ -1969,11 +1973,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "44.4%",
       "180万元",
       "飞行小时",
+      "1.8万元",
       "0.36元",
-      "1.8万元"
+      "44.4%"
     ]
   },
   {
@@ -2324,11 +2328,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
+      "90万元",
       "0.15万元",
-      "主营业务成本",
-      "30万元",
       "间接营运费",
-      "90万元"
+      "30万元",
+      "主营业务成本"
     ]
   },
   {
@@ -2347,12 +2351,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "0.288元",
-      "80%",
-      "115.2万元",
       "飞行小时",
-      "144万元",
-      "1.8万元"
+      "1.8万元",
+      "115.2万元",
+      "80%",
+      "0.288元",
+      "144万元"
     ]
   },
   {
@@ -2371,12 +2375,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "232.5万元",
       "2325001.5元",
-      "5166.67元",
+      "232.5万元",
+      "航材消耗件-航油",
       "航材消耗件",
-      "航材消耗件-航油"
+      "主营业务成本",
+      "5166.67元"
     ]
   },
   {
@@ -2395,11 +2399,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
+      "1.8万元",
       "0.5万元",
       "1.6万元",
-      "250万元",
       "150万元",
-      "1.8万元"
+      "250万元"
     ]
   },
   {
@@ -2439,8 +2443,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "20%",
-      "30%",
-      "10%"
+      "10%",
+      "30%"
     ]
   },
   {
@@ -2479,8 +2483,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "飞行小时"
+      "飞行小时",
+      "主营业务成本"
     ]
   },
   {
@@ -2550,14 +2554,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
+      "银行存款",
+      "90%",
+      "900万元",
       "银行存款/应收账款",
       "主营业务收入",
-      "900万元",
-      "主营业务收入-运输收入",
-      "合同负债",
       "10%",
-      "银行存款",
-      "90%"
+      "合同负债",
+      "主营业务收入-运输收入"
     ]
   },
   {
@@ -2854,9 +2858,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "主营业务收入-运输收入",
       "国内票证结算",
       "银行存款",
+      "主营业务收入-运输收入",
       "主营业务收入"
     ]
   },
@@ -2876,10 +2880,10 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "合同负债-常旅客奖励",
-      "主营业务收入-运输收入",
+      "主营业务收入",
       "合同负债",
-      "主营业务收入"
+      "主营业务收入-运输收入",
+      "合同负债-常旅客奖励"
     ]
   },
   {
@@ -2898,15 +2902,15 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
+      "95%",
       "5%",
+      "银行存款",
       "2.5亿元",
+      "47.5亿元",
       "银行存款/应收账款",
       "主营业务收入",
-      "主营业务收入-运输收入",
       "合同负债",
-      "95%",
-      "47.5亿元",
-      "银行存款"
+      "主营业务收入-运输收入"
     ]
   },
   {
@@ -2926,11 +2930,11 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "320万元",
-      "680万元",
+      "银行存款",
       "主营业务收入",
+      "680万元",
       "合同负债",
-      "主营业务收入-运输收入",
-      "银行存款"
+      "主营业务收入-运输收入"
     ]
   },
   {
@@ -3194,17 +3198,17 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "应付债券-面值",
-      "5%",
       "财务费用",
-      "16.4万元",
-      "6%",
-      "应付债券",
-      "116.4万元",
-      "应付利息",
       "摊销",
+      "应付债券",
+      "5%",
+      "100万元",
+      "16.4万元",
       "银行存款",
-      "100万元"
+      "应付利息",
+      "116.4万元",
+      "应付债券-面值",
+      "6%"
     ]
   },
   {
@@ -3464,11 +3468,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "使用权资产",
       "租赁负债",
+      "使用权资产",
+      "航材消耗件",
       "国际票证结算",
       "合同负债",
-      "航材消耗件",
       "高价周转件"
     ]
   },
@@ -3506,10 +3510,10 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "800万元",
+      "3000万元",
       "5000万元",
-      "2000万元",
       "款收到的现金）",
-      "3000万元"
+      "2000万元"
     ]
   },
   {
@@ -3529,9 +3533,9 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "财务费用",
+      "1700万元",
       "管理费用",
       "1720万元",
-      "1700万元",
       "1320万元"
     ]
   },
@@ -3755,9 +3759,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "载运率",
+      "客座率",
       "100%",
-      "客座率"
+      "载运率"
     ]
   },
   {
@@ -3795,8 +3799,8 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "100%",
-      "70%"
+      "70%",
+      "100%"
     ]
   },
   {
@@ -3815,12 +3819,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "1.2万元",
+      "120万元",
       "飞行小时",
+      "1.2万元",
       "0.4元",
-      "24%",
       "100%",
-      "120万元"
+      "24%"
     ]
   },
   {
@@ -3840,8 +3844,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "20%",
-      "50亿元",
       "100%",
+      "50亿元",
       "25%"
     ]
   },
@@ -3861,9 +3865,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "载运率",
       "飞行小时",
-      "客座率"
+      "客座率",
+      "载运率"
     ]
   },
   {
@@ -4074,12 +4078,12 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "财务费用",
+      "730万元",
       "10万元",
       "汇兑差额",
       "主营业务收入",
-      "主营业务收入-运输收入",
-      "730万元",
-      "财务费用-汇兑差额"
+      "财务费用-汇兑差额",
+      "主营业务收入-运输收入"
     ]
   },
   {
@@ -4834,13 +4838,13 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "5%",
-      "信用减值损失",
-      "方）",
       "坏账准备",
-      "6万元",
-      "应收账款",
       "银行存款",
-      "0万元"
+      "应收账款",
+      "信用减值损失",
+      "6万元",
+      "0万元",
+      "方）"
     ]
   },
   {
@@ -4859,11 +4863,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "3090元",
-      "99910元",
-      "6%",
       "103000元",
-      "9%"
+      "3090元",
+      "9%",
+      "99910元",
+      "6%"
     ]
   },
   {
@@ -4883,9 +4887,9 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "待处理财产损溢-待处理流动资产损溢",
-      "库存现金",
       "管理费用",
-      "其他应收款-出纳员"
+      "其他应收款-出纳员",
+      "库存现金"
     ]
   },
   {
@@ -5246,12 +5250,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
-      "主营业务成本-运输成本",
-      "轮胎摊销",
-      "880元",
       "摊销",
-      "11元"
+      "880元",
+      "轮胎摊销",
+      "11元",
+      "主营业务成本",
+      "主营业务成本-运输成本"
     ]
   },
   {
@@ -5270,11 +5274,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
-      "管理费用",
-      "50%",
+      "管理费用/主营业务成本",
       "摊销",
-      "管理费用/主营业务成本"
+      "管理费用",
+      "主营业务成本",
+      "50%"
     ]
   },
   {
@@ -5656,10 +5660,10 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "48000元",
-      "100%",
       "折旧",
-      "40%"
+      "48000元",
+      "40%",
+      "100%"
     ]
   },
   {
@@ -5678,13 +5682,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "固定资产清理",
-      "累计折旧",
-      "折旧",
-      "固定资产",
       "资产处置损益",
+      "固定资产",
       "8000元",
-      "银行存款"
+      "固定资产清理",
+      "银行存款",
+      "折旧",
+      "累计折旧"
     ]
   },
   {
@@ -5703,14 +5707,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "无形资产",
-      "资本化",
-      "费用化",
-      "银行存款/应付职工薪酬等",
       "管理费用",
       "研发支出-资本化支出",
       "研发支出-费用化支出",
-      "银行存款"
+      "银行存款/应付职工薪酬等",
+      "银行存款",
+      "无形资产",
+      "费用化",
+      "资本化"
     ]
   },
   {
@@ -6069,14 +6073,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
       "应付职工薪酬",
-      "累计折旧",
-      "主营业务成本-运输成本",
+      "165000元",
+      "银行存款",
       "折旧",
       "33元",
-      "165000元",
-      "银行存款"
+      "主营业务成本",
+      "累计折旧",
+      "主营业务成本-运输成本"
     ]
   },
   {
@@ -6095,11 +6099,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
+      "20000元",
+      "营运间接费用",
       "主营业务成本",
       "40000元",
-      "主营业务成本-运输成本",
-      "营运间接费用",
-      "20000元"
+      "主营业务成本-运输成本"
     ]
   },
   {
@@ -6118,12 +6122,12 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
-      "应付职工薪酬",
-      "累计折旧",
       "管理费用",
+      "应付职工薪酬",
+      "原材料-燃料",
       "折旧",
-      "原材料-燃料"
+      "主营业务成本",
+      "累计折旧"
     ]
   },
   {
@@ -6482,13 +6486,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "1000元",
       "财务费用",
       "短期借款",
-      "6%",
-      "入：",
+      "银行存款",
+      "1000元",
       "应付利息",
-      "银行存款"
+      "6%",
+      "入："
     ]
   },
   {
@@ -6507,16 +6511,16 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "2%",
-      "主营业务成本",
-      "应付职工薪酬-社会保险费",
-      "主营业务成本-运输成本",
-      "管理费用",
       "8%",
-      "10%",
-      "应付职工薪酬-工资",
+      "应付职工薪酬-社会保险费",
+      "管理费用",
+      "8000元",
       "10000元",
-      "8000元"
+      "应付职工薪酬-工资",
+      "2%",
+      "10%",
+      "主营业务成本",
+      "主营业务成本-运输成本"
     ]
   },
   {
@@ -6535,15 +6539,15 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "应付职工薪酬-职工福利费",
-      "主营业务收入",
-      "2600元",
-      "原材料-燃料",
-      "34600元",
-      "45000元",
-      "银行存款",
       "13%",
-      "9%"
+      "原材料-燃料",
+      "银行存款",
+      "9%",
+      "主营业务收入",
+      "应付职工薪酬-职工福利费",
+      "45000元",
+      "2600元",
+      "34600元"
     ]
   },
   {
@@ -6851,8 +6855,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "否",
     "keywords": [
-      "管理费用",
-      "财务费用"
+      "财务费用",
+      "管理费用"
     ]
   },
   {
@@ -6888,9 +6892,9 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "300000元",
+      "250000元",
       "295000元",
-      "250000元"
+      "300000元"
     ]
   },
   {
@@ -6909,17 +6913,17 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "应付股利",
-      "5%",
-      "利润分配-提取法定盈余公积",
-      "利润分配-应付现金股利",
-      "盈余公积-法定盈余公积",
+      "325000元",
       "本年利润",
+      "5%",
+      "盈余公积-法定盈余公积",
+      "应付股利",
       "25000元",
+      "利润分配-提取法定盈余公积",
       "利润分配-未分配利润",
       "10%",
-      "325000元",
-      "50000元"
+      "50000元",
+      "利润分配-应付现金股利"
     ]
   },
   {
@@ -6938,11 +6942,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "120000元",
+      "40%",
+      "100%",
       "合同资产/应收账款",
       "主营业务收入",
-      "100%",
-      "40%"
+      "120000元"
     ]
   },
   {
@@ -7318,8 +7322,8 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "135000元",
-      "90000元"
+      "90000元",
+      "135000元"
     ]
   },
   {
@@ -7338,9 +7342,9 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
+      "450000元",
       "90000元",
       "300000元",
-      "450000元",
       "240000元"
     ]
   },
@@ -7533,11 +7537,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "1000元",
       "财务费用",
-      "汇兑差额",
       "原材料-燃料",
       "银行存款",
+      "1000元",
+      "汇兑差额",
       "财务费用-汇兑差额"
     ]
   },
@@ -7557,14 +7561,14 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
       "财务费用",
+      "21650元",
+      "银行存款",
       "21840元",
+      "190元",
       "汇兑差额",
       "主营业务收入",
-      "21650元",
-      "190元",
-      "银行存款",
+      "主营业务成本",
       "财务费用-汇兑差额"
     ]
   },
@@ -7975,9 +7979,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "300万元",
+      "130万元",
       "170万元",
-      "130万元"
+      "300万元"
     ]
   },
   {
@@ -8901,10 +8905,10 @@ const QUESTIONS = [
     "score": 8,
     "aviation": "否",
     "keywords": [
+      "2小时",
       "72小时",
       "1.5%",
-      "0.2%",
-      "2小时"
+      "0.2%"
     ]
   },
   {
@@ -9338,10 +9342,10 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "坏账准备",
-      "2000元",
-      "应收账款",
+      "银行存款",
       "3000元",
-      "银行存款"
+      "2000元",
+      "应收账款"
     ]
   },
   {
@@ -9361,12 +9365,12 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "5%",
-      "信用减值损失",
       "坏账准备",
-      "23000元",
-      "10%",
+      "信用减值损失",
       "30%",
-      "1%"
+      "23000元",
+      "1%",
+      "10%"
     ]
   },
   {
@@ -9385,13 +9389,13 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "应收票据",
       "财务费用",
+      "196000元",
+      "应收票据",
+      "银行存款",
       "200000元",
       "4000元",
-      "196000元",
-      "6%",
-      "银行存款"
+      "6%"
     ]
   },
   {
@@ -9806,14 +9810,14 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
-      "轮胎—在用",
-      "低值易耗品",
       "轮胎—摊销）",
       "燃料—汽油",
       "摊销",
+      "银行存款",
       "轮胎—在库",
-      "银行存款"
+      "低值易耗品",
+      "轮胎—在用",
+      "主营业务成本"
     ]
   },
   {
@@ -9832,12 +9836,12 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
-      "000元",
       "主营业务成本—燃料",
-      "燃料",
       "摊销",
-      "银行存款"
+      "银行存款",
+      "燃料",
+      "000元",
+      "主营业务成本"
     ]
   },
   {
@@ -9856,15 +9860,15 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "主营业务成本",
-      "5%",
-      "主营业务成本—轮胎",
-      "轮胎—在用",
-      "轮胎—摊销",
-      "380元",
       "摊销",
+      "轮胎—摊销",
+      "主营业务成本—轮胎",
+      "5%",
+      "0.0475元",
       "轮胎—在库",
-      "0.0475元"
+      "380元",
+      "轮胎—在用",
+      "主营业务成本"
     ]
   },
   {
@@ -9883,9 +9887,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "存货跌价准备",
+      "000元",
       "资产减值损失",
-      "000元"
+      "存货跌价准备"
     ]
   },
   {
@@ -10299,9 +10303,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "5%",
       "折旧",
-      "9120元"
+      "9120元",
+      "5%"
     ]
   },
   {
@@ -10320,11 +10324,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
+      "9.375%",
       "3750元",
-      "折旧",
       "100%",
-      "45000元",
-      "9.375%"
+      "折旧",
+      "45000元"
     ]
   },
   {
@@ -10343,13 +10347,13 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "60000元",
-      "资本化",
-      "费用化",
       "管理费用",
       "折旧",
+      "26666.67元",
+      "60000元",
       "5000元",
-      "26666.67元"
+      "费用化",
+      "资本化"
     ]
   },
   {
@@ -10368,10 +10372,10 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "累计折旧",
-      "方）。",
       "折旧",
-      "资产处置损益"
+      "资产处置损益",
+      "方）。",
+      "累计折旧"
     ]
   },
   {
@@ -11231,14 +11235,14 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "0.8%",
-      "12%",
-      "管理费用",
-      "应付职工薪酬—工资",
       "生产成本/管理费用等",
-      "10%",
       "38.8%",
-      "16%"
+      "管理费用",
+      "0.8%",
+      "应付职工薪酬—工资",
+      "10%",
+      "16%",
+      "12%"
     ]
   },
   {
@@ -11257,13 +11261,13 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "2%",
+      "2.31万元",
       "税金及附加",
-      "应交税费—应交城市维护建设税",
       "7%",
-      "0.99万元",
+      "应交税费—应交城市维护建设税",
       "3%",
-      "2.31万元"
+      "2%",
+      "0.99万元"
     ]
   },
   {
@@ -11282,13 +11286,13 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "000元",
-      "500元",
       "其他应付款—代扣社保公积金",
-      "应付职工薪酬—工资",
-      "40.1%",
+      "500元",
       "22.5%",
-      "银行存款"
+      "银行存款",
+      "40.1%",
+      "应付职工薪酬—工资",
+      "000元"
     ]
   },
   {
@@ -11307,11 +11311,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "入：借：银行存款",
       "财务费用",
+      "入：借：银行存款",
+      "银行存款；同时支付剩余利息。",
       "短期借款",
-      "银行存款",
-      "银行存款；同时支付剩余利息。"
+      "银行存款"
     ]
   },
   {
@@ -11687,8 +11691,8 @@ const QUESTIONS = [
     "score": 8,
     "aviation": "否",
     "keywords": [
-      "50%",
-      "10%"
+      "10%",
+      "50%"
     ]
   },
   {
@@ -11781,8 +11785,8 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "5%",
-      "10%"
+      "10%",
+      "5%"
     ]
   },
   {
@@ -11939,8 +11943,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "方明细",
-      "000元"
+      "000元",
+      "方明细"
     ]
   },
   {
@@ -12011,10 +12015,10 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "财务费用",
-      "000元",
-      "500元",
       "管理费用",
-      "25%"
+      "500元",
+      "25%",
+      "000元"
     ]
   },
   {
@@ -12785,9 +12789,9 @@ const QUESTIONS = [
     "score": 4,
     "aviation": "否",
     "keywords": [
+      "财务费用",
       "其他综合收益",
-      "资本化",
-      "财务费用"
+      "资本化"
     ]
   },
   {
@@ -12824,10 +12828,10 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "7.22元",
-      "7.20元",
-      "主营业务收入",
       "固定资产——集装箱",
-      "银行存款"
+      "银行存款",
+      "主营业务收入",
+      "7.20元"
     ]
   },
   {
@@ -12865,10 +12869,10 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "银行存款",
       "财务费用",
-      "财务费用——汇兑损益",
-      "000元"
+      "000元",
+      "银行存款",
+      "财务费用——汇兑损益"
     ]
   },
   {
@@ -12888,9 +12892,9 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "财务费用",
-      "000元",
       "500元",
       "银行存款",
+      "000元",
       "财务费用——汇兑损益"
     ]
   },
@@ -12911,9 +12915,9 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "财务费用",
-      "000元",
       "400元",
       "银行存款",
+      "000元",
       "财务费用——汇兑损益"
     ]
   },
@@ -12933,9 +12937,9 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "其他综合收益",
+      "000元",
       "方）。",
-      "000元"
+      "其他综合收益"
     ]
   },
   {
@@ -12954,13 +12958,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
+      "财务费用",
+      "400元",
       "800元",
       "200元",
-      "财务费用",
-      "000元",
-      "主营业务收入",
-      "400元",
       "固定资产——集装箱",
+      "主营业务收入",
+      "000元",
       "财务费用——汇兑损益"
     ]
   },
@@ -13367,10 +13371,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "累计折旧",
+      "折旧",
       "主营业务成本",
-      "主营业务成本/制造费用",
-      "折旧"
+      "累计折旧",
+      "主营业务成本/制造费用"
     ]
   },
   {
@@ -15255,10 +15259,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "使用权资产",
-      "使用权资产——飞机",
       "租赁负债——租赁付款额",
-      "租赁负债"
+      "租赁负债",
+      "使用权资产",
+      "使用权资产——飞机"
     ]
   },
   {
@@ -15704,8 +15708,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "银行存款",
-      "原材料——航材"
+      "原材料——航材",
+      "银行存款"
     ]
   },
   {
@@ -15845,8 +15849,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "银行存款",
-      "固定资产——飞机"
+      "固定资产——飞机",
+      "银行存款"
     ]
   },
   {
@@ -16088,8 +16092,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "银行存款",
-      "无形资产——软件"
+      "无形资产——软件",
+      "银行存款"
     ]
   },
   {
@@ -16959,8 +16963,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "所得税费用",
-      "应交税费——应交所得税"
+      "应交税费——应交所得税",
+      "所得税费用"
     ]
   },
   {
@@ -17100,9 +17104,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
+      "管理费用——租赁费",
       "管理费用",
-      "银行存款",
-      "管理费用——租赁费"
+      "银行存款"
     ]
   },
   {
@@ -17892,8 +17896,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "主营业务成本——运输成本",
       "原材料——航油",
+      "主营业务成本——运输成本",
       "主营业务成本"
     ]
   },
@@ -18034,10 +18038,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
+      "主营业务成本——航油成本",
       "原材料——航油",
       "主营业务成本",
-      "银行存款",
-      "主营业务成本——航油成本"
+      "银行存款"
     ]
   },
   {
@@ -18279,10 +18283,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "银行存款",
       "租赁负债——租赁付款额",
-      "财务费用",
-      "租赁负债"
+      "租赁负债",
+      "银行存款",
+      "财务费用"
     ]
   },
   {
@@ -18563,9 +18567,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
+      "主营业务成本——航线成本",
       "原材料——航油",
-      "主营业务成本",
-      "主营业务成本——航线成本"
+      "主营业务成本"
     ]
   },
   {
@@ -19331,10 +19335,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "15%",
       "主营业务成本",
-      "主营业务收入",
-      "本年利润"
+      "15%",
+      "本年利润",
+      "主营业务收入"
     ]
   },
   {
@@ -19678,10 +19682,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "60%",
-      "长期借款",
+      "款：借：银行存款",
       "银行存款",
-      "款：借：银行存款"
+      "60%",
+      "长期借款"
     ]
   },
   {
@@ -20573,10 +20577,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "原材料——航油",
-      "主营业务成本",
       "主营业务成本——航线成本",
-      "2元"
+      "原材料——航油",
+      "2元",
+      "主营业务成本"
     ]
   },
   {
@@ -20818,10 +20822,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "原材料——航油",
+      "主营业务成本——航油成本",
       "主营业务成本",
-      "54.55%",
-      "主营业务成本——航油成本"
+      "原材料——航油",
+      "54.55%"
     ]
   },
   {
@@ -23418,52 +23422,127 @@ function bindQuizEvents(q){
   });
 }
 
-// ===== AI答疑（RAG检索增强）=====
+// ===== AI答疑（RAG检索增强 + 可选真实LLM后端）=====
+let AI_BACKEND_AVAILABLE=null;
+const AI_FAQ={
+  '航油成本占比多少':['航油成本通常是航空公司最大的单一成本项目，占营业成本的25%-35%，甚至更高。','它受国际油价、航线结构、机队燃油效率、航距等多因素影响。'],
+  '飞机租赁一般采用说明方式':['飞机租赁在民航会计中通常采用融资租赁或经营租赁两种方式。','融资租赁需确认使用权资产和租赁负债，按实际利率法计提折旧和利息；经营租赁则将租金按直线法计入当期成本费用。'],
+  '飞机折旧为什么用两种方法':['飞机折旧常结合年限平均法（直线法）和飞行小时法。','直线法按预计使用年限平均分摊；飞行小时法按实际飞行小时与预计总飞行小时比例分摊，更匹配航空资产的使用强度。'],
+  '常旅客里程怎么确认收入':['常旅客奖励里程在授予时按公允价值计入递延收益（合同负债）。','待会员实际兑换并使用里程时，再按比例确认为运输收入。'],
+  '什么是BSP结算':['BSP（Billing and Settlement Plan，开账与结算计划）是IATA推出的全球航空客票销售结算系统。','它通过中性票证和统一结算，简化航空公司与代理人之间的票款清算。'],
+  'C检费用资本化还是费用化':['例行C检等定期检查通常按计划维修费用资本化或按受益期摊销。','具体需结合企业会计政策和C检支出的经济实质判断：若形成未来经济利益则资本化，否则费用化。']
+};
+async function checkAIStatus(){
+  const badge=document.getElementById('aiStatus');
+  try{
+    const r=await fetch('http://localhost:8000/api/config',{method:'GET',signal:AbortSignal.timeout(2500)});
+    const j=await r.json();
+    AI_BACKEND_AVAILABLE=!!j.configured;
+    if(badge){badge.className='ai-status '+(AI_BACKEND_AVAILABLE?'online':'offline');badge.textContent=AI_BACKEND_AVAILABLE?'LLM 在线':'本地模式';}
+  }catch(e){
+    AI_BACKEND_AVAILABLE=false;
+    if(badge){badge.className='ai-status offline';badge.textContent='本地模式';}
+  }
+}
 function renderAI(){
   const msgs=document.getElementById('aiMessages');
   if(msgs.children.length===0){
-    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。</div>`;
+    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。本地模式下使用知识库RAG；若启动本地LLM代理，可获得更强的生成式回答。</div>`;
   }
   const sug=document.getElementById('aiSuggestions');
   const suggestions=['飞机折旧为什么用两种方法？','常旅客里程怎么确认收入？','航油成本占比多少？','什么是BSP结算？','使用权资产怎么计量？','C检费用资本化还是费用化？'];
   sug.innerHTML=suggestions.map(s=>`<span class="ai-suggestion" onclick="document.getElementById('aiInput').value='${s}';sendAI();">${s}</span>`).join('');
+  if(AI_BACKEND_AVAILABLE===null)checkAIStatus();
 }
-function sendAI(){
+async function sendAI(){
   const input=document.getElementById('aiInput');
   const q=input.value.trim();
   if(!q)return;
   const msgs=document.getElementById('aiMessages');
   msgs.innerHTML+=`<div class="ai-msg user">${q}</div>`;
   input.value='';
-  // RAG检索：关键词匹配知识库
-  setTimeout(()=>{
-    const answer=ragSearch(q);
-    msgs.innerHTML+=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
-    msgs.scrollTop=msgs.scrollHeight;
-  },500);
+  msgs.scrollTop=msgs.scrollHeight;
+  const loadingId='ai-loading-'+Date.now();
+  msgs.innerHTML+=`<div class="ai-msg bot" id="${loadingId}">正在思考……</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  let answer=null;
+  // 优先尝试真实LLM后端
+  if(AI_BACKEND_AVAILABLE!==false){
+    try{
+      const r=await fetch('http://localhost:8000/api/chat',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({message:q,source:'aviation-mvp'}),
+        signal:AbortSignal.timeout(20000)
+      });
+      if(r.ok){
+        const j=await r.json();
+        answer={text:j.answer||j.text||'(无返回)',sources:j.sources||['LLM生成']};
+        AI_BACKEND_AVAILABLE=true;
+      }
+    }catch(e){AI_BACKEND_AVAILABLE=false;}
+  }
+  if(!answer) answer=ragSearch(q);
+  document.getElementById(loadingId).outerHTML=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='aiInput')sendAI();});
 
+function expandQuery(query){
+  const synonyms={
+    '折旧':['折旧','折旧方法','depreciation','损耗','年限平均','直线法','飞行小时法'],
+    '租赁':['租赁','融资租赁','经营租赁','使用权资产','租赁负债','租金'],
+    '航油':['航油','燃油','油料','航空煤油','燃油成本','油料成本'],
+    '收入':['收入','确认收入','营业收入','运输收入','客运收入','货运收入'],
+    'BSP':['BSP','开账与结算计划','票款结算','代理人结算','票证结算'],
+    'C检':['C检','定期检查','维修','大修','资本化','费用化'],
+    '常旅客':['常旅客','里程','奖励里程','递延收益','合同负债','积分']
+  };
+  const words=query.split(/[\s，。？、！；：.?!;:]+/).filter(w=>w.length>=2);
+  const expanded=new Set(words);
+  words.forEach(w=>{
+    for(const k in synonyms){ if(w.includes(k)||k.includes(w)) synonyms[k].forEach(s=>expanded.add(s)); }
+  });
+  return Array.from(expanded);
+}
+function scoreKB(query,kb,qWords){
+  let score=0;
+  const text=(kb.chapter||'')+' '+(kb.title||'')+' '+(kb.content||'')+' '+(kb.keywords?kb.keywords.join(' '):'');
+  const lower=text.toLowerCase();
+  const qlower=query.toLowerCase();
+  // 整词命中标题权重高
+  kb.keywords.forEach(kw=>{ if(qlower.includes(kw.toLowerCase())) score+=5; });
+  // 分词在内容中出现
+  qWords.forEach(w=>{
+    if(kb.title.toLowerCase().includes(w.toLowerCase())) score+=3;
+    if(lower.includes(w.toLowerCase())) score+=2;
+  });
+  return score;
+}
 function ragSearch(query){
-  // 简单RAG：对知识库每条计算关键词匹配分
-  const qWords=query.split(/[\s，。？、]+/).filter(w=>w.length>=2);
-  let scored=KNOWLEDGE_BASE.map(kb=>{
-    let score=0;
-    kb.keywords.forEach(kw=>{if(query.includes(kw)||qWords.some(w=>kw.includes(w)||w.includes(kw)))score++;});
-    return{...kb,score};
-  }).filter(k=>k.score>0).sort((a,b)=>b.score-a.score);
-  if(scored.length===0){
-    // 模糊匹配：搜索题目解析
-    const matchedQ=QUESTIONS.find(q=>q.explain&&q.explain.includes(query.substring(0,4)));
-    if(matchedQ){
-      return{text:`根据题库相关内容：\n\n${matchedQ.explain}\n\n这是「${matchedQ.ch}」中「${matchedQ.type}」的相关解析。如需更详细解答，请补充具体场景。`,sources:['题库-'+matchedQ.id]};
-    }
-    return{text:'抱歉，我在知识库中未找到与该问题直接相关的内容。请尝试换一种问法，或咨询以下常见问题：飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁、航线成本核算等。',sources:['知识库未命中']};
+  // 1. 优先FAQ
+  const qKey=Object.keys(AI_FAQ).find(k=>query.toLowerCase().includes(k.toLowerCase()));
+  if(qKey){
+    return{text:'<p>'+AI_FAQ[qKey].join('</p><p>')+'</p>',sources:['常见问题库']};
   }
-  // 取top2-3条知识拼接回答
+  // 2. 知识库检索
+  const qWords=expandQuery(query);
+  let scored=KNOWLEDGE_BASE.map(kb=>{return{...kb,score:scoreKB(query,kb,qWords)}}).filter(k=>k.score>0).sort((a,b)=>b.score-a.score);
+  if(scored.length===0){
+    // 3. 题目解析 fallback
+    const qlower=query.toLowerCase();
+    const matchedQ=QUESTIONS.filter(q=>q.explain&&q.explain.length>10).sort((a,b)=>{
+      const ta=(a.q||'')+' '+(a.explain||''); const tb=(b.q||'')+' '+(b.explain||'');
+      let sa=0,sb=0; qWords.forEach(w=>{ if(ta.toLowerCase().includes(w.toLowerCase())) sa++; if(tb.toLowerCase().includes(w.toLowerCase())) sb++; });
+      return sb-sa;
+    })[0];
+    if(matchedQ && qWords.some(w=>(matchedQ.q+matchedQ.explain).toLowerCase().includes(w.toLowerCase()))){
+      return{text:`<p>根据题库中「${matchedQ.ch}」的${matchedQ.type}，可参考以下解析：</p><blockquote>${matchedQ.explain}</blockquote><p>若需针对具体场景深入分析，可补充背景后再次提问。</p>`,sources:['题库-'+matchedQ.id]};
+    }
+    return{text:'<p>抱歉，我在知识库和题库中暂未找到与该问题直接匹配的内容。建议尝试：</p><ul><li>换一种更具体的问法，例如「融资租赁飞机的折旧方法」；</li><li>点击上方常见问题快速体验；</li><li>启动本地LLM代理后，模型可基于知识库生成更开放的回答。</li></ul>',sources:['知识库未命中']};
+  }
   const top=scored.slice(0,3);
-  const text=top.map((k,i)=>`<strong>${i+1}. ${k.title}</strong>\n${k.content}`).join('\n\n');
+  const text='<p>根据民航运输企业会计知识库，为您整理以下要点：</p>'+top.map((k,i)=>`<p><strong>${i+1}. ${k.title}</strong><br>${k.content}</p>`).join('')+'<p style="font-size:12px;color:var(--text-light)">以上基于教材与题库知识库，仅供参考。</p>';
   return{text:text,sources:top.map(k=>k.chapter+'·'+k.title)};
 }
 
