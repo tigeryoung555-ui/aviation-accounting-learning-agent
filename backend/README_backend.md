@@ -20,7 +20,7 @@
 > 安全：请勿把含真实 Key 的 `server_config.json` 提交到公开仓库；生产环境一律用环境变量注入 Key。
 
 ## 一键部署
-- **Render**：连接本仓库，Root Directory 留空（仓库根即后端），Build `pip install -r requirements.txt`，Start `python hx_llm_server.py`；或在控制台导入 `render.yaml`。部署后在 Environment 填写 `LLM_API_KEY`。
+- **Render**：连接本仓库，Root Directory 填 `backend`，Build `pip install -r requirements.txt`，Start `python hx_llm_server.py`；或在控制台导入 `render.yaml`。部署后在 Environment 填写 `LLM_API_KEY`。
 - **Railway**：连接仓库，`railway.json` 已配置；在 Variables 填 `LLM_API_KEY`。
 - **HuggingFace Spaces**：选 Docker SDK，把本目录内容上传，在 Settings→Variables 填 `LLM_API_KEY` 与 `ALLOWED_ORIGIN`。
 
