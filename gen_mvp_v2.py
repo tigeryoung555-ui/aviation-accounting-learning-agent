@@ -678,7 +678,7 @@ async function checkAIStatus(){
     AI_BACKEND_AVAILABLE=!!j.configured;
     if(badge){badge.className='ai-status '+(AI_BACKEND_AVAILABLE?'online':'offline');badge.textContent=AI_BACKEND_AVAILABLE?'LLM 在线':'本地模式';}
   }catch(e){
-    AI_BACKEND_AVAILABLE=false;
+    AI_BACKEND_AVAILABLE=null;
     if(badge){badge.className='ai-status offline';badge.textContent='本地模式';}
   }
 }
@@ -711,14 +711,14 @@ async function sendAI(){
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({message:q,source:'aviation-mvp'}),
-        signal:AbortSignal.timeout(20000)
+        signal:AbortSignal.timeout(60000)
       });
       if(r.ok){
         const j=await r.json();
         answer={text:j.answer||j.text||'(无返回)',sources:j.sources||['LLM生成']};
         AI_BACKEND_AVAILABLE=true;
       }
-    }catch(e){AI_BACKEND_AVAILABLE=false;}
+    }catch(e){AI_BACKEND_AVAILABLE=null;}
   }
   if(!answer) answer=ragSearch(q);
   document.getElementById(loadingId).outerHTML=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
