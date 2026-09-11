@@ -172,6 +172,8 @@ html_template = r'''<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>民航运输企业会计学习智能体 v2.0</title>
+<script>window.APP_API_BASE="http://localhost:8000";</script>
+<script src="config.js"></script>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
 <style>
 :root{--primary:#1a56a4;--primary-light:#e8f0fb;--primary-dark:#0f3d7a;--accent:#00a0b0;--success:#22a06b;--warning:#e8a317;--danger:#d94040;--bg:#f4f6fa;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--shadow:0 2px 12px rgba(26,86,164,0.08);}
@@ -659,6 +661,7 @@ function bindQuizEvents(q){
 
 // ===== AI答疑（RAG检索增强 + 可选真实LLM后端）=====
 let AI_BACKEND_AVAILABLE=null;
+const API_BASE=(window.APP_API_BASE&&!String(window.APP_API_BASE).includes('REPLACE'))?window.APP_API_BASE:'http://localhost:8000';
 const AI_FAQ={
   '航油成本占比多少':['航油成本通常是航空公司最大的单一成本项目，占营业成本的25%-35%，甚至更高。','它受国际油价、航线结构、机队燃油效率、航距等多因素影响。'],
   '飞机租赁一般采用说明方式':['飞机租赁在民航会计中通常采用融资租赁或经营租赁两种方式。','融资租赁需确认使用权资产和租赁负债，按实际利率法计提折旧和利息；经营租赁则将租金按直线法计入当期成本费用。'],
@@ -670,7 +673,7 @@ const AI_FAQ={
 async function checkAIStatus(){
   const badge=document.getElementById('aiStatus');
   try{
-    const r=await fetch('http://localhost:8000/api/config',{method:'GET',signal:AbortSignal.timeout(2500)});
+    const r=await fetch(API_BASE+'/api/config',{method:'GET',signal:AbortSignal.timeout(2500)});
     const j=await r.json();
     AI_BACKEND_AVAILABLE=!!j.configured;
     if(badge){badge.className='ai-status '+(AI_BACKEND_AVAILABLE?'online':'offline');badge.textContent=AI_BACKEND_AVAILABLE?'LLM 在线':'本地模式';}
@@ -704,7 +707,7 @@ async function sendAI(){
   // 优先尝试真实LLM后端
   if(AI_BACKEND_AVAILABLE!==false){
     try{
-      const r=await fetch('http://localhost:8000/api/chat',{
+      const r=await fetch(API_BASE+'/api/chat',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({message:q,source:'aviation-mvp'}),
