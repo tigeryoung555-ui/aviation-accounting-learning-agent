@@ -1,0 +1,4786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>民航运输企业会计学习智能体 v2.0</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
+<style>
+:root{--primary:#1a56a4;--primary-light:#e8f0fb;--primary-dark:#0f3d7a;--accent:#00a0b0;--success:#22a06b;--warning:#e8a317;--danger:#d94040;--bg:#f4f6fa;--card:#fff;--text:#1e293b;--text-light:#64748b;--border:#e2e8f0;--shadow:0 2px 12px rgba(26,86,164,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+.app{display:flex;min-height:100vh;}
+.sidebar{width:240px;background:linear-gradient(180deg,var(--primary-dark),var(--primary));color:#fff;padding:20px 0;position:fixed;height:100vh;overflow-y:auto;z-index:100;}
+.sidebar .logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
+.sidebar .logo h1{font-size:17px;font-weight:700;line-height:1.4;}
+.sidebar .logo p{font-size:11px;opacity:0.7;margin-top:4px;}
+.sidebar .role-tabs{display:flex;padding:12px 16px;gap:6px;}
+.sidebar .role-tab{flex:1;padding:6px 0;text-align:center;font-size:12px;border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);transition:all 0.2s;}
+.sidebar .role-tab.active{background:var(--accent);font-weight:600;}
+.nav{padding:8px 0;}
+.nav-section{font-size:11px;text-transform:uppercase;opacity:0.5;padding:12px 24px 6px;letter-spacing:1px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 24px;cursor:pointer;transition:all 0.2s;font-size:13px;color:rgba(255,255,255,0.8);border-left:3px solid transparent;}
+.nav-item:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.nav-item.active{background:rgba(255,255,255,0.15);color:#fff;border-left-color:var(--accent);font-weight:500;}
+.nav-item svg{width:18px;height:18px;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:var(--accent);color:#fff;font-size:10px;padding:1px 7px;border-radius:9px;font-weight:600;}
+.main{margin-left:240px;flex:1;padding:28px;max-width:1280px;}
+.page-header{margin-bottom:20px;}
+.page-header h2{font-size:22px;font-weight:700;color:var(--primary-dark);}
+.page-header p{color:var(--text-light);font-size:13px;margin-top:3px;}
+.card{background:var(--card);border-radius:12px;padding:22px;box-shadow:var(--shadow);margin-bottom:18px;}
+.card h3{font-size:15px;font-weight:600;margin-bottom:14px;color:var(--primary-dark);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.stat-card{background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+.stat-card.blue::before{background:var(--primary);}.stat-card.teal::before{background:var(--accent);}
+.stat-card.green::before{background:var(--success);}.stat-card.orange::before{background:var(--warning);}
+.stat-card .label{font-size:12px;color:var(--text-light);margin-bottom:6px;}
+.stat-card .value{font-size:26px;font-weight:700;color:var(--primary-dark);}
+.stat-card .sub{font-size:11px;color:var(--text-light);margin-top:3px;}
+.chapter-list{display:grid;gap:10px;}
+.chapter-item{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:all 0.2s;border:1px solid transparent;}
+.chapter-item:hover{border-color:var(--primary);transform:translateX(3px);}
+.chapter-num{width:36px;height:36px;border-radius:8px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.chapter-info{flex:1;}.chapter-info .title{font-weight:600;font-size:14px;}
+.chapter-info .meta{font-size:11px;color:var(--text-light);margin-top:2px;}
+.chapter-progress{width:100px;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.chapter-progress .bar{height:100%;background:var(--success);border-radius:4px;transition:width 0.3s;}
+.knowledge-content{line-height:1.8;}
+.knowledge-content h4{color:var(--primary);font-size:14px;margin:18px 0 8px;padding-left:10px;border-left:3px solid var(--primary);}
+.knowledge-content p{margin-bottom:10px;font-size:13px;}
+.knowledge-content .highlight{background:var(--primary-light);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:13px;}
+.knowledge-content .formula{background:#f8fafc;padding:8px 14px;border-radius:6px;font-family:monospace;font-size:12px;margin:6px 0;border-left:3px solid var(--accent);white-space:pre-line;}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.quiz-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.filter-btn{padding:6px 14px;border:1px solid var(--border);border-radius:18px;background:#fff;cursor:pointer;font-size:12px;transition:all 0.2s;}
+.filter-btn:hover{border-color:var(--primary);}
+.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+.quiz-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:14px;}
+.quiz-meta{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;}
+.tag{padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;}
+.tag.chapter{background:var(--primary-light);color:var(--primary);}
+.tag.type{background:#f0fdf4;color:var(--success);}
+.tag.diff-easy{background:#fef3c7;color:#92400e;}
+.tag.diff-mid{background:#dbeafe;color:#1e40af;}
+.tag.diff-hard{background:#fee2e2;color:#991b1b;}
+.tag.aviation{background:#ecfeff;color:#155e75;}
+.quiz-question{font-size:14px;font-weight:500;margin-bottom:14px;line-height:1.7;}
+.quiz-options{display:flex;flex-direction:column;gap:8px;}
+.quiz-option{padding:10px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:13px;display:flex;align-items:center;gap:10px;}
+.quiz-option:hover{border-color:var(--primary);background:var(--primary-light);}
+.quiz-option.selected{border-color:var(--primary);background:var(--primary-light);font-weight:500;}
+.quiz-option.correct{border-color:var(--success);background:#f0fdf4;}
+.quiz-option.wrong{border-color:var(--danger);background:#fef2f2;}
+.quiz-option .opt-label{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;}
+.quiz-option.selected .opt-label{background:var(--primary);color:#fff;}
+.quiz-option.correct .opt-label{background:var(--success);color:#fff;}
+.quiz-option.wrong .opt-label{background:var(--danger);color:#fff;}
+.subjective-area{width:100%;min-height:100px;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;line-height:1.6;}
+.subjective-area:focus{outline:none;border-color:var(--primary);}
+.quiz-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.btn{padding:8px 20px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.2s;}
+.btn-primary{background:var(--primary);color:#fff;}.btn-primary:hover{background:var(--primary-dark);}
+.btn-primary:disabled{background:var(--border);cursor:not-allowed;}
+.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+.btn-success{background:var(--success);color:#fff;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.quiz-result{margin-top:14px;padding:14px;border-radius:8px;display:none;}
+.quiz-result.show{display:block;}
+.quiz-result.correct{background:#f0fdf4;border:1px solid #bbf7d0;}
+.quiz-result.wrong{background:#fef2f2;border:1px solid #fecaca;}
+.quiz-result.partial{background:#fffbeb;border:1px solid #fde68a;}
+.quiz-result .result-title{font-weight:600;margin-bottom:6px;font-size:14px;}
+.quiz-result .result-explain{font-size:12px;color:var(--text-light);line-height:1.7;margin-top:6px;}
+.score-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin:6px 0;}
+.score-bar .fill{height:100%;border-radius:4px;transition:width 0.5s;}
+.score-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.score-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);text-align:center;}
+.score-card .score-num{font-size:32px;font-weight:700;color:var(--primary);}
+.score-card .score-label{font-size:12px;color:var(--text-light);margin-top:4px;}
+.chapter-score-row{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);}
+.chapter-score-row .cs-name{width:160px;font-size:13px;flex-shrink:0;}
+.chapter-score-row .cs-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.chapter-score-row .cs-fill{height:100%;border-radius:4px;}
+.chapter-score-row .cs-score{width:70px;text-align:right;font-weight:600;font-size:13px;}
+.wrong-list{display:flex;flex-direction:column;gap:10px;}
+.wrong-item{background:var(--card);border-radius:10px;padding:14px;box-shadow:var(--shadow);border-left:3px solid var(--danger);}
+.wrong-item .wq{font-size:13px;margin-bottom:6px;}
+.wrong-item .wa{font-size:12px;color:var(--text-light);}
+/* AI答疑 */
+.ai-chat{display:flex;flex-direction:column;height:600px;}
+.ai-messages{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:12px;}
+.ai-msg{max-width:80%;padding:12px 16px;border-radius:12px;font-size:13px;line-height:1.7;}
+.ai-msg.user{align-self:flex-end;background:var(--primary);color:#fff;border-bottom-right-radius:4px;}
+.ai-msg.bot{align-self:flex-start;background:#f1f5f9;color:var(--text);border-bottom-left-radius:4px;}
+.ai-msg.bot .src{font-size:11px;color:var(--text-light);margin-top:8px;padding-top:6px;border-top:1px solid var(--border);}
+.ai-input{display:flex;gap:10px;padding:14px;border-top:1px solid var(--border);}
+.ai-input input{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;}
+.ai-input input:focus{outline:none;border-color:var(--primary);}
+.ai-suggestions{display:flex;gap:8px;flex-wrap:wrap;padding:10px 14px;}
+.ai-suggestion{padding:5px 12px;background:var(--primary-light);color:var(--primary);border-radius:14px;font-size:12px;cursor:pointer;transition:all 0.2s;}
+.ai-suggestion:hover{background:var(--primary);color:#fff;}
+/* 教师端 */
+.teacher-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.t-stat{background:var(--card);border-radius:12px;padding:18px;box-shadow:var(--shadow);}
+.t-stat .t-label{font-size:12px;color:var(--text-light);}
+.t-stat .t-value{font-size:24px;font-weight:700;color:var(--primary-dark);margin-top:4px;}
+.t-stat .t-sub{font-size:11px;color:var(--text-light);margin-top:2px;}
+.table-wrap{overflow-x:auto;}
+.data-table{width:100%;border-collapse:collapse;font-size:12px;}
+.data-table th{background:var(--primary-light);color:var(--primary-dark);padding:10px 8px;text-align:left;font-weight:600;border-bottom:2px solid var(--primary);}
+.data-table td{padding:8px;border-bottom:1px solid var(--border);}
+.data-table tr:hover{background:var(--primary-light);}
+.exam-config{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.config-group label{display:block;font-size:12px;color:var(--text-light);margin-bottom:4px;}
+.config-group input,.config-group select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;}
+.exam-preview{margin-top:16px;}
+.exam-q{padding:12px;background:#f8fafc;border-radius:8px;margin-bottom:8px;font-size:13px;}
+.exam-q .eq-num{font-weight:600;color:var(--primary);margin-right:8px;}
+.class-chart{height:300px;position:relative;}
+.bar-chart{display:flex;align-items:flex-end;gap:12px;height:250px;padding:20px 0;border-bottom:2px solid var(--border);}
+.bar-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.bar{width:100%;max-width:50px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:4px 4px 0 0;transition:height 0.5s;position:relative;}
+.bar .bar-val{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--primary-dark);}
+.bar-label{font-size:11px;color:var(--text-light);text-align:center;}
+@media(max-width:768px){.sidebar{width:56px;}.sidebar .logo h1,.sidebar .logo p,.nav-item span,.nav-badge,.nav-section,.role-tab{display:none;}.main{margin-left:56px;padding:14px;}.stats-grid,.teacher-stats{grid-template-columns:repeat(2,1fr);}.score-overview{grid-template-columns:1fr;}.exam-config{grid-template-columns:1fr;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.view{animation:fadeIn 0.3s ease;}.hidden{display:none;}
+.toast{position:fixed;top:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:13px;z-index:9999;animation:fadeIn 0.3s;}
+.toast.success{background:var(--success);}.toast.error{background:var(--danger);}.toast.info{background:var(--primary);}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="logo"><h1>民航运输企业会计</h1><p>学习智能体 v2.0</p></div>
+<div class="role-tabs">
+<div class="role-tab active" data-role="student">学生端</div>
+<div class="role-tab" data-role="teacher">教师端</div>
+</div>
+<nav class="nav" id="studentNav">
+<div class="nav-section">学习中心</div>
+<div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>学习仪表盘</span></div>
+<div class="nav-item" data-view="knowledge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>知识学习</span></div>
+<div class="nav-item" data-view="quiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>智能练习</span><span class="nav-badge" id="quizBadge">0</span></div>
+<div class="nav-item" data-view="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>AI答疑</span></div>
+<div class="nav-item" data-view="score"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>成绩分析</span></div>
+<div class="nav-item" data-view="wrong"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>错题本</span></div>
+</nav>
+<nav class="nav hidden" id="teacherNav">
+<div class="nav-section">教学管理</div>
+<div class="nav-item" data-view="t-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>教学概览</span></div>
+<div class="nav-item" data-view="t-bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>题库管理</span></div>
+<div class="nav-item" data-view="t-exam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg><span>自动组卷</span></div>
+<div class="nav-item" data-view="t-class"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>班级成绩</span></div>
+</nav>
+</aside>
+<main class="main">
+<!-- 学生端视图 -->
+<div id="view-dashboard" class="view">
+<div class="page-header"><h2>学习仪表盘</h2><p>掌握你的学习进度，民航运输企业会计智能体为你护航</p></div>
+<div class="stats-grid">
+<div class="stat-card blue"><div class="label">题库总量</div><div class="value" id="statTotal">0</div><div class="sub">10章39个知识点</div></div>
+<div class="stat-card teal"><div class="label">已完成练习</div><div class="value" id="statDone">0</div><div class="sub">累计答题次数</div></div>
+<div class="stat-card green"><div class="label">正确率</div><div class="value" id="statRate">0%</div><div class="sub">客观题自动评阅</div></div>
+<div class="stat-card orange"><div class="label">错题数</div><div class="value" id="statWrong">0</div><div class="sub">待复习巩固</div></div>
+</div>
+<div class="card"><h3>课程章节（点击进入学习）</h3><div class="chapter-list" id="chapterList"></div></div>
+</div>
+
+<div id="view-knowledge" class="view hidden">
+<div class="page-header"><h2>知识学习</h2><p>系统学习民航运输企业会计10章核心知识</p></div>
+<div id="knowledgeChapterSelect" style="margin-bottom:16px;"></div>
+<div class="card" id="knowledgeContent"></div>
+</div>
+
+<div id="view-quiz" class="view hidden">
+<div class="page-header"><h2>智能练习</h2><p>206题全量题库 · 客观题自动评阅 · 主观题关键词初评</p></div>
+<div class="quiz-header">
+<div class="quiz-filters" id="chapterFilter"></div>
+<div class="quiz-filters" id="typeFilter"></div>
+</div>
+<div id="quizList"></div>
+</div>
+
+<div id="view-ai" class="view hidden">
+<div class="page-header"><h2>AI答疑助手</h2><p>基于民航会计知识库的检索增强答疑（RAG），输入问题获取专业解答</p></div>
+<div class="card" style="padding:0;overflow:hidden;">
+<div class="ai-suggestions" id="aiSuggestions"></div>
+<div class="ai-messages" id="aiMessages"></div>
+<div class="ai-input">
+<input type="text" id="aiInput" placeholder="输入你的问题，如：飞机折旧为什么用两种方法？">
+<button class="btn btn-primary" onclick="sendAI()">发送</button>
+</div>
+</div>
+</div>
+
+<div id="view-score" class="view hidden">
+<div class="page-header"><h2>成绩分析</h2><p>自动生成个人学习成绩和知识点掌握分析</p></div>
+<div class="score-overview">
+<div class="score-card"><div class="score-num" id="totalAnswered">0</div><div class="score-label">累计答题数</div></div>
+<div class="score-card"><div class="score-num" id="totalCorrect">0</div><div class="score-label">答对题数</div></div>
+<div class="score-card"><div class="score-num" id="overallRate">0%</div><div class="score-label">综合正确率</div></div>
+</div>
+<div class="card"><h3>各章正确率</h3><div class="chapter-scores" id="chapterScores"></div></div>
+<div class="card"><h3>知识点掌握度（薄弱点优先）</h3><div id="kpMastery"></div></div>
+</div>
+
+<div id="view-wrong" class="view hidden">
+<div class="page-header"><h2>错题本</h2><p>自动归集错题，针对性复习薄弱知识点</p></div>
+<div class="wrong-list" id="wrongList"></div>
+</div>
+
+<!-- 教师端视图 -->
+<div id="view-t-dashboard" class="view hidden">
+<div class="page-header"><h2>教学概览</h2><p>题库、班级、成绩一站式管理</p></div>
+<div class="teacher-stats">
+<div class="t-stat"><div class="t-label">题库总量</div><div class="t-value" id="tTotal">0</div><div class="t-sub">覆盖10章</div></div>
+<div class="t-stat"><div class="t-label">班级人数</div><div class="t-value">45</div><div class="t-sub">模拟班级数据</div></div>
+<div class="t-stat"><div class="t-label">平均正确率</div><div class="t-value" id="tAvgRate">0%</div><div class="t-sub">班级整体</div></div>
+<div class="t-stat"><div class="t-label">已组试卷</div><div class="t-value" id="tExamCount">0</div><div class="t-sub">历史组卷</div></div>
+</div>
+<div class="card"><h3>题库分布</h3><div id="bankDistribution"></div></div>
+<div class="card"><h3>班级成绩分布</h3><div class="bar-chart" id="classChart"></div></div>
+</div>
+
+<div id="view-t-bank" class="view hidden">
+<div class="page-header"><h2>题库管理</h2><p>浏览、筛选、统计全部206道题目</p></div>
+<div class="quiz-header">
+<div class="quiz-filters" id="bankChapterFilter"></div>
+<div class="quiz-filters" id="bankTypeFilter"></div>
+<div style="font-size:13px;color:var(--text-light);">共 <span id="bankCount">0</span> 题</div>
+</div>
+<div class="card" style="padding:0;"><div class="table-wrap"><table class="data-table" id="bankTable"><thead><tr><th>编号</th><th>章节</th><th>题型</th><th>难度</th><th>题干</th><th>分值</th><th>民航特色</th></tr></thead><tbody></tbody></table></div></div>
+</div>
+
+<div id="view-t-exam" class="view hidden">
+<div class="page-header"><h2>自动组卷</h2><p>按题型、难度、知识点约束自动生成试卷</p></div>
+<div class="card">
+<h3>组卷参数</h3>
+<div class="exam-config">
+<div class="config-group"><label>试卷名称</label><input type="text" id="examName" value="民航会计期中模拟试卷"></div>
+<div class="config-group"><label>考试时长（分钟）</label><input type="number" id="examDuration" value="90"></div>
+<div class="config-group"><label>章节范围</label><select id="examChapter"><option value="全部">全部章节</option><option value="第1章 概论">第1章 概论</option><option value="第2章 流动资产">第2章 流动资产</option><option value="第3章 飞机发动机">第3章 飞机发动机</option><option value="第4章 飞机租赁">第4章 飞机租赁</option><option value="第5章 运输成本">第5章 运输成本</option><option value="第6章 票证收入">第6章 票证收入</option><option value="第7章 负债权益">第7章 负债权益</option><option value="第8章 财务报告">第8章 财务报告</option><option value="第9章 报表分析">第9章 报表分析</option><option value="第10章 外币合并">第10章 外币合并</option></select></div>
+<div class="config-group"><label>难度分布</label><select id="examDiff"><option value="balanced">均衡（易3:中5:难2）</option><option value="easy">偏易（易5:中4:难1）</option><option value="hard">偏难（易1:中4:难5）</option></select></div>
+<div class="config-group"><label>单选题数量</label><input type="number" id="nSingle" value="15" min="0"></div>
+<div class="config-group"><label>多选题数量</label><input type="number" id="nMulti" value="5" min="0"></div>
+<div class="config-group"><label>判断题数量</label><input type="number" id="nJudge" value="10" min="0"></div>
+<div class="config-group"><label>主观题数量</label><input type="number" id="nSubj" value="3" min="0"></div>
+</div>
+<div style="margin-top:16px;"><button class="btn btn-primary" onclick="generateExam()">生成试卷</button>
+<button class="btn btn-outline" onclick="exportExam()">导出试卷</button></div>
+</div>
+<div class="card hidden" id="examResult"><h3>试卷预览</h3><div id="examPreview"></div></div>
+</div>
+
+<div id="view-t-class" class="view hidden">
+<div class="page-header"><h2>班级成绩分析</h2><p>模拟班级数据 · 学生成绩排名 · 知识点掌握热力图</p></div>
+<div class="score-overview">
+<div class="score-card"><div class="score-num">78.5</div><div class="score-label">班级平均分</div></div>
+<div class="score-card"><div class="score-num">85%</div><div class="score-label">及格率</div></div>
+<div class="score-card"><div class="score-num">12.3</div><div class="score-label">标准差</div></div>
+</div>
+<div class="card"><h3>成绩分布直方图</h3><div class="bar-chart" id="scoreDistChart"></div></div>
+<div class="card"><h3>学生成绩排名</h3><div class="table-wrap"><table class="data-table" id="classRankTable"><thead><tr><th>排名</th><th>学号</th><th>姓名</th><th>平时成绩</th><th>期中成绩</th><th>期末成绩</th><th>总评</th><th>等级</th></tr></thead><tbody></tbody></table></div></div>
+<div class="card"><h3>各章班级正确率（知识点掌握热力图）</h3><div id="classChapterRate"></div></div>
+</div>
+</main>
+</div>
+<div id="toastContainer"></div>
+
+<script>
+// ===== 数据 =====
+const QUESTIONS = [
+  {
+    "id": "MH-CH1-001",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.2",
+    "type": "单选题",
+    "q": "民用航空运输企业成本计算的基本单位是（  ）。",
+    "A": "吨",
+    "B": "吨公里",
+    "C": "飞行小时",
+    "D": "件",
+    "answer": "C",
+    "explain": "民航运输企业不生产物质产品，其成本计算对象是航线和机型，单位成本以飞行小时或吨公里计量，其中飞行小时是最基本的成本计算单位。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-002",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.1",
+    "type": "单选题",
+    "q": "民用航空运输业最显著的行业特征是（  ）。",
+    "A": "劳动密集型",
+    "B": "资本密集型和技术密集型",
+    "C": "资源密集型",
+    "D": "知识密集型",
+    "answer": "B",
+    "explain": "民航运输业需要购置价值数亿元的飞机，建设复杂的运行保障系统，属于典型的资本密集型和技术密集型行业。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-003",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.1",
+    "type": "单选题",
+    "q": "航空公司的核心生产要素是（  ）。",
+    "A": "原材料",
+    "B": "飞机及发动机",
+    "C": "劳动力",
+    "D": "土地",
+    "answer": "B",
+    "explain": "飞机及发动机是航空公司最核心的生产要素，单架飞机价值数亿元，占企业资产总额的绝大部分。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-004",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.3",
+    "type": "单选题",
+    "q": "下列不属于民航企业特有会计科目的是（  ）。",
+    "A": "高价周转件",
+    "B": "国内票证结算",
+    "C": "航材消耗件",
+    "D": "原材料",
+    "answer": "D",
+    "explain": "原材料是通用会计科目；高价周转件、国内票证结算、航材消耗件均为民航企业特有会计科目。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-005",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.2",
+    "type": "单选题",
+    "q": "民航运输企业与制造企业会计核算的根本区别在于（  ）。",
+    "A": "使用的会计准则不同",
+    "B": "不生产物质产品，提供位移服务",
+    "C": "成本核算方法完全不同",
+    "D": "收入确认时点不同",
+    "answer": "B",
+    "explain": "民航运输企业不生产有形的物质产品，而是提供旅客和货物的空间位移服务，这决定了其成本核算对象和收入确认的特殊性。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-006",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.3",
+    "type": "多选题",
+    "q": "下列属于民航企业特有会计科目的有（  ）。",
+    "A": "航材消耗件",
+    "B": "高价周转件",
+    "C": "机上供应品",
+    "D": "国内票证结算",
+    "answer": "ABCD",
+    "explain": "航材消耗件、高价周转件、机上供应品属于存货类特殊科目；国内票证结算属于往来类特殊科目，均为民航企业特有。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-007",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.1",
+    "type": "多选题",
+    "q": "民用航空运输企业的经营特点包括（  ）。",
+    "A": "资本密集",
+    "B": "技术密集",
+    "C": "国际化程度高",
+    "D": "受油价和汇率影响大",
+    "answer": "ABCD",
+    "explain": "民航业需要巨额资本投入飞机，技术要求高，国际航线涉及外币结算，航油成本和汇率波动对经营影响显著。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-008",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.2",
+    "type": "多选题",
+    "q": "民航运输企业成本计算的计量单位可以是（  ）。",
+    "A": "飞行小时",
+    "B": "吨公里",
+    "C": "客公里",
+    "D": "件",
+    "answer": "ABC",
+    "explain": "民航运输成本可以按飞行小时、吨公里（货运）、客公里（客运）等计量单位计算，不是按件计算。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-009",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.1",
+    "type": "判断题",
+    "q": "民用航空运输企业生产的产品是有形的物质产品。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "民航运输企业不生产有形物质产品，其产品是旅客和货物的空间位移服务，具有不可储存性。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-010",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.3",
+    "type": "判断题",
+    "q": "「高价周转件」是民航企业特有的存货类会计科目。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "高价周转件核算民航企业高价周转件的实际成本，是民航企业特有的会计科目，如发动机、起落架等。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-011",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.2",
+    "type": "判断题",
+    "q": "民航运输企业的成本计算对象只能是航线。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "民航运输企业成本计算对象可以是航线、机型或航班，根据管理需要选择，不是只能按航线。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-012",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.1",
+    "type": "名词解释",
+    "q": "民用航空运输企业",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "民用航空运输企业是指使用民用航空器运送旅客、行李、邮件或者货物的企业法人，包括公共航空运输企业和通用航空企业。其核心业务是提供空中位移服务，不生产物质产品。",
+    "diff": "易",
+    "score": 5,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH1-013",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.3",
+    "type": "名词解释",
+    "q": "高价周转件",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "高价周转件是指民航企业价值高、使用期限长、可多次周转使用并需单独核算的大型飞机部件，如发动机、起落架、辅助动力装置（APU）等。其摊销通常按飞行小时计算。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "飞行小时",
+      "摊销",
+      "高价周转件"
+    ]
+  },
+  {
+    "id": "MH-CH1-014",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.2",
+    "type": "简答题",
+    "q": "简述民航运输企业会计核算的主要特点。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）不生产物质产品，提供位移服务，产品不可储存；（2）成本计算对象特殊，按航线、机型或航班归集成本；（3）单位成本以飞行小时或吨公里计量；（4）存货核算特殊，设航材消耗件、高价周转件、机上供应品等科目；（5）票证结算方式特殊，设国内票证结算、国际票证结算科目；（6）固定资产以飞机为主，折旧方法特殊。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "国际票证结算",
+      "高价周转件",
+      "航材消耗件",
+      "折旧",
+      "国内票证结算",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH1-015",
+    "ch": "第1章 概论",
+    "kp": "MH-CH1.1",
+    "type": "简答题",
+    "q": "简述民航运输业的行业经济特征。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）资本密集：飞机购置成本高，单架窄体飞机约5亿元，宽体飞机超10亿元；（2）技术密集：飞行、维修、运行控制均需高技术水平；（3）高固定成本、低边际成本：固定成本占比高，增加一名旅客的边际成本低；（4）受外部因素影响大：油价、汇率、天气、政策；（5）季节性和周期性明显；（6）国际化程度高，涉及多国法规和外币结算。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "5亿元",
+      "10亿元"
+    ]
+  },
+  {
+    "id": "MH-CH2-001",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.2",
+    "type": "单选题",
+    "q": "民航企业高价周转件摊销通常采用的方法是（  ）。",
+    "A": "一次摊销法",
+    "B": "五五摊销法",
+    "C": "按飞行小时摊销",
+    "D": "年限平均法",
+    "answer": "C",
+    "explain": "高价周转件（如发动机、起落架等）价值高、使用期限长，其损耗与实际飞行小时直接相关，因此通常按飞行小时数计提摊销。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-002",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "单选题",
+    "q": "民航企业航材消耗件领用时，其成本应计入（  ）。",
+    "A": "管理费用",
+    "B": "主营业务成本（运输成本）",
+    "C": "销售费用",
+    "D": "营业外支出",
+    "answer": "B",
+    "explain": "航材消耗件用于飞机维修保养，领用时其成本应计入运输成本中的维修成本项目。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-003",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.3",
+    "type": "单选题",
+    "q": "机上供应品不包括（  ）。",
+    "A": "餐食",
+    "B": "饮料",
+    "C": "报纸杂志",
+    "D": "航空燃油",
+    "answer": "D",
+    "explain": "机上供应品包括为旅客提供的餐食、饮料、报纸杂志、毛毯耳机等；航空燃油属于航油成本，不属于机上供应品。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-004",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "单选题",
+    "q": "航材成本差异的分摊方法通常是（  ）。",
+    "A": "全部计入当期损益",
+    "B": "按领用航材的计划成本比例分摊",
+    "C": "按飞行小时分摊",
+    "D": "按机型分摊",
+    "answer": "B",
+    "explain": "航材采用计划成本核算时，成本差异应按当期领用航材的计划成本比例分摊计入运输成本。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-005",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.2",
+    "type": "单选题",
+    "q": "某航空公司高价周转件原值500万元，预计总飞行小时100000小时，本月飞行500小时，则本月摊销额为（  ）。",
+    "A": "2万元",
+    "B": "2.5万元",
+    "C": "5万元",
+    "D": "10万元",
+    "answer": "B",
+    "explain": "单位飞行小时摊销额=500÷100000=0.005万元/小时；本月摊销额=500×0.005=2.5万元。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-006",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "多选题",
+    "q": "航材消耗件的特点包括（  ）。",
+    "A": "使用期限较短",
+    "B": "价值相对较低",
+    "C": "领用时一次性或分次摊销",
+    "D": "可多次周转使用",
+    "answer": "ABC",
+    "explain": "航材消耗件是指使用期限较短、价值较低、在使用中消耗或不可修复的航材，如螺栓、密封圈等；可多次周转使用是高价周转件的特点。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-007",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.2",
+    "type": "多选题",
+    "q": "下列属于高价周转件的有（  ）。",
+    "A": "航空发动机",
+    "B": "起落架",
+    "C": "辅助动力装置（APU）",
+    "D": "机用餐车",
+    "answer": "ABC",
+    "explain": "发动机、起落架、APU价值高、可周转使用，属于高价周转件；机用餐车价值较低，属于机上供应品或低值易耗品。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-008",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.3",
+    "type": "多选题",
+    "q": "机上供应品核算的内容包括（  ）。",
+    "A": "餐食",
+    "B": "饮料",
+    "C": "毛毯",
+    "D": "耳机",
+    "answer": "ABCD",
+    "explain": "机上供应品包括为旅客提供的各种消耗品和服务用品，如餐食、饮料、毛毯、耳机、报纸杂志等。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-009",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "判断题",
+    "q": "航材消耗件领用时一律采用一次摊销法。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "航材消耗件可根据价值和使用期限采用一次摊销法或分次摊销法，不是一律采用一次摊销法。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-010",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.2",
+    "type": "判断题",
+    "q": "高价周转件的摊销额应计入运输成本。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "高价周转件用于飞机运营，其摊销额构成运输成本的一部分，计入主营业务成本。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-011",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.3",
+    "type": "判断题",
+    "q": "机上供应品在航班结束后如有剩余，可以退回仓库重新入库。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "未使用的机上供应品（如未开封的饮料、毛毯等）可以退回仓库，冲减当期领用成本。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-012",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "名词解释",
+    "q": "航材消耗件",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "航材消耗件是指民航企业库存的使用期限较短、单位价值较低、在使用过程中消耗或不可修复的航空器材，如螺栓、螺母、密封圈、刹车片等。领用时其成本计入运输成本。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "航材消耗件"
+    ]
+  },
+  {
+    "id": "MH-CH2-013",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.3",
+    "type": "名词解释",
+    "q": "机上供应品",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "机上供应品是指民航企业为航班旅客提供的各种消耗品和服务用品，包括餐食、饮料、小食品、报纸杂志、毛毯、耳机、洗漱用品等。领用时计入运输成本中的机上供应品项目。",
+    "diff": "易",
+    "score": 5,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH2-014",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "分录题",
+    "q": "某航空公司本月领用航材消耗件一批，计划成本20万元，材料成本差异率为+2%（超支）。要求编制领用和分摊差异的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）领用航材：\n借：主营业务成本-运输成本（维修成本）200000\n  贷：航材消耗件 200000\n（2）分摊成本差异：\n借：主营业务成本-运输成本（维修成本）4000\n  贷：材料成本差异 4000",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "主营业务成本",
+      "材料成本差异",
+      "航材消耗件"
+    ]
+  },
+  {
+    "id": "MH-CH2-015",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.2",
+    "type": "分录题",
+    "q": "某航空公司高价周转件本月摊销3万元，其中用于客运航班2万元，货运航班1万元。要求编制摊销会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "借：主营业务成本-运输成本（客运-折旧及摊销）20000\n    主营业务成本-运输成本（货运-折旧及摊销）10000\n  贷：高价周转件摊销 30000",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "摊销",
+      "折旧",
+      "主营业务成本",
+      "高价周转件",
+      "高价周转件摊销"
+    ]
+  },
+  {
+    "id": "MH-CH2-016",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.3",
+    "type": "分录题",
+    "q": "某航空公司本月领用机上供应品5万元，航班结束后退回未使用供应品0.5万元。要求编制领用和退回的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）领用：\n借：主营业务成本-运输成本（机上供应品）50000\n  贷：机上供应品 50000\n（2）退回：\n借：机上供应品 5000\n  贷：主营业务成本-运输成本（机上供应品）5000",
+    "diff": "易",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "主营业务成本",
+      "机上供应品"
+    ]
+  },
+  {
+    "id": "MH-CH2-017",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.2",
+    "type": "计算分析题",
+    "q": "某航空公司一台发动机作为高价周转件核算，原值3000万元，预计净残值150万元，预计总飞行小时60000小时。本月该发动机实际飞行300小时。要求：计算单位飞行小时摊销额和本月摊销额，并编制会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）单位飞行小时摊销额=（3000-150）÷60000=0.0475万元/小时=475元/小时\n（2）本月摊销额=300×0.0475=14.25万元\n（3）会计分录：\n借：主营业务成本-运输成本（折旧及摊销）142500\n  贷：高价周转件摊销 142500",
+    "diff": "中",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "飞行小时",
+      "摊销",
+      "折旧",
+      "0.0475万元",
+      "主营业务成本",
+      "高价周转件",
+      "高价周转件摊销",
+      "14.25万元",
+      "475元"
+    ]
+  },
+  {
+    "id": "MH-CH2-018",
+    "ch": "第2章 流动资产",
+    "kp": "MH-CH2.1",
+    "type": "简答题",
+    "q": "简述航材消耗件与高价周转件的区别。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）价值不同：航材消耗件单位价值较低，高价周转件单位价值高；（2）使用期限不同：航材消耗件使用期限短，高价周转件使用期限长；（3）周转方式不同：航材消耗件使用后消耗或不可修复，高价周转件可多次周转使用；（4）摊销方法不同：航材消耗件采用一次或分次摊销，高价周转件按飞行小时摊销；（5）核算科目不同：分别在「航材消耗件」和「高价周转件」科目核算。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "飞行小时",
+      "摊销",
+      "高价周转件",
+      "航材消耗件"
+    ]
+  },
+  {
+    "id": "MH-CH3-001",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.3",
+    "type": "单选题",
+    "q": "某航空公司发动机替换件采用工作量法计提折旧，其折旧基数应是（  ）。",
+    "A": "发动机原值",
+    "B": "发动机原值减预计净残值",
+    "C": "发动机原值减已提折旧",
+    "D": "发动机公允价值",
+    "answer": "B",
+    "explain": "工作量法下，单位飞行小时折旧额=（原值-预计净残值）÷预计总飞行小时。因此折旧基数为原值减预计净残值。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-002",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "单选题",
+    "q": "某航空公司购入一架波音737飞机，原值8亿元，预计使用20年，预计净残值率5%，采用年限平均法计提折旧，则月折旧额为（  ）。",
+    "A": "316.67万元",
+    "B": "333.33万元",
+    "C": "380万元",
+    "D": "400万元",
+    "answer": "A",
+    "explain": "年折旧额=80000×(1-5%)÷20=3800万元；月折旧额=3800÷12≈316.67万元。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-003",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "多选题",
+    "q": "飞机维修检查中，属于大修理（资本化）的有（  ）。",
+    "A": "A检",
+    "B": "B检",
+    "C": "C检",
+    "D": "D检",
+    "answer": "CD",
+    "explain": "A检和B检属于日常维护（费用化），C检和D检属于大修理（符合资本化条件的计入固定资产成本）。D检是最高级别的检修，通常需要拆解机身。",
+    "diff": "难",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-004",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "判断题",
+    "q": "民航企业飞机机身折旧通常采用工作量法。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "飞机机身通常采用年限平均法计提折旧（折旧年限一般15-20年）；发动机替换件才采用按飞行小时的工作量法。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-005",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.3",
+    "type": "计算分析题",
+    "q": "某航空公司一台发动机原值2000万元，预计净残值100万元，预计总飞行小时50000小时。本月该发动机实际飞行200小时。要求：计算单位飞行小时折旧额和本月折旧额，并编制会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）单位飞行小时折旧额=（2000-100）÷50000=0.038万元/小时=380元/小时\n（2）本月折旧额=200×0.038=7.6万元\n（3）会计分录：\n借：主营业务成本-运输成本（直接营运费-折旧）76000\n  贷：累计折旧 76000",
+    "diff": "难",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "累计折旧",
+      "380元",
+      "主营业务成本",
+      "7.6万元",
+      "折旧",
+      "0.038万元",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH3-006",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.1",
+    "type": "单选题",
+    "q": "企业外购飞机的入账价值不包括（  ）。",
+    "A": "飞机买价",
+    "B": "进口关税",
+    "C": "增值税进项税额",
+    "D": "运输安装费",
+    "answer": "C",
+    "explain": "增值税一般纳税人购入固定资产的进项税额可以抵扣，不计入固定资产成本；买价、关税、运输安装费均计入入账价值。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-007",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "单选题",
+    "q": "民航企业飞机机身折旧年限通常为（  ）。",
+    "A": "5-10年",
+    "B": "10-15年",
+    "C": "15-20年",
+    "D": "25-30年",
+    "answer": "C",
+    "explain": "民航企业飞机机身折旧年限通常为15-20年，具体由企业根据飞机类型和使用情况确定。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-008",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "单选题",
+    "q": "飞机A检的会计处理通常是（  ）。",
+    "A": "资本化计入固定资产成本",
+    "B": "费用化计入当期损益",
+    "C": "计入长期待摊费用",
+    "D": "计入在建工程",
+    "answer": "B",
+    "explain": "A检是最低级别的例行检查，属于日常维护，相关支出费用化计入当期损益（运输成本）。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-009",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.5",
+    "type": "单选题",
+    "q": "企业出售飞机产生的净损益应计入（  ）。",
+    "A": "主营业务收入",
+    "B": "其他业务收入",
+    "C": "资产处置损益",
+    "D": "营业外收入",
+    "answer": "C",
+    "explain": "出售固定资产（飞机）的净损益计入「资产处置损益」科目，影响营业利润。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-010",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.1",
+    "type": "单选题",
+    "q": "融资租入飞机的初始入账价值应为（  ）。",
+    "A": "租赁开始日飞机公允价值",
+    "B": "最低租赁付款额现值",
+    "C": "租赁开始日飞机公允价值与最低租赁付款额现值两者中较低者",
+    "D": "各期租金之和",
+    "answer": "C",
+    "explain": "融资租入固定资产按租赁开始日租赁资产公允价值与最低租赁付款额现值两者中较低者作为入账价值。",
+    "diff": "难",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-011",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "单选题",
+    "q": "某航空公司一架飞机原值10亿元，预计净残值率4%，预计使用18年，采用年限平均法，则年折旧率为（  ）。",
+    "A": "5.00%",
+    "B": "5.33%",
+    "C": "5.56%",
+    "D": "6.00%",
+    "answer": "B",
+    "explain": "年折旧率=（1-4%）÷18=5.33%。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-012",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.3",
+    "type": "单选题",
+    "q": "发动机按飞行小时计提折旧，本月实际飞行400小时，单位折旧额500元/小时，则本月折旧额为（  ）。",
+    "A": "15万元",
+    "B": "20万元",
+    "C": "25万元",
+    "D": "30万元",
+    "answer": "B",
+    "explain": "本月折旧额=400×500=200000元=20万元。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-013",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "单选题",
+    "q": "飞机D检的特点是（  ）。",
+    "A": "每月进行一次",
+    "B": "每500飞行小时进行",
+    "C": "每6-10年进行一次，需拆解机身",
+    "D": "每次飞行前检查",
+    "answer": "C",
+    "explain": "D检是最高级别的检修，通常每6-10年进行一次，需要将飞机几乎完全拆解检查，费用高昂，符合资本化条件。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-014",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.5",
+    "type": "单选题",
+    "q": "飞机报废清理时，最终的净损失应转入（  ）。",
+    "A": "管理费用",
+    "B": "资产处置损益",
+    "C": "营业外支出",
+    "D": "主营业务成本",
+    "answer": "C",
+    "explain": "飞机报废（非正常出售）的净损失计入「营业外支出」；正常出售的净损益计入「资产处置损益」。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-015",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.1",
+    "type": "多选题",
+    "q": "飞机的价值构成包括（  ）。",
+    "A": "机身",
+    "B": "发动机",
+    "C": "机载设备",
+    "D": "内饰装修",
+    "answer": "ABCD",
+    "explain": "飞机价值包括机身、发动机、机载设备（航电、通信导航等）、内饰装修等全部达到预定可使用状态前的支出。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-016",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "多选题",
+    "q": "飞机折旧的影响因素包括（  ）。",
+    "A": "原值",
+    "B": "预计净残值",
+    "C": "预计使用年限（或飞行小时）",
+    "D": "已计提的减值准备",
+    "answer": "ABCD",
+    "explain": "折旧额=（原值-预计净残值-已提减值准备）÷预计使用年限（或总飞行小时），四个因素均影响折旧。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-017",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "多选题",
+    "q": "飞机后续支出中，应费用化的有（  ）。",
+    "A": "A检",
+    "B": "B检",
+    "C": "C检",
+    "D": "日常小修",
+    "answer": "ABD",
+    "explain": "A检、B检和日常小修属于经常性维护，费用化；C检和D检属于大修理，符合条件的资本化。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-018",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.5",
+    "type": "多选题",
+    "q": "飞机处置的方式包括（  ）。",
+    "A": "出售",
+    "B": "报废",
+    "C": "毁损",
+    "D": "对外投资",
+    "answer": "ABCD",
+    "explain": "飞机处置包括出售、报废、毁损、对外投资、非货币性资产交换、债务重组等多种方式。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-019",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.1",
+    "type": "判断题",
+    "q": "外购飞机的增值税进项税额可以抵扣。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "增值税一般纳税人购入作为固定资产的飞机，其进项税额可以抵扣，不计入飞机成本。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-020",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "判断题",
+    "q": "飞机C检费用一律资本化。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "C检费用只有符合固定资产确认条件（延长使用寿命、提高性能等）时才资本化，否则费用化。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-021",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.5",
+    "type": "判断题",
+    "q": "飞机出售净损益影响营业利润。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "飞机出售净损益计入「资产处置损益」，属于营业利润的组成部分。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-022",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "判断题",
+    "q": "飞机折旧方法一经确定，不得变更。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "折旧方法一经确定不得随意变更，但如果经济利益预期实现方式发生重大变化，可以变更，并作为会计估计变更处理。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH3-023",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.1",
+    "type": "名词解释",
+    "q": "飞机初始计量",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "飞机初始计量是指确定飞机取得时入账价值的过程。外购飞机的入账价值包括买价、相关税费、运输费、安装费等达到预定可使用状态前的全部支出。融资租入飞机按公允价值与最低租赁付款额现值孰低计量。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "现值"
+    ]
+  },
+  {
+    "id": "MH-CH3-024",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "名词解释",
+    "q": "飞机D检",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "D检（大修检）是飞机最高级别的检修，通常每6-10年或一定飞行循环后进行，需要将飞机几乎完全拆解，对机身结构、系统进行全面检查和修复，费用高昂，符合资本化条件时计入固定资产成本。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "资本化"
+    ]
+  },
+  {
+    "id": "MH-CH3-025",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "简答题",
+    "q": "为什么飞机机身采用年限平均法折旧，而发动机替换件采用工作量法？",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）机身的损耗主要与时间相关：机身结构的老化、金属疲劳、锈蚀等随时间推移而发生，与实际飞行小时数关系相对较小，因此适合按年限平均法计提折旧；（2）发动机替换件的损耗与使用强度直接相关：发动机的磨损、热循环损伤主要取决于实际飞行小时和起降循环次数，按飞行小时计提折旧更准确地反映其价值消耗；（3）这种分类折旧方法体现了会计信息质量的相关性要求，使成本与收入更配比。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "飞行小时",
+      "折旧",
+      "年限平均法"
+    ]
+  },
+  {
+    "id": "MH-CH3-026",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.2",
+    "type": "计算分析题",
+    "q": "某航空公司2024年1月购入一架A320飞机，原值6亿元，预计使用20年，预计净残值率5%，采用年限平均法计提折旧。要求：（1）计算年折旧额和月折旧额；（2）编制2024年1月计提折旧的会计分录；（3）计算2024年末该飞机的账面价值。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）年折旧额=60000×(1-5%)÷20=2850万元；月折旧额=2850÷12=237.5万元\n（2）借：主营业务成本-运输成本（折旧）2375000\n  贷：累计折旧 2375000\n（3）2024年折旧额=237.5×11=2612.5万元（1月购入，2月开始折旧，共11个月）\n账面价值=60000-2612.5=57387.5万元",
+    "diff": "中",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "累计折旧",
+      "57387.5万元",
+      "5%",
+      "237.5万元",
+      "主营业务成本",
+      "折旧",
+      "2612.5万元",
+      "2850万元"
+    ]
+  },
+  {
+    "id": "MH-CH3-027",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "分录题",
+    "q": "某航空公司一架飞机进行C检，发生修理费用500万元，该支出符合资本化条件，以银行存款支付。C检后飞机预计尚可使用年限延长2年。要求编制C检支出的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）将飞机账面价值转入在建工程：\n借：在建工程（账面价值）\n    累计折旧\n  贷：固定资产-飞机（原值）\n（2）支付C检费用：\n借：在建工程 5000000\n  贷：银行存款 5000000\n（3）完工转入固定资产：\n借：固定资产-飞机\n  贷：在建工程",
+    "diff": "难",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "累计折旧",
+      "固定资产-飞机",
+      "银行存款",
+      "在建工程",
+      "折旧"
+    ]
+  },
+  {
+    "id": "MH-CH3-028",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.5",
+    "type": "分录题",
+    "q": "某航空公司出售一架旧飞机，原值5亿元，已提折旧3亿元，出售取得价款2.2亿元（不含税），发生清理费用0.1万元。要求编制固定资产清理的全部会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）转入清理：\n借：固定资产清理 200000000\n    累计折旧 300000000\n  贷：固定资产-飞机 500000000\n（2）支付清理费用：\n借：固定资产清理 1000\n  贷：银行存款 1000\n（3）取得出售价款：\n借：银行存款 220000000\n  贷：固定资产清理 220000000\n（4）结转净损益：\n净收益=22000-20000-0.1=1999.9万元\n借：固定资产清理 19999000\n  贷：资产处置损益 19999000",
+    "diff": "中",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "累计折旧",
+      "资产处置损益",
+      "固定资产-飞机",
+      "固定资产清理",
+      "银行存款",
+      "1999.9万元",
+      "折旧"
+    ]
+  },
+  {
+    "id": "MH-CH3-029",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.3",
+    "type": "案例题",
+    "q": "某航空公司2023年初购入一台发动机作为替换件，原值4000万元，预计净残值200万元，预计总飞行小时80000小时。2023年实际飞行3000小时，2024年实际飞行3500小时。2025年初对发动机进行大修，发生支出800万元（资本化），大修后预计剩余飞行小时50000小时，净残值不变。要求：（1）计算2023年和2024年折旧额；（2）计算大修后发动机的账面价值和新的单位飞行小时折旧额。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）单位飞行小时折旧额=（4000-200）÷80000=0.0475万元/小时\n2023年折旧额=3000×0.0475=142.5万元\n2024年折旧额=3500×0.0475=166.25万元\n（2）大修前账面价值=4000-142.5-166.25=3691.25万元\n大修后账面价值=3691.25+800=4491.25万元\n新的单位飞行小时折旧额=（4491.25-200）÷50000=0.085825万元/小时=858.25元/小时",
+    "diff": "难",
+    "score": 20,
+    "aviation": "是",
+    "keywords": [
+      "折旧",
+      "0.0475万元",
+      "3691.25万元",
+      "4491.25万元",
+      "142.5万元",
+      "飞行小时",
+      "166.25万元"
+    ]
+  },
+  {
+    "id": "MH-CH3-030",
+    "ch": "第3章 飞机发动机",
+    "kp": "MH-CH3.4",
+    "type": "简答题",
+    "q": "简述飞机维修检查的分类及各自的会计处理原则。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "飞机维修检查分为：（1）A检：最低级别例行检查，每200-300飞行小时进行，费用化；（2）B检：中等检查，每4-6个月进行，费用化；（3）C检：高级别检修，每15-24个月进行，符合资本化条件的计入固定资产成本，否则费用化；（4）D检：最高级别检修，每6-10年进行，需拆解机身，费用高昂，通常资本化。会计处理原则：符合固定资产确认条件（延长使用寿命、提高经济利益）的后续支出资本化，计入固定资产成本；不符合的费用化，计入当期损益。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "资本化",
+      "飞行小时",
+      "费用化"
+    ]
+  },
+  {
+    "id": "MH-CH4-001",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "单选题",
+    "q": "根据新租赁准则（CAS 21），承租人对融资租赁飞机应确认（  ）。",
+    "A": "固定资产和长期应付款",
+    "B": "使用权资产和租赁负债",
+    "C": "固定资产和租赁负债",
+    "D": "使用权资产和长期应付款",
+    "answer": "B",
+    "explain": "新租赁准则下，承租人不再区分经营租赁和融资租赁，除短期租赁和低价值资产租赁外，均应确认使用权资产和租赁负债。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-002",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "单选题",
+    "q": "租赁负债的初始计量金额是（  ）。",
+    "A": "各期租金之和",
+    "B": "租赁付款额的现值",
+    "C": "飞机公允价值",
+    "D": "各期租金之和加利息",
+    "answer": "B",
+    "explain": "租赁负债应按租赁开始日尚未支付的租赁付款额的现值进行初始计量。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-003",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "单选题",
+    "q": "使用权资产的初始入账价值不包括（  ）。",
+    "A": "租赁负债的初始计量金额",
+    "B": "租赁期开始日或之前支付的租赁付款额",
+    "C": "承租人发生的初始直接费用",
+    "D": "飞机的公允价值",
+    "answer": "D",
+    "explain": "使用权资产=租赁负债初始金额+预付租金+初始直接费用+预计复原成本-租赁激励。不包括飞机公允价值。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-004",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.1",
+    "type": "单选题",
+    "q": "经营租赁与融资租赁的主要区别在于（  ）。",
+    "A": "租赁期限长短",
+    "B": "租金金额大小",
+    "C": "与租赁资产所有权相关的风险和报酬是否转移",
+    "D": "租赁资产的类型",
+    "answer": "C",
+    "explain": "区分经营租赁和融资租赁的核心标准是与资产所有权相关的风险和报酬是否实质上转移给承租人。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-005",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "单选题",
+    "q": "租赁负债后续计量采用的方法是（  ）。",
+    "A": "直线法",
+    "B": "实际利率法",
+    "C": "年数总和法",
+    "D": "工作量法",
+    "answer": "B",
+    "explain": "租赁负债采用实际利率法计算利息费用，摊余成本进行后续计量。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-006",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "单选题",
+    "q": "使用权资产的折旧方法通常是（  ）。",
+    "A": "年限平均法",
+    "B": "工作量法",
+    "C": "年数总和法",
+    "D": "双倍余额递减法",
+    "answer": "A",
+    "explain": "使用权资产通常采用年限平均法计提折旧，折旧年限为租赁期与资产剩余使用寿命孰短。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-007",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.4",
+    "type": "单选题",
+    "q": "售后回租交易中，如果销售成立，卖方兼承租人应（  ）。",
+    "A": "终止确认原资产，确认使用权资产和租赁负债",
+    "B": "继续确认原资产，不确认使用权资产",
+    "C": "将全部售价确认为当期损益",
+    "D": "将售价与账面价值差额确认为当期损益",
+    "answer": "A",
+    "explain": "售后回租中销售成立时，卖方兼承租人终止确认原资产，按公允价值确认使用权资产，差额计入当期损益，同时确认租赁负债。",
+    "diff": "难",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-008",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.1",
+    "type": "单选题",
+    "q": "民航企业大量采用飞机租赁的主要原因不包括（  ）。",
+    "A": "降低初始资本投入",
+    "B": "灵活调整机队结构",
+    "C": "享受税收优惠",
+    "D": "避免飞机折旧",
+    "answer": "D",
+    "explain": "租赁飞机仍需计提折旧（使用权资产折旧），不能避免折旧。其他三项均为租赁的优势。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-009",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "单选题",
+    "q": "某航空公司租入一架飞机，年租金1000万元，租期10年，折现率5%，则租赁负债初始金额约为（  ）。（P/A,5%,10）=7.7217",
+    "A": "7721.7万元",
+    "B": "10000万元",
+    "C": "5000万元",
+    "D": "8500万元",
+    "answer": "A",
+    "explain": "租赁负债=年租金×年金现值系数=1000×7.7217=7721.7万元。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-010",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "多选题",
+    "q": "使用权资产的成本包括（  ）。",
+    "A": "租赁负债的初始计量金额",
+    "B": "预付租金",
+    "C": "初始直接费用",
+    "D": "预计复原成本",
+    "answer": "ABCD",
+    "explain": "使用权资产成本=租赁负债初始金额+预付租金+初始直接费用+预计复原成本-租赁激励。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-011",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.1",
+    "type": "多选题",
+    "q": "下列情形通常表明租赁为融资租赁的有（  ）。",
+    "A": "租赁期占资产使用寿命的大部分",
+    "B": "租赁期满资产所有权转移给承租人",
+    "C": "承租人有优惠购买选择权",
+    "D": "租赁资产性质特殊，不作大改造只有承租人能用",
+    "answer": "ABCD",
+    "explain": "四项均为融资租赁的判断标准，满足之一即可认定为融资租赁。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-012",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "多选题",
+    "q": "租赁付款额包括（  ）。",
+    "A": "固定付款额",
+    "B": "基于指数或比率的可变付款额",
+    "C": "合理确定将行使购买选择权的行权价格",
+    "D": "承租人提供的担保余值",
+    "answer": "ABCD",
+    "explain": "租赁付款额包括固定付款额、基于指数/比率的可变付款额、购买选择权行权价格、担保余值、终止租赁罚金等。",
+    "diff": "难",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-013",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.4",
+    "type": "多选题",
+    "q": "售后回租交易的会计处理可能涉及（  ）。",
+    "A": "终止确认原资产",
+    "B": "确认使用权资产",
+    "C": "确认租赁负债",
+    "D": "确认资产处置损益",
+    "answer": "ABCD",
+    "explain": "售后回租销售成立时，涉及终止确认原资产、确认使用权资产和租赁负债、确认处置损益；销售不成立时则不终止确认，作为金融负债处理。",
+    "diff": "难",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-014",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "判断题",
+    "q": "短期租赁和低价值资产租赁可以不确认使用权资产。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "新租赁准则下，短期租赁（租期≤12个月）和低价值资产租赁，承租人可以选择不确认使用权资产和租赁负债，租金按直线法计入当期损益。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-015",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "判断题",
+    "q": "租赁负债的利息费用计入财务费用。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "租赁负债采用实际利率法计算的利息费用，计入当期损益（财务费用）。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-016",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.1",
+    "type": "判断题",
+    "q": "经营租赁的租金应在租赁期内按直线法确认为费用。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "对于短期租赁或简化处理的经营租赁，租金应在租赁期内按直线法或其他系统合理方法确认为费用。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-017",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.4",
+    "type": "判断题",
+    "q": "售后回租交易中，售价与资产账面价值的差额应全部计入当期损益。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "售后回租中，只有与转让使用权相关的利得或损失才计入当期损益，与保留使用权相关的部分应递延。",
+    "diff": "难",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-018",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.1",
+    "type": "名词解释",
+    "q": "融资租赁",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "融资租赁是指实质上转移了与资产所有权有关的全部风险和报酬的租赁。其所有权最终可能转移，也可能不转移。判断标准包括：租赁期占资产使用寿命大部分、期满所有权转移、优惠购买选择权、资产性质特殊等。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH4-019",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "名词解释",
+    "q": "使用权资产",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "使用权资产是指承租人在租赁期内使用租赁资产的权利。在新租赁准则下，承租人除短期租赁和低价值资产租赁外，均应确认使用权资产，按成本进行初始计量，包括租赁负债初始金额、预付租金、初始直接费用和预计复原成本。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "使用权资产",
+      "租赁负债"
+    ]
+  },
+  {
+    "id": "MH-CH4-020",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "名词解释",
+    "q": "租赁负债",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "租赁负债是指承租人尚未支付的租赁付款额的现值。初始计量按租赁付款额现值入账，后续采用实际利率法计算利息费用并调整摊余成本。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "现值",
+      "实际利率法",
+      "租赁负债"
+    ]
+  },
+  {
+    "id": "MH-CH4-021",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "分录题",
+    "q": "某航空公司租入一架飞机（非短期租赁），租赁期开始日，租赁负债初始金额8000万元，预付租金500万元，初始直接费用20万元。要求编制确认使用权资产和租赁负债的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "使用权资产成本=8000+500+20=8520万元\n借：使用权资产 85200000\n  贷：租赁负债-租赁付款额 80000000\n      银行存款 5200000",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "租赁负债-租赁付款额",
+      "使用权资产",
+      "银行存款",
+      "8520万元",
+      "租赁负债"
+    ]
+  },
+  {
+    "id": "MH-CH4-022",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.3",
+    "type": "计算分析题",
+    "q": "某航空公司租入一架飞机，年租金1200万元（年末支付），租期8年，折现率6%。（P/A,6%,8）=6.2098。要求：（1）计算租赁负债初始金额；（2）编制租赁期开始日的会计分录；（3）计算第一年应确认的利息费用。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）租赁负债初始金额=1200×6.2098=7451.76万元\n（2）借：使用权资产 74517600\n  贷：租赁负债-租赁付款额 74517600\n（3）第一年利息费用=7451.76×6%=447.11万元\n借：财务费用 4471100\n  贷：租赁负债-未确认融资费用 4471100",
+    "diff": "难",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "财务费用",
+      "租赁负债-租赁付款额",
+      "7451.76万元",
+      "使用权资产",
+      "6%",
+      "租赁负债-未确认融资费用",
+      "租赁负债",
+      "447.11万元"
+    ]
+  },
+  {
+    "id": "MH-CH4-023",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.4",
+    "type": "案例题",
+    "q": "某航空公司将一架账面价值5亿元的飞机以5.5亿元出售给租赁公司，同时租回该飞机，租期10年，年租金6000万元。该交易符合销售成立条件。飞机公允价值5.5亿元。要求：（1）计算应确认的处置损益；（2）说明使用权资产和租赁负债的计量原则。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）处置损益=售价-账面价值=5.5-5=0.5亿元，全部计入当期资产处置损益（因为售价等于公允价值）。\n（2）使用权资产按原账面价值中与保留使用权相关的部分计量，即按租赁付款额现值占售价的比例计算；租赁负债按租赁付款额现值计量。\n若售价不等于公允价值，差额需调整：售价高于公允价值的部分作为融资行为，低于公允价值的部分作为预付租金。",
+    "diff": "难",
+    "score": 20,
+    "aviation": "是",
+    "keywords": [
+      "资产处置损益",
+      "使用权资产",
+      "0.5亿元",
+      "现值",
+      "租赁负债"
+    ]
+  },
+  {
+    "id": "MH-CH4-024",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.1",
+    "type": "简答题",
+    "q": "简述新租赁准则（CAS 21）下承租人会计处理的主要变化。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）不再区分经营租赁和融资租赁：除短期租赁和低价值资产租赁外，所有租赁均确认使用权资产和租赁负债；（2）资产负债表变化：原经营租赁下的表外融资纳入表内，资产和负债同时增加；（3）利润表变化：原经营租赁租金费用改为使用权资产折旧+租赁负债利息费用，前高后低；（4）现金流量表变化：租赁本金部分计入筹资活动，利息部分可计入经营或筹资活动；（5）对航空公司影响重大：大量经营租赁飞机入表，资产负债率显著上升。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "使用权资产",
+      "租赁负债",
+      "折旧"
+    ]
+  },
+  {
+    "id": "MH-CH4-025",
+    "ch": "第4章 飞机租赁",
+    "kp": "MH-CH4.2",
+    "type": "简答题",
+    "q": "简述民航企业采用飞机租赁的主要动因。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）降低初始资本投入：飞机价值高昂，租赁可避免一次性巨额资金支出；（2）灵活调整机队：租赁可根据市场需求快速增减飞机，降低机队规划风险；（3）税收优惠：部分租赁结构可享受税收抵免或加速折旧优惠；（4）技术更新：租赁可避免飞机技术陈旧风险，及时更换新机型；（5）资产负债管理：原经营租赁可实现表外融资（新准则下已入表）；（6）国际化运营：跨境租赁可利用不同国家的税收和融资优势。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "折旧"
+    ]
+  },
+  {
+    "id": "MH-CH5-001",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "单选题",
+    "q": "航空公司最大的单项运营成本通常是（  ）。",
+    "A": "飞机折旧",
+    "B": "航油成本",
+    "C": "机组薪酬",
+    "D": "起降费",
+    "answer": "B",
+    "explain": "航油成本通常占航空公司运营成本的20%-30%，是最大的单项成本，受国际油价波动影响显著。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-002",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.1",
+    "type": "多选题",
+    "q": "民航运输企业成本核算的对象可以是（  ）。",
+    "A": "航线",
+    "B": "机型",
+    "C": "航班",
+    "D": "飞行小时",
+    "answer": "ABC",
+    "explain": "民航运输成本核算对象可以按航线、机型或航班设置。飞行小时是成本计算单位，不是核算对象。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-003",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.6",
+    "type": "案例题",
+    "q": "某航空公司A320机型执飞北京-上海航线，本月飞行100小时，发生以下费用：航油成本80万元，机组薪酬30万元，飞机折旧20万元，起降费15万元，维修成本10万元，分摊间接营运费25万元。该航线本月旅客周转量500万客公里。要求：计算该航线本月运输总成本和单位飞行小时成本、单位客公里成本。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）运输总成本=80+30+20+15+10+25=180万元\n（2）单位飞行小时成本=180÷100=1.8万元/飞行小时\n（3）单位客公里成本=1800000÷5000000=0.36元/客公里\n\n分析：航油成本占比44.4%（80/180），是最大成本项；该航线单位客公里成本0.36元，若平均票价高于此值则航线盈利。",
+    "diff": "难",
+    "score": 20,
+    "aviation": "是",
+    "keywords": [
+      "44.4%",
+      "1.8万元",
+      "0.36元",
+      "180万元",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH5-004",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "单选题",
+    "q": "航油成本的归集通常按（  ）。",
+    "A": "实际加油量和油价",
+    "B": "计划加油量",
+    "C": "航班座位数",
+    "D": "飞行距离",
+    "answer": "A",
+    "explain": "航油成本按实际加油量乘以实际油价（含加油服务费）归集，计入对应航班/航线的直接营运费。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-005",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.3",
+    "type": "单选题",
+    "q": "飞机起降费的收费依据通常是（  ）。",
+    "A": "飞机最大起飞重量",
+    "B": "飞机座位数",
+    "C": "飞行距离",
+    "D": "旅客人数",
+    "answer": "A",
+    "explain": "机场起降费通常按飞机最大起飞重量（MTOW）分档计费，重量越大费用越高。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-006",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.4",
+    "type": "单选题",
+    "q": "飞行机组薪酬应计入（  ）。",
+    "A": "管理费用",
+    "B": "直接营运费",
+    "C": "间接营运费",
+    "D": "销售费用",
+    "answer": "B",
+    "explain": "飞行机组（飞行员、乘务员）薪酬直接服务于航班生产，计入直接营运费中的机组薪酬项目。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-007",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.5",
+    "type": "单选题",
+    "q": "间接营运费分配的常用标准是（  ）。",
+    "A": "按飞行小时",
+    "B": "按直接费用比例",
+    "C": "按旅客人数",
+    "D": "按航线距离",
+    "answer": "A",
+    "explain": "间接营运费通常按各机型/航线的飞行小时比例分配，因为飞行小时能较好反映运营资源消耗。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-008",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.6",
+    "type": "单选题",
+    "q": "单位飞行小时成本的计算公式是（  ）。",
+    "A": "运输总成本÷飞行小时数",
+    "B": "运输总成本÷旅客周转量",
+    "C": "直接营运费÷飞行小时数",
+    "D": "航油成本÷飞行小时数",
+    "answer": "A",
+    "explain": "单位飞行小时成本=运输总成本÷飞行小时数，反映每飞行一小时的平均成本。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-009",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.1",
+    "type": "单选题",
+    "q": "吨公里是（  ）的成本计算单位。",
+    "A": "客运",
+    "B": "货运",
+    "C": "通用航空",
+    "D": "机务维修",
+    "answer": "B",
+    "explain": "吨公里是货运成本计算单位（1吨货物运输1公里）；客公里是客运成本计算单位。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-010",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.3",
+    "type": "单选题",
+    "q": "民航基础设施建设基金属于（  ）。",
+    "A": "航油成本",
+    "B": "起降费及航路费",
+    "C": "间接营运费",
+    "D": "管理费用",
+    "answer": "B",
+    "explain": "民航基础设施建设基金（航路费）按飞行里程征收，属于直接营运费中的起降费及航路费项目。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-011",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "多选题",
+    "q": "航油成本包括（  ）。",
+    "A": "燃油本身费用",
+    "B": "加油服务费",
+    "C": "燃油附加费",
+    "D": "燃油运输储存费",
+    "answer": "ABD",
+    "explain": "航油成本包括燃油采购费用、加油服务费、运输储存费等。燃油附加费是向旅客收取的价外费用，不是航油成本。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-012",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.1",
+    "type": "多选题",
+    "q": "民航运输成本项目包括（  ）。",
+    "A": "直接营运费",
+    "B": "间接营运费",
+    "C": "销售费用",
+    "D": "管理费用",
+    "answer": "AB",
+    "explain": "运输成本包括直接营运费和间接营运费。销售费用和管理费用属于期间费用，不计入运输成本。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-013",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.3",
+    "type": "多选题",
+    "q": "直接营运费包括（  ）。",
+    "A": "航油成本",
+    "B": "起降费",
+    "C": "机组薪酬",
+    "D": "飞机折旧",
+    "answer": "ABCD",
+    "explain": "直接营运费是直接归属于航班生产的费用，包括航油、起降费、机组薪酬、飞机折旧及租赁、维修、餐食等。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-014",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.5",
+    "type": "多选题",
+    "q": "间接营运费包括（  ）。",
+    "A": "地面保障费用",
+    "B": "运行指挥费用",
+    "C": "培训费用",
+    "D": "管理人员薪酬",
+    "answer": "ABCD",
+    "explain": "间接营运费是为组织和管理运输生产发生的不能直接归属某航班的费用，如地面保障、运行指挥、培训、管理人员薪酬等。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-015",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "判断题",
+    "q": "航油成本占航空公司运营成本的比例通常在20%-30%之间。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "航油成本是航空公司最大的单项成本，通常占运营成本的20%-30%，具体比例受油价和运营效率影响。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-016",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.1",
+    "type": "判断题",
+    "q": "飞行小时既是成本计算单位，也是成本核算对象。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "飞行小时是成本计算单位，不是核算对象。核算对象是航线、机型或航班。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-017",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.5",
+    "type": "判断题",
+    "q": "间接营运费可以直接计入某一航班的成本。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "间接营运费不能直接归属某一航班，需要按一定标准（如飞行小时）分配计入各航线/机型成本。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-018",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.6",
+    "type": "判断题",
+    "q": "单位客公里成本越低，航线盈利能力越强。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "单位客公里成本低只是盈利的必要条件，还需结合票价水平和客座率。若票价低于单位成本，即使成本低也可能亏损。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH5-019",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.1",
+    "type": "名词解释",
+    "q": "直接营运费",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "直接营运费是指民航企业在运输生产过程中发生的、能直接归属于特定航班/航线/机型的各项费用，包括航油成本、机组薪酬、飞机折旧及租赁、起降费、航路费、维修成本、餐食及供应品等。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "折旧"
+    ]
+  },
+  {
+    "id": "MH-CH5-020",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.5",
+    "type": "名词解释",
+    "q": "间接营运费",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "间接营运费是指民航企业为组织和管理运输生产发生的、不能直接归属某一航班的各项费用，如地面保障费、运行指挥费、培训费、安全管理费用等。需按一定标准分配计入各成本核算对象。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "管理费用"
+    ]
+  },
+  {
+    "id": "MH-CH5-021",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.6",
+    "type": "名词解释",
+    "q": "单位飞行小时成本",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "单位飞行小时成本是指每飞行一小时所耗费的运输成本，计算公式为：运输总成本÷飞行小时数。它是衡量航空公司运营效率的重要指标，可用于不同机型、不同航线的成本对比。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH5-022",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "分录题",
+    "q": "某航空公司本月发生航油成本500万元，其中客运航班350万元，货运航班150万元，均以银行存款支付。要求编制航油成本归集的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "借：主营业务成本-运输成本（客运-航油成本）3500000\n    主营业务成本-运输成本（货运-航油成本）1500000\n  贷：银行存款 5000000",
+    "diff": "易",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "银行存款",
+      "主营业务成本"
+    ]
+  },
+  {
+    "id": "MH-CH5-023",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.5",
+    "type": "分录题",
+    "q": "某航空公司本月发生间接营运费120万元，按飞行小时分配：客运航班飞行600小时，货运航班飞行200小时。要求计算分配率并编制分配会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "分配率=120÷(600+200)=0.15万元/小时\n客运分配=600×0.15=90万元\n货运分配=200×0.15=30万元\n借：主营业务成本-运输成本（客运-间接营运费）900000\n    主营业务成本-运输成本（货运-间接营运费）300000\n  贷：间接营运费 1200000",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "0.15万元",
+      "30万元",
+      "主营业务成本",
+      "90万元",
+      "间接营运费"
+    ]
+  },
+  {
+    "id": "MH-CH5-024",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.6",
+    "type": "计算分析题",
+    "q": "某航空公司B737机型执飞广州-成都航线，本月数据如下：飞行80小时，航油成本64万元，机组薪酬24万元，飞机折旧16万元，起降费12万元，维修成本8万元，分摊间接营运费20万元。本月旅客周转量400万客公里，货运周转量50万吨公里。要求：（1）计算运输总成本；（2）计算单位飞行小时成本；（3）计算单位客公里成本（客运占比80%）。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）运输总成本=64+24+16+12+8+20=144万元\n（2）单位飞行小时成本=144÷80=1.8万元/飞行小时\n（3）客运应分摊成本=144×80%=115.2万元\n单位客公里成本=1152000÷4000000=0.288元/客公里",
+    "diff": "中",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "1.8万元",
+      "115.2万元",
+      "0.288元",
+      "144万元",
+      "飞行小时",
+      "80%"
+    ]
+  },
+  {
+    "id": "MH-CH5-025",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "计算分析题",
+    "q": "某航空公司本月航油采购情况：月初库存航油100吨，单价5000元/吨；本月购入500吨，单价5200元/吨；本月领用450吨。采用加权平均法核算。要求：（1）计算加权平均单价；（2）计算本月领用航油成本；（3）编制领用会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）加权平均单价=（100×5000+500×5200）÷（100+500）=（500000+2600000）÷600=5166.67元/吨\n（2）本月领用航油成本=450×5166.67=2325001.5元≈232.5万元\n（3）借：主营业务成本-运输成本（航油成本）2325000\n  贷：航材消耗件-航油 2325000",
+    "diff": "中",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "5166.67元",
+      "主营业务成本",
+      "航材消耗件",
+      "232.5万元",
+      "航材消耗件-航油",
+      "2325001.5元"
+    ]
+  },
+  {
+    "id": "MH-CH5-026",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.6",
+    "type": "案例题",
+    "q": "某航空公司有A320和B737两种机型，本月数据如下：A320飞行500小时，直接营运费900万元；B737飞行300小时，直接营运费480万元。本月间接营运费共计400万元，按飞行小时分配。要求：（1）计算两种机型的单位飞行小时直接成本；（2）计算间接营运费分配率和各机型分配额；（3）计算两种机型的单位飞行小时完全成本。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）A320单位直接成本=900÷500=1.8万元/小时\nB737单位直接成本=480÷300=1.6万元/小时\n（2）分配率=400÷(500+300)=0.5万元/小时\nA320分配间接费=500×0.5=250万元\nB737分配间接费=300×0.5=150万元\n（3）A320完全成本=900+250=1150万元，单位完全成本=1150÷500=2.3万元/小时\nB737完全成本=480+150=630万元，单位完全成本=630÷300=2.1万元/小时\n结论：B737单位完全成本低于A320，主要因直接成本较低。",
+    "diff": "难",
+    "score": 20,
+    "aviation": "是",
+    "keywords": [
+      "0.5万元",
+      "1.8万元",
+      "1.6万元",
+      "150万元",
+      "250万元"
+    ]
+  },
+  {
+    "id": "MH-CH5-027",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.1",
+    "type": "简答题",
+    "q": "简述民航运输成本核算的特点。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）成本计算对象特殊：按航线、机型或航班归集成本，而非按产品批次；（2）成本计算单位特殊：以飞行小时、吨公里、客公里等运营指标计量；（3）成本项目特殊：设直接营运费和间接营运费两大类，直接营运费中航油、起降费、飞机折旧为主要项目；（4）成本归集维度多：需同时按航线、机型、航班等多维度归集；（5）固定成本占比高：飞机折旧、租赁等固定成本占比大，边际成本低。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "折旧",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH5-028",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.2",
+    "type": "简答题",
+    "q": "简述航油成本对航空公司经营的影响及管理措施。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "影响：（1）航油成本占运营成本20%-30%，是最大单项成本；（2）国际油价波动直接影响利润，油价每上涨10%，航司利润可能下降数亿元；（3）航油成本具有刚性，短期内难以大幅压缩。\n管理措施：（1）航油套期保值，锁定燃油成本；（2）优化航线网络和飞行程序，降低燃油消耗；（3）引入更节油的新机型；（4）合理配载，减少不必要的燃油携带；（5）征收燃油附加费，部分转嫁成本。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "30%",
+      "10%",
+      "20%"
+    ]
+  },
+  {
+    "id": "MH-CH5-029",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.3",
+    "type": "分录题",
+    "q": "某航空公司本月发生以下直接营运费：起降费80万元（银行存款支付）、航路费15万元（银行存款支付）、机上餐食供应品25万元（领用库存）。要求编制会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "借：主营业务成本-运输成本（起降费）800000\n    主营业务成本-运输成本（航路费）150000\n    主营业务成本-运输成本（机上供应品）250000\n  贷：银行存款 950000\n      机上供应品 250000",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "银行存款",
+      "主营业务成本"
+    ]
+  },
+  {
+    "id": "MH-CH5-030",
+    "ch": "第5章 运输成本",
+    "kp": "MH-CH5.4",
+    "type": "简答题",
+    "q": "简述飞行机组薪酬的构成和核算方法。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "构成：（1）基本工资：固定发放部分；（2）飞行小时费：按实际飞行小时计发，是机组薪酬的主要变动部分；（3）驻外津贴：按驻外天数计发；（4）夜航补贴、高原补贴等特殊补贴；（5）年终奖和绩效奖金。\n核算方法：机组薪酬按实际发生额归集，能直接归属某机型/航线的直接计入，不能直接归属的按飞行小时分配。计入「主营业务成本-运输成本（直接营运费-机组薪酬）」。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "主营业务成本",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH6-001",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "单选题",
+    "q": "航空公司常旅客里程奖励计划中，分摊至奖励里程的票款应确认为（  ）。",
+    "A": "主营业务收入",
+    "B": "合同负债",
+    "C": "预收账款",
+    "D": "其他应付款",
+    "answer": "B",
+    "explain": "根据收入准则，常旅客奖励里程属于单项履约义务，分摊至奖励里程的票款应先确认为合同负债，待会员兑换里程并提供运输服务时再转为收入。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-002",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.1",
+    "type": "单选题",
+    "q": "民航企业国内客票销售通过BSP结算时，应使用的会计科目是（  ）。",
+    "A": "应收账款",
+    "B": "国内票证结算",
+    "C": "国际票证结算",
+    "D": "合同负债",
+    "answer": "B",
+    "explain": "「国内票证结算」是民航企业特有的会计科目，用于核算国内航线票证的结算款项，包括BSP（账单结算计划）结算。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-003",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "判断题",
+    "q": "常旅客里程兑换时，航空公司应将相关合同负债转为运输收入。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "常旅客里程兑换时，航空公司履行了运输服务履约义务，应将原确认为合同负债的金额转为运输收入。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-004",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "计算分析题",
+    "q": "某航空公司本月客运收入1000万元（不含税），根据常旅客计划，票款需在运输服务和奖励里程之间分摊。已知运输服务单独售价为900万元，奖励里程单独售价为100万元。要求：计算分摊至运输服务和奖励里程的金额，并编制确认收入的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）分摊比例：运输服务=900÷(900+100)=90%；奖励里程=100÷(900+100)=10%\n（2）分摊金额：运输服务=1000×90%=900万元；奖励里程=1000×10%=100万元\n（3）会计分录：\n借：银行存款/应收账款 10000000\n  贷：主营业务收入-运输收入 9000000\n      合同负债-常旅客奖励 1000000",
+    "diff": "难",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "主营业务收入-运输收入",
+      "主营业务收入",
+      "合同负债",
+      "银行存款/应收账款",
+      "银行存款",
+      "10%",
+      "900万元",
+      "90%"
+    ]
+  },
+  {
+    "id": "MH-CH6-005",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.1",
+    "type": "单选题",
+    "q": "BSP的中文含义是（  ）。",
+    "A": "银行结算计划",
+    "B": "账单结算计划",
+    "C": "票务销售计划",
+    "D": "旅客服务计划",
+    "answer": "B",
+    "explain": "BSP（Billing and Settlement Plan）即账单结算计划，是国际航协（IATA）推行的中性票证结算系统。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-006",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.3",
+    "type": "单选题",
+    "q": "客运收入确认的时点是（  ）。",
+    "A": "售票时",
+    "B": "旅客值机时",
+    "C": "运输服务提供时（航班到达）",
+    "D": "旅客购票后7天",
+    "answer": "C",
+    "explain": "根据收入准则，客运收入应在运输服务提供时（即旅客完成运输、航班到达目的地）确认。售票时未运输的票款确认为合同负债。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-007",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.2",
+    "type": "单选题",
+    "q": "国际联运票证结算中，各承运航空公司之间分配收入的方法是（  ）。",
+    "A": "平均分配",
+    "B": "比例分摊",
+    "C": "按航程分配",
+    "D": "按旅客数分配",
+    "answer": "B",
+    "explain": "国际联运中，多家航空公司共同完成运输，收入按IATA比例分摊手册（Prorate Manual）规定的比例在各承运人之间分配。",
+    "diff": "难",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-008",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.3",
+    "type": "单选题",
+    "q": "旅客购票后未乘机（误机）且不可退票的票款，应（  ）。",
+    "A": "一直挂在合同负债",
+    "B": "确认为营业外收入",
+    "C": "确认为运输收入",
+    "D": "冲减销售费用",
+    "answer": "C",
+    "explain": "旅客误机且票款不可退时，航空公司的履约义务解除，应将相关合同负债转为运输收入。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-009",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "单选题",
+    "q": "常旅客里程到期未兑换，应将相关合同负债（  ）。",
+    "A": "转入营业外收入",
+    "B": "转入运输收入",
+    "C": "继续挂账",
+    "D": "冲减销售费用",
+    "answer": "B",
+    "explain": "常旅客里程到期未兑换，航空公司不再负有履约义务，应将相关合同负债转为运输收入（或其他收益）。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-010",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.1",
+    "type": "多选题",
+    "q": "国内票证结算核算的内容包括（  ）。",
+    "A": "本企业出票由其他企业承运",
+    "B": "其他企业出票由本企业承运",
+    "C": "BSP结算",
+    "D": "国内航线票证款项结算",
+    "answer": "ABCD",
+    "explain": "国内票证结算核算国内航线各种票证的结算，包括互票结算、BSP结算等。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-011",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.3",
+    "type": "多选题",
+    "q": "民航运输收入包括（  ）。",
+    "A": "客运收入",
+    "B": "货运收入",
+    "C": "邮运收入",
+    "D": "行李逾重收入",
+    "answer": "ABCD",
+    "explain": "民航运输收入包括客运收入、货运收入、邮运收入、逾重行李收入等与运输服务直接相关的收入。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-012",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "多选题",
+    "q": "常旅客里程计划涉及的会计处理包括（  ）。",
+    "A": "票款分摊",
+    "B": "合同负债确认",
+    "C": "里程兑换转收入",
+    "D": "里程到期处理",
+    "answer": "ABCD",
+    "explain": "常旅客计划会计处理包括：票款在运输服务和奖励里程间分摊、奖励里程部分确认为合同负债、兑换时转收入、到期未兑换转收入。",
+    "diff": "难",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-013",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.2",
+    "type": "多选题",
+    "q": "国际票证结算的特点包括（  ）。",
+    "A": "涉及多家航空公司联运",
+    "B": "按比例分摊收入",
+    "C": "涉及外币结算",
+    "D": "使用国际票证结算科目",
+    "answer": "ABCD",
+    "explain": "国际票证结算涉及多国多家航空公司联运，收入需按比例分摊，涉及外币折算，使用「国际票证结算」科目核算。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-014",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.3",
+    "type": "判断题",
+    "q": "航空公司售票时即可全额确认运输收入。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "售票时旅客尚未接受运输服务，不能确认收入，应将未运输部分确认为合同负债，待运输服务提供时再确认收入。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-015",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.1",
+    "type": "判断题",
+    "q": "「国内票证结算」科目期末余额反映尚未结算的票证款项。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "国内票证结算属于往来类科目，期末余额反映应收或应付的未结算票证款项。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-016",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "判断题",
+    "q": "常旅客奖励里程的单独售价可以参考里程的市场兑换价值确定。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "奖励里程的单独售价可参考里程的市场兑换价值（如兑换免票的公允价值、合作商户的兑换比率）来确定。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-017",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.2",
+    "type": "判断题",
+    "q": "国际联运收入一律按收到的票款全额确认。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "国际联运涉及多家承运人，收入应按比例分摊，本企业只确认属于自己承运部分的收入。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH6-018",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.1",
+    "type": "名词解释",
+    "q": "国内票证结算",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "国内票证结算是民航企业特有的会计科目，用于核算国内航线票证的结算款项，包括本企业出票由其他企业承运、其他企业出票由本企业承运以及通过BSP结算的国内票证款项。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "国内票证结算"
+    ]
+  },
+  {
+    "id": "MH-CH6-019",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "名词解释",
+    "q": "常旅客里程奖励计划",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "常旅客里程奖励计划是航空公司为吸引和保留旅客推出的忠诚度计划，旅客乘坐航班可累积里程，里程可兑换免票、升舱或其他奖励。会计上需将票款在运输服务和奖励里程之间按单独售价比例分摊，奖励里程部分确认为合同负债。",
+    "diff": "难",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "合同负债"
+    ]
+  },
+  {
+    "id": "MH-CH6-020",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.3",
+    "type": "名词解释",
+    "q": "空中交通负债（合同负债）",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "空中交通负债是指航空公司已售票但尚未提供运输服务的票款，在新收入准则下确认为合同负债。这是航空公司最大的流动负债项目之一，反映了已售票未运输的金额。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "合同负债"
+    ]
+  },
+  {
+    "id": "MH-CH6-021",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.1",
+    "type": "分录题",
+    "q": "某航空公司本月通过BSP结算收到国内票款800万元，其中本企业承运600万元，其他企业承运200万元。要求编制相关会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）收到票款：\n借：银行存款 8000000\n  贷：国内票证结算 8000000\n（2）确认本企业承运收入：\n借：国内票证结算 6000000\n  贷：主营业务收入-运输收入 6000000\n（3）支付其他企业承运款：\n借：国内票证结算 2000000\n  贷：银行存款 2000000",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "银行存款",
+      "国内票证结算",
+      "主营业务收入",
+      "主营业务收入-运输收入"
+    ]
+  },
+  {
+    "id": "MH-CH6-022",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "分录题",
+    "q": "某航空公司常旅客会员用里程兑换一张免票，该免票对应合同负债金额1500元，旅客已完成运输。要求编制里程兑换确认收入的会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "借：合同负债-常旅客奖励 1500\n  贷：主营业务收入-运输收入 1500",
+    "diff": "易",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "主营业务收入-运输收入",
+      "主营业务收入",
+      "合同负债-常旅客奖励",
+      "合同负债"
+    ]
+  },
+  {
+    "id": "MH-CH6-023",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "计算分析题",
+    "q": "某航空公司2024年客运收入50亿元（不含税），常旅客计划规定每消费1元累积1里程，里程单独售价为0.05元/里程（即每元票价中奖励里程单独售价0.05元）。要求：（1）计算运输服务和奖励里程的分摊比例及金额；（2）编制确认收入的会计分录（以万元为单位）。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）运输服务单独售价=50×(1-0.05)=47.5亿元；奖励里程单独售价=50×0.05=2.5亿元\n分摊比例：运输服务=47.5÷50=95%；奖励里程=2.5÷50=5%\n分摊金额：运输服务=50×95%=47.5亿元=475000万元；奖励里程=50×5%=2.5亿元=25000万元\n（2）借：银行存款/应收账款 500000\n  贷：主营业务收入-运输收入 475000\n      合同负债-常旅客奖励 25000",
+    "diff": "难",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "主营业务收入-运输收入",
+      "主营业务收入",
+      "95%",
+      "5%",
+      "银行存款/应收账款",
+      "2.5亿元",
+      "47.5亿元",
+      "合同负债",
+      "银行存款"
+    ]
+  },
+  {
+    "id": "MH-CH6-024",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.3",
+    "type": "案例题",
+    "q": "某航空公司本月售票情况：售出机票10000张，票价总额800万元（不含税）。截至月末，已完成运输6000张（480万元），未运输4000张（320万元）。另有上月售票本月运输200万元。要求：（1）计算本月应确认的运输收入；（2）计算月末合同负债余额；（3）编制相关会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）本月应确认运输收入=本月售票本月运输480万+上月售票本月运输200万=680万元\n（2）月末合同负债余额=本月售票未运输320万元（假设上月未运输部分已全部在本月运输）\n（3）售票时：\n借：银行存款 8000000\n  贷：合同负债 8000000\n确认本月运输收入：\n借：合同负债 6800000\n  贷：主营业务收入-运输收入 6800000",
+    "diff": "中",
+    "score": 20,
+    "aviation": "是",
+    "keywords": [
+      "主营业务收入-运输收入",
+      "主营业务收入",
+      "320万元",
+      "合同负债",
+      "银行存款",
+      "680万元"
+    ]
+  },
+  {
+    "id": "MH-CH6-025",
+    "ch": "第6章 票证收入",
+    "kp": "MH-CH6.4",
+    "type": "简答题",
+    "q": "简述常旅客里程奖励计划的会计处理原则。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）识别履约义务：常旅客奖励里程构成一项单独的履约义务（旅客可选择兑换奖励）；（2）确定交易价格分摊：将票款在运输服务和奖励里程之间按单独售价比例分摊；（3）确认合同负债：分摊至奖励里程的金额确认为合同负债，不立即确认收入；（4）兑换时转收入：会员兑换里程并接受运输服务时，将相关合同负债转为运输收入；（5）到期处理：里程到期未兑换，航空公司履约义务解除，将合同负债转为收入；（6）估计变更：根据历史兑换率调整合同负债余额，作为会计估计变更处理。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "合同负债"
+    ]
+  },
+  {
+    "id": "MH-CH7-001",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.1",
+    "type": "单选题",
+    "q": "航空公司短期借款的利息通常计入（  ）。",
+    "A": "管理费用",
+    "B": "财务费用",
+    "C": "销售费用",
+    "D": "主营业务成本",
+    "answer": "B",
+    "explain": "短期借款利息属于筹资费用，计入财务费用。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-002",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "单选题",
+    "q": "应付债券发行价格低于面值的差额称为（  ）。",
+    "A": "债券溢价",
+    "B": "债券折价",
+    "C": "利息调整",
+    "D": "应计利息",
+    "answer": "B",
+    "explain": "债券发行价格低于面值为折价发行，差额为债券折价，在「应付债券-利息调整」科目核算。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-003",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "单选题",
+    "q": "可转换公司债券在初始确认时应将负债成分和权益成分（  ）。",
+    "A": "全部确认为负债",
+    "B": "全部确认为权益",
+    "C": "分拆，负债成分确认为应付债券，权益成分确认为其他权益工具",
+    "D": "分拆，负债成分确认为长期借款，权益成分确认为资本公积",
+    "answer": "C",
+    "explain": "可转换公司债券应分拆为负债成分和权益成分：负债成分按未来现金流量现值确认为应付债券，权益成分计入其他权益工具。",
+    "diff": "难",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-004",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.3",
+    "type": "单选题",
+    "q": "企业接受投资者投入的资本超出其在注册资本中所占份额的部分，应计入（  ）。",
+    "A": "实收资本",
+    "B": "资本公积-资本溢价",
+    "C": "盈余公积",
+    "D": "营业外收入",
+    "answer": "B",
+    "explain": "投资者投入资本超出注册资本份额的部分，计入「资本公积-资本溢价（或股本溢价）」。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-005",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "单选题",
+    "q": "某公司发行5年期债券，面值1000万元，票面利率6%，每年付息，发行价格950万元。采用实际利率法，第一年末利息费用（实际利率7%）为（  ）。",
+    "A": "57万元",
+    "B": "60万元",
+    "C": "66.5万元",
+    "D": "70万元",
+    "answer": "C",
+    "explain": "实际利率法下利息费用=期初摊余成本×实际利率=950×7%=66.5万元。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-006",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.1",
+    "type": "多选题",
+    "q": "民航企业的流动负债包括（  ）。",
+    "A": "短期借款",
+    "B": "应付账款",
+    "C": "应付职工薪酬",
+    "D": "合同负债",
+    "answer": "ABCD",
+    "explain": "四项均属于流动负债，其中合同负债（已售票未运输）是民航企业特有的大额流动负债。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-007",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "多选题",
+    "q": "应付债券的后续计量方法包括（  ）。",
+    "A": "直线法摊销",
+    "B": "实际利率法摊销",
+    "C": "成本法",
+    "D": "权益法",
+    "answer": "AB",
+    "explain": "应付债券折价或溢价可采用直线法或实际利率法摊销，现行准则要求采用实际利率法。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-008",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.3",
+    "type": "多选题",
+    "q": "所有者权益包括（  ）。",
+    "A": "实收资本（股本）",
+    "B": "资本公积",
+    "C": "盈余公积",
+    "D": "未分配利润",
+    "answer": "ABCD",
+    "explain": "所有者权益包括实收资本（股本）、资本公积、其他综合收益、盈余公积和未分配利润。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-009",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.1",
+    "type": "判断题",
+    "q": "合同负债属于流动负债。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "合同负债通常在一年内转为收入，属于流动负债。航空公司的合同负债（空中交通负债）是最大的流动负债项目之一。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-010",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "判断题",
+    "q": "可转换公司债券转股时，应将债券账面价值与股本面值的差额计入营业外收入。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "可转换债券转股时，按债券账面价值结转，股本面值部分计入股本，差额计入资本公积-股本溢价，不确认损益。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-011",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.3",
+    "type": "判断题",
+    "q": "盈余公积可以用于弥补亏损、转增资本和分配股利。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "盈余公积的用途包括弥补亏损、转增资本（股本）和分配现金股利或利润。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH7-012",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "名词解释",
+    "q": "可转换公司债券",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "可转换公司债券是指发行人依照法定程序发行，在一定期间内依据约定条件可以转换成股份的公司债券。初始确认时应分拆为负债成分和权益成分，负债成分确认为应付债券，权益成分确认为其他权益工具。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "否",
+    "keywords": [
+      "其他权益工具",
+      "应付债券"
+    ]
+  },
+  {
+    "id": "MH-CH7-013",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.3",
+    "type": "名词解释",
+    "q": "其他综合收益",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "其他综合收益是指企业根据会计准则规定未在当期损益中确认的各项利得和损失，包括外币财务报表折算差额、其他债权投资公允价值变动等。属于所有者权益的组成部分。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "否",
+    "keywords": [
+      "其他综合收益"
+    ]
+  },
+  {
+    "id": "MH-CH7-014",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.2",
+    "type": "计算分析题",
+    "q": "某航空公司2024年1月1日发行3年期公司债券，面值2000万元，票面利率5%，每年付息，到期还本，发行价格1940万元（实际利率约6%）。要求：（1）编制发行时的会计分录；（2）计算2024年应确认的利息费用（实际利率法）。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）发行时：\n借：银行存款 19400000\n    应付债券-利息调整 600000\n  贷：应付债券-面值 20000000\n（2）2024年利息费用=期初摊余成本×实际利率=1940×6%=116.4万元\n票面利息=2000×5%=100万元\n利息调整摊销额=116.4-100=16.4万元\n借：财务费用 1164000\n  贷：应付利息 1000000\n      应付债券-利息调整 164000",
+    "diff": "难",
+    "score": 15,
+    "aviation": "否",
+    "keywords": [
+      "财务费用",
+      "摊销",
+      "应付利息",
+      "116.4万元",
+      "应付债券",
+      "5%",
+      "银行存款",
+      "100万元",
+      "16.4万元",
+      "6%",
+      "应付债券-面值"
+    ]
+  },
+  {
+    "id": "MH-CH7-015",
+    "ch": "第7章 负债权益",
+    "kp": "MH-CH7.3",
+    "type": "分录题",
+    "q": "某航空公司经批准将资本公积5000万元转增股本。要求编制会计分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "借：资本公积-股本溢价 50000000\n  贷：股本 50000000",
+    "diff": "易",
+    "score": 10,
+    "aviation": "否",
+    "keywords": [
+      "资本公积-股本溢价",
+      "股本"
+    ]
+  },
+  {
+    "id": "MH-CH8-001",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.1",
+    "type": "单选题",
+    "q": "民航企业资产负债表中，「高价周转件」应在（  ）项目列示。",
+    "A": "存货",
+    "B": "固定资产",
+    "C": "其他非流动资产",
+    "D": "在建工程",
+    "answer": "A",
+    "explain": "高价周转件属于存货类科目，在资产负债表「存货」项目中列示。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-002",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "单选题",
+    "q": "航空公司购买飞机支付的现金属于现金流量表中的（  ）。",
+    "A": "经营活动现金流出",
+    "B": "投资活动现金流出",
+    "C": "筹资活动现金流出",
+    "D": "汇率变动影响",
+    "answer": "B",
+    "explain": "购买飞机属于长期资产购置，是投资活动现金流出。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-003",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.2",
+    "type": "单选题",
+    "q": "民航企业利润表中，运输收入应列示为（  ）。",
+    "A": "主营业务收入",
+    "B": "其他业务收入",
+    "C": "营业外收入",
+    "D": "投资收益",
+    "answer": "A",
+    "explain": "运输收入是民航企业的主营业务收入，在利润表「营业收入」中列示（主营+其他）。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-004",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.4",
+    "type": "单选题",
+    "q": "分部报告的确定基础是（  ）。",
+    "A": "管理内部报告",
+    "B": "行业分类",
+    "C": "地区分类",
+    "D": "资产规模",
+    "answer": "A",
+    "explain": "分部报告以企业内部管理报告为基础确定报告分部，可按业务分部或地区分部。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-005",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "单选题",
+    "q": "航空公司收到旅客票款属于（  ）。",
+    "A": "经营活动现金流入",
+    "B": "投资活动现金流入",
+    "C": "筹资活动现金流入",
+    "D": "不涉及现金",
+    "answer": "A",
+    "explain": "收到旅客票款是经营活动的主要现金流入，属于销售商品、提供劳务收到的现金。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-006",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.1",
+    "type": "多选题",
+    "q": "民航企业资产负债表中的特殊项目包括（  ）。",
+    "A": "高价周转件（存货）",
+    "B": "合同负债（空中交通负债）",
+    "C": "国内票证结算",
+    "D": "使用权资产",
+    "answer": "ABCD",
+    "explain": "高价周转件在存货列示，合同负债是大额流动负债，票证结算在往来款项列示，使用权资产是非流动资产。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-007",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "多选题",
+    "q": "航空公司经营活动现金流出包括（  ）。",
+    "A": "支付航油款",
+    "B": "支付机组薪酬",
+    "C": "支付起降费",
+    "D": "支付飞机租金",
+    "answer": "ABCD",
+    "explain": "航油、薪酬、起降费、租金均为经营活动现金流出（短期租赁租金）。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-008",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.4",
+    "type": "多选题",
+    "q": "民航企业分部报告可以按（  ）分部。",
+    "A": "航线",
+    "B": "地区",
+    "C": "客运/货运",
+    "D": "国内/国际",
+    "answer": "ABCD",
+    "explain": "民航企业可按航线、地区、业务类型（客运/货运）、国内/国际等维度编制分部报告。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-009",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.1",
+    "type": "判断题",
+    "q": "「合同负债」在资产负债表中属于非流动负债。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "合同负债通常在一年内转为收入，属于流动负债。超过一年的部分才列示为非流动负债。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-010",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "判断题",
+    "q": "支付飞机租赁本金属于筹资活动现金流出。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "新租赁准则下，租赁负债本金偿还属于筹资活动现金流出；利息部分可计入经营或筹资活动。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-011",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.2",
+    "type": "判断题",
+    "q": "民航企业的利润表格式与一般企业完全不同。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "民航企业利润表基本格式与一般企业一致，只是在营业收入和营业成本中反映运输业务的特点。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-012",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.4",
+    "type": "名词解释",
+    "q": "分部报告",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "分部报告是指企业在对外提供的财务报告中，按照确定的业务分部或地区分部提供的各组成部分的收入、成本、利润、资产、负债等信息。民航企业通常按航线、地区或客运/货运业务提供分部信息。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-013",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "名词解释",
+    "q": "现金流量表",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "现金流量表是反映企业在一定会计期间现金和现金等价物流入和流出的报表。分为经营活动、投资活动和筹资活动三类现金流量。航空公司经营活动现金流入主要是票款收入，流出主要是航油、薪酬等。",
+    "diff": "易",
+    "score": 5,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-014",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.1",
+    "type": "简答题",
+    "q": "简述民航企业资产负债表的特殊列报项目。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）存货项目：包含航材消耗件、高价周转件、机上供应品等民航特有存货；（2）固定资产：飞机及发动机占比极高，是最大的资产项目；（3）使用权资产：新租赁准则下大量经营租赁飞机入表；（4）合同负债：已售票未运输的票款（空中交通负债），是最大的流动负债之一；（5）租赁负债：融资租赁和经营租赁入表后的长期负债；（6）国内/国际票证结算：在应收/应付项目中列示。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "合同负债",
+      "使用权资产",
+      "国际票证结算",
+      "高价周转件",
+      "航材消耗件",
+      "租赁负债"
+    ]
+  },
+  {
+    "id": "MH-CH8-015",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "简答题",
+    "q": "简述航空公司现金流量表的主要特点。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）经营活动：现金流入主要是旅客票款和货运收入，现金流出主要是航油、薪酬、起降费、维修等；（2）投资活动：主要是飞机购置和处置的大额现金流出/流入，金额巨大；（3）筹资活动：主要是借款、发行债券、租赁付款、股权融资等，飞机购置资金大量依赖筹资；（4）特点：投资活动净流出通常很大，筹资活动净流入支撑投资，经营活动现金流是核心偿债来源；（5）租赁付款：本金部分计入筹资活动，利息部分可计入经营或筹资活动。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH8-016",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.3",
+    "type": "分录题",
+    "q": "某航空公司本月发生以下现金收支：收到客票款2000万元，支付航油款800万元，支付飞机购置款5000万元，取得短期借款3000万元。要求分别说明各项属于哪类现金流量活动。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）收到客票款2000万元：经营活动现金流入（销售商品提供劳务收到的现金）\n（2）支付航油款800万元：经营活动现金流出（购买商品接受劳务支付的现金）\n（3）支付飞机购置款5000万元：投资活动现金流出（购建固定资产支付的现金）\n（4）取得短期借款3000万元：筹资活动现金流入（取得借款收到的现金）",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "2000万元",
+      "3000万元",
+      "5000万元",
+      "款收到的现金）",
+      "800万元"
+    ]
+  },
+  {
+    "id": "MH-CH8-017",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.2",
+    "type": "计算分析题",
+    "q": "某航空公司本月数据：客运收入5000万元，货运收入800万元，运输成本3500万元，销售费用200万元，管理费用300万元，财务费用150万元，投资收益50万元，营业外收入30万元，营业外支出10万元，所得税费用400万元。要求：计算营业利润、利润总额和净利润。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）营业利润=营业收入-营业成本-销售费用-管理费用-财务费用+投资收益\n=（5000+800）-3500-200-300-150+50=1700万元\n（2）利润总额=营业利润+营业外收入-营业外支出=1700+30-10=1720万元\n（3）净利润=利润总额-所得税费用=1720-400=1320万元",
+    "diff": "中",
+    "score": 15,
+    "aviation": "否",
+    "keywords": [
+      "财务费用",
+      "1720万元",
+      "管理费用",
+      "1700万元",
+      "1320万元"
+    ]
+  },
+  {
+    "id": "MH-CH8-018",
+    "ch": "第8章 财务报告",
+    "kp": "MH-CH8.4",
+    "type": "简答题",
+    "q": "民航企业编制分部报告有何意义？",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）帮助投资者评估不同航线/地区/业务的盈利能力和风险；（2）揭示不同业务分部的增长潜力和资本需求；（3）便于管理层进行资源配置和业绩考核；（4）满足会计准则和监管要求；（5）民航企业航线网络复杂，不同航线盈利差异大，分部信息对决策至关重要；（6）国际航线和国内航线面临不同的竞争环境和监管，分部报告有助于区分分析。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-001",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.1",
+    "type": "单选题",
+    "q": "资产负债率的计算公式是（  ）。",
+    "A": "资产总额÷负债总额",
+    "B": "负债总额÷资产总额",
+    "C": "负债总额÷所有者权益",
+    "D": "流动资产÷流动负债",
+    "answer": "B",
+    "explain": "资产负债率=负债总额÷资产总额×100%，反映企业长期偿债能力。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-002",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.2",
+    "type": "单选题",
+    "q": "反映飞机利用效率的指标是（  ）。",
+    "A": "资产周转率",
+    "B": "客座率",
+    "C": "应收账款周转率",
+    "D": "存货周转率",
+    "answer": "B",
+    "explain": "客座率（载运率）是反映飞机利用效率的核心运营指标，等于实际周转量÷最大周转量。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-003",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.3",
+    "type": "单选题",
+    "q": "航线毛利率的计算公式是（  ）。",
+    "A": "航线收入÷航线成本",
+    "B": "（航线收入-航线成本）÷航线收入",
+    "C": "航线利润÷航线收入",
+    "D": "航线收入÷飞行小时",
+    "answer": "B",
+    "explain": "航线毛利率=（航线收入-航线成本）÷航线收入×100%，反映航线的盈利能力。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-004",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.4",
+    "type": "单选题",
+    "q": "航油价格上涨10%，对航空公司利润的影响通常是（  ）。",
+    "A": "利润增加",
+    "B": "利润减少",
+    "C": "利润不变",
+    "D": "无法判断",
+    "answer": "B",
+    "explain": "航油成本是最大单项成本，油价上涨直接增加成本，在票价不变的情况下利润减少。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-005",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.1",
+    "type": "单选题",
+    "q": "利息保障倍数的计算公式是（  ）。",
+    "A": "净利润÷利息费用",
+    "B": "利润总额÷利息费用",
+    "C": "息税前利润÷利息费用",
+    "D": "营业收入÷利息费用",
+    "answer": "C",
+    "explain": "利息保障倍数=息税前利润（EBIT）÷利息费用，反映企业偿付利息的能力。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-006",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.2",
+    "type": "多选题",
+    "q": "反映航空公司营运能力的指标包括（  ）。",
+    "A": "客座率",
+    "B": "载运率",
+    "C": "飞机日利用率",
+    "D": "应收账款周转率",
+    "answer": "ABCD",
+    "explain": "客座率、载运率、飞机日利用率是运营效率指标，应收账款周转率是资产营运指标。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-007",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.3",
+    "type": "多选题",
+    "q": "航线盈利能力分析的指标包括（  ）。",
+    "A": "航线毛利率",
+    "B": "单位客公里收入",
+    "C": "单位客公里成本",
+    "D": "客座率",
+    "answer": "ABCD",
+    "explain": "航线盈利能力分析包括收入端（单位客公里收入、客座率）和成本端（单位客公里成本）以及综合指标（毛利率）。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-008",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.1",
+    "type": "多选题",
+    "q": "反映偿债能力的指标包括（  ）。",
+    "A": "流动比率",
+    "B": "速动比率",
+    "C": "资产负债率",
+    "D": "利息保障倍数",
+    "answer": "ABCD",
+    "explain": "流动比率和速动比率反映短期偿债能力，资产负债率和利息保障倍数反映长期偿债能力。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-009",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.2",
+    "type": "判断题",
+    "q": "客座率越高，航空公司盈利能力越强。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "客座率高说明飞机利用率高，但盈利还取决于票价水平和单位成本。高客座率配合低票价可能仍然亏损。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-010",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.4",
+    "type": "判断题",
+    "q": "航油价格敏感性分析可以帮助企业评估油价波动对利润的影响程度。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "航油价格敏感性分析通过计算油价变动一定幅度对利润的影响，帮助企业进行风险管理和套期保值决策。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-011",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.3",
+    "type": "判断题",
+    "q": "单位飞行小时利润是衡量航线盈利能力的唯一指标。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "单位飞行小时利润是重要指标但不是唯一指标，还需结合航线毛利率、单位客公里利润、投资回报率等综合分析。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "是",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH9-012",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.2",
+    "type": "名词解释",
+    "q": "客座率",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "客座率（旅客载运率）是指实际旅客周转量与最大旅客周转量的比率，反映飞机座位的利用效率。计算公式：客座率=实际旅客周转量（客公里）÷最大旅客周转量（可提供客公里）×100%。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "客座率",
+      "100%",
+      "载运率"
+    ]
+  },
+  {
+    "id": "MH-CH9-013",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.4",
+    "type": "名词解释",
+    "q": "航油价格敏感性分析",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "航油价格敏感性分析是指通过测算航油价格变动一定幅度（如±10%）对航空公司成本和利润的影响程度，评估企业对油价波动的风险敞口，为套期保值和定价决策提供依据。",
+    "diff": "中",
+    "score": 5,
+    "aviation": "是",
+    "keywords": [
+      "10%"
+    ]
+  },
+  {
+    "id": "MH-CH9-014",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.1",
+    "type": "计算分析题",
+    "q": "某航空公司年末资产总额500亿元，负债总额350亿元，流动资产150亿元，流动负债120亿元，息税前利润40亿元，利息费用15亿元。要求：计算资产负债率、流动比率和利息保障倍数。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）资产负债率=350÷500×100%=70%\n（2）流动比率=150÷120=1.25\n（3）利息保障倍数=40÷15=2.67倍",
+    "diff": "中",
+    "score": 15,
+    "aviation": "否",
+    "keywords": [
+      "100%",
+      "70%"
+    ]
+  },
+  {
+    "id": "MH-CH9-015",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.3",
+    "type": "计算分析题",
+    "q": "某航线本月数据：运输收入500万元，运输成本380万元，飞行100小时，旅客周转量300万客公里。要求：计算航线毛利率、单位飞行小时利润和单位客公里利润。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）航线毛利=500-380=120万元\n航线毛利率=120÷500×100%=24%\n（2）单位飞行小时利润=120÷100=1.2万元/飞行小时\n（3）单位客公里利润=1200000÷3000000=0.4元/客公里",
+    "diff": "中",
+    "score": 15,
+    "aviation": "是",
+    "keywords": [
+      "24%",
+      "0.4元",
+      "100%",
+      "1.2万元",
+      "飞行小时",
+      "120万元"
+    ]
+  },
+  {
+    "id": "MH-CH9-016",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.4",
+    "type": "案例题",
+    "q": "某航空公司年航油消耗量100万吨，当前油价5000元/吨，年运营成本200亿元，年利润20亿元。要求：（1）计算当前航油成本占运营成本的比例；（2）若油价上涨20%，计算对利润的影响（假设其他条件不变）；（3）计算油价上涨后的利润额。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）当前航油成本=100×5000=50亿元\n占运营成本比例=50÷200×100%=25%\n（2）油价上涨20%，航油成本增加=50×20%=10亿元\n利润减少10亿元\n（3）油价上涨后利润=20-10=10亿元（下降50%）\n\n分析：航油成本占比25%，油价上涨20%导致利润下降50%，说明航空公司对油价高度敏感，需通过套期保值等方式管理风险。",
+    "diff": "难",
+    "score": 20,
+    "aviation": "是",
+    "keywords": [
+      "25%",
+      "100%",
+      "50亿元",
+      "20%"
+    ]
+  },
+  {
+    "id": "MH-CH9-017",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.2",
+    "type": "简答题",
+    "q": "简述评价航空公司运营效率的主要指标。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）客座率：实际旅客周转量÷可提供客公里，反映座位利用率；（2）载运率：实际总周转量÷可提供总周转量，综合反映客货利用效率；（3）飞机日利用率：飞机日均飞行小时，反映飞机使用强度；（4）单位客公里收入：客运收入÷旅客周转量，反映收益水平；（5）单位吨公里成本：运输成本÷总周转量，反映成本效率；（6）应收账款周转率：反映票款回收效率；（7）总资产周转率：反映整体资产运营效率。",
+    "diff": "中",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "客座率",
+      "载运率",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH9-018",
+    "ch": "第9章 报表分析",
+    "kp": "MH-CH9.3",
+    "type": "简答题",
+    "q": "如何进行航线盈利能力分析？",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）收入分析：计算航线收入、单位客公里收入、客座率，分析收入驱动因素；（2）成本分析：按航油、折旧、机组、起降费等项目分解航线成本，计算单位飞行小时成本和单位客公里成本；（3）盈利分析：计算航线毛利、毛利率、单位飞行小时利润、单位客公里利润；（4）对比分析：与历史同期对比、与其他航线对比、与行业平均对比；（5）敏感性分析：分析油价、汇率、客座率、票价变动对航线利润的影响；（6）决策建议：根据分析结果提出航线优化建议（增班、减班、换机型、调价等）。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": [
+      "客座率",
+      "折旧",
+      "飞行小时"
+    ]
+  },
+  {
+    "id": "MH-CH10-001",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.1",
+    "type": "单选题",
+    "q": "企业外币交易初始确认时，应采用的汇率是（  ）。",
+    "A": "交易发生日的即期汇率",
+    "B": "期初汇率",
+    "C": "期末汇率",
+    "D": "历史汇率",
+    "answer": "A",
+    "explain": "外币交易初始确认时，应采用交易发生日的即期汇率将外币金额折算为记账本位币金额。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-002",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.1",
+    "type": "单选题",
+    "q": "期末外币货币性项目应采用（  ）折算。",
+    "A": "交易发生日即期汇率",
+    "B": "期末即期汇率",
+    "C": "期初汇率",
+    "D": "平均汇率",
+    "answer": "B",
+    "explain": "期末外币货币性项目应按期末即期汇率折算，产生的汇兑差额计入当期损益。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-003",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.2",
+    "type": "单选题",
+    "q": "境外子公司财务报表折算时，资产和负债项目应采用（  ）。",
+    "A": "交易发生日汇率",
+    "B": "期末即期汇率",
+    "C": "平均汇率",
+    "D": "历史汇率",
+    "answer": "B",
+    "explain": "境外经营财务报表折算时，资产和负债项目采用资产负债表日（期末）即期汇率折算。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-004",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.2",
+    "type": "单选题",
+    "q": "外币财务报表折算差额应计入（  ）。",
+    "A": "财务费用",
+    "B": "其他综合收益",
+    "C": "营业外收入",
+    "D": "投资收益",
+    "answer": "B",
+    "explain": "境外经营财务报表折算差额计入其他综合收益，在处置境外经营时转入当期损益。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-005",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.3",
+    "type": "单选题",
+    "q": "合并财务报表的合并范围以（  ）为基础确定。",
+    "A": "股权比例",
+    "B": "控制",
+    "C": "重大影响",
+    "D": "关联关系",
+    "answer": "B",
+    "explain": "合并范围以控制为基础确定，母公司控制的所有子公司均应纳入合并范围。",
+    "diff": "易",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-006",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.1",
+    "type": "多选题",
+    "q": "下列属于外币货币性项目的有（  ）。",
+    "A": "外币应收账款",
+    "B": "外币应付账款",
+    "C": "外币银行存款",
+    "D": "外币固定资产",
+    "answer": "ABC",
+    "explain": "货币性项目是企业持有的货币和将以固定或可确定金额收取的资产或偿付的负债，包括应收应付、银行存款等。固定资产是非货币性项目。",
+    "diff": "中",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-007",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.2",
+    "type": "多选题",
+    "q": "境外经营财务报表折算时，采用发生日即期汇率折算的项目有（  ）。",
+    "A": "实收资本",
+    "B": "资本公积",
+    "C": "营业收入",
+    "D": "管理费用",
+    "answer": "ABCD",
+    "explain": "所有者权益项目（除未分配利润）采用发生日即期汇率；收入和费用项目可采用交易发生日汇率或近似汇率（平均汇率）。",
+    "diff": "难",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-008",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.3",
+    "type": "多选题",
+    "q": "合并财务报表包括（  ）。",
+    "A": "合并资产负债表",
+    "B": "合并利润表",
+    "C": "合并现金流量表",
+    "D": "合并所有者权益变动表",
+    "answer": "ABCD",
+    "explain": "合并财务报表包括合并资产负债表、合并利润表、合并现金流量表、合并所有者权益变动表和附注。",
+    "diff": "易",
+    "score": 3,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-009",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.1",
+    "type": "判断题",
+    "q": "外币非货币性项目期末不需要按期末汇率调整。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "A",
+    "explain": "以历史成本计量的外币非货币性项目，仍采用交易发生日即期汇率折算，不改变其记账本位币金额，期末不调整。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-010",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.2",
+    "type": "判断题",
+    "q": "外币财务报表折算差额应在利润表中确认为当期损益。（  ）",
+    "A": "正确",
+    "B": "错误",
+    "C": "",
+    "D": "",
+    "answer": "B",
+    "explain": "外币财务报表折算差额计入其他综合收益，不影响当期净利润，在处置境外经营时才转入损益。",
+    "diff": "中",
+    "score": 2,
+    "aviation": "否",
+    "keywords": []
+  },
+  {
+    "id": "MH-CH10-011",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.1",
+    "type": "计算分析题",
+    "q": "某航空公司以人民币为记账本位币。本月1日出口运输服务收入100万美元，当日汇率1美元=7.2元人民币。月末汇率1美元=7.3元人民币，款项尚未收到。要求：（1）编制交易发生日的会计分录；（2）计算期末汇兑差额并编制调整分录。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）交易发生日：\n借：应收账款-美元户 7200000（100万×7.2）\n  贷：主营业务收入-运输收入 7200000\n（2）期末调整：\n按期末汇率折算=100万×7.3=730万元\n汇兑差额=730-720=10万元（汇兑收益）\n借：应收账款-美元户 100000\n  贷：财务费用-汇兑差额 100000",
+    "diff": "中",
+    "score": 15,
+    "aviation": "否",
+    "keywords": [
+      "财务费用",
+      "主营业务收入-运输收入",
+      "主营业务收入",
+      "汇兑差额",
+      "730万元",
+      "10万元",
+      "财务费用-汇兑差额"
+    ]
+  },
+  {
+    "id": "MH-CH10-012",
+    "ch": "第10章 外币合并",
+    "kp": "MH-CH10.3",
+    "type": "简答题",
+    "q": "简述民航企业合并财务报表的特点。",
+    "A": "",
+    "B": "",
+    "C": "",
+    "D": "",
+    "answer": "见解析",
+    "explain": "（1）合并范围广：大型航空集团通常包含航空公司、机场、维修、物流、酒店等多个子公司；（2）跨境合并：航空公司常有境外子公司（如境外办事处、维修基地），涉及外币报表折算；（3）关联交易复杂：集团内部航线代码共享、飞机租赁、维修服务等关联交易需抵销；（4）飞机资产合并：内部飞机租赁、销售等交易需抵销未实现损益；（5）常旅客计划：集团内常旅客计划跨子公司使用，需统一处理；（6）合并商誉：航空公司并购中常产生大额商誉，需定期减值测试。",
+    "diff": "难",
+    "score": 10,
+    "aviation": "是",
+    "keywords": []
+  }
+];
+const KNOWLEDGE_BASE = [
+  {
+    "id": "kb1",
+    "chapter": "第1章",
+    "title": "民航企业经营特点",
+    "keywords": "民航 经营 特点 资本密集 技术密集 位移 服务 行业",
+    "content": "民用航空运输企业不生产有形物质产品，其产品是旅客和货物的空间位移服务。行业特征：资本密集（单架飞机数亿元）、技术密集（飞行/维修/运控高技术要求）、高固定成本低边际成本、受油价汇率影响大、国际化程度高、季节性周期性明显。"
+  },
+  {
+    "id": "kb2",
+    "chapter": "第1章",
+    "title": "民航会计核算特点",
+    "keywords": "会计 核算 特点 成本对象 飞行小时 吨公里 航线 机型",
+    "content": "民航会计核算特点：1.不生产物质产品，提供位移服务；2.成本计算对象为航线、机型或航班；3.成本计算单位为飞行小时、吨公里、客公里；4.存货核算特殊（航材消耗件、高价周转件、机上供应品）；5.票证结算特殊（国内/国际票证结算）；6.固定资产以飞机为主，折旧方法特殊。"
+  },
+  {
+    "id": "kb3",
+    "chapter": "第1章",
+    "title": "民航特殊会计科目",
+    "keywords": "科目 航材消耗件 高价周转件 机上供应品 国内票证结算 国际票证结算",
+    "content": "民航特有会计科目：存货类-航材消耗件、高价周转件、机上供应品；往来类-国内票证结算、国际票证结算。法规依据：《企业会计准则》《运输（民用航空）企业会计制度》《民航企业会计核算办法》财会[2003]12号。"
+  },
+  {
+    "id": "kb4",
+    "chapter": "第2章",
+    "title": "航材消耗件核算",
+    "keywords": "航材 消耗件 领用 摊销 计划成本 成本差异 维修",
+    "content": "航材消耗件是使用期限较短、单位价值较低、在使用中消耗或不可修复的航空器材（螺栓、密封圈、刹车片等）。可采用实际成本法或计划成本法核算。领用时计入运输成本（维修成本），可采用一次摊销法或分次摊销法。计划成本法下需分摊材料成本差异。"
+  },
+  {
+    "id": "kb5",
+    "chapter": "第2章",
+    "title": "高价周转件核算",
+    "keywords": "高价周转件 发动机 起落架 APU 飞行小时 摊销",
+    "content": "高价周转件是价值高、使用期限长、可多次周转使用的大型飞机部件（发动机、起落架、APU等）。按飞行小时摊销：单位摊销额=(原值-预计净残值)÷预计总飞行小时，本月摊销额=本月实际飞行小时×单位摊销额。摊销额计入运输成本。"
+  },
+  {
+    "id": "kb6",
+    "chapter": "第2章",
+    "title": "机上供应品核算",
+    "keywords": "机上供应品 餐食 饮料 毛毯 耳机 领用 退回",
+    "content": "机上供应品包括为旅客提供的餐食、饮料、报纸杂志、毛毯、耳机等。领用时计入运输成本（机上供应品项目），航班结束后未使用的可退回仓库冲减成本。"
+  },
+  {
+    "id": "kb7",
+    "chapter": "第3章",
+    "title": "飞机初始计量",
+    "keywords": "飞机 初始计量 入账价值 外购 融资租赁 增值税",
+    "content": "外购飞机入账价值=买价+进口关税+运输安装费等达到预定可使用状态前的全部支出。增值税一般纳税人购入飞机的进项税额可抵扣，不计入成本。融资租入飞机按租赁开始日公允价值与最低租赁付款额现值孰低计量。"
+  },
+  {
+    "id": "kb8",
+    "chapter": "第3章",
+    "title": "飞机折旧-年限平均法",
+    "keywords": "飞机 折旧 年限平均法 机身 折旧年限 净残值 月折旧",
+    "content": "飞机机身采用年限平均法计提折旧，折旧年限通常15-20年，净残值率通常5%。计算公式：年折旧额=原值×(1-净残值率)÷预计使用年限；月折旧额=年折旧额÷12。机身损耗与时间相关（老化、锈蚀），适合年限平均法。"
+  },
+  {
+    "id": "kb9",
+    "chapter": "第3章",
+    "title": "飞机折旧-工作量法",
+    "keywords": "发动机 工作量法 飞行小时 折旧 替换件 单位折旧",
+    "content": "发动机替换件采用工作量法（按飞行小时）计提折旧。单位飞行小时折旧额=(原值-预计净残值)÷预计总飞行小时；本月折旧额=本月实际飞行小时×单位飞行小时折旧额。发动机损耗与使用强度直接相关，按飞行小时计提更准确。"
+  },
+  {
+    "id": "kb10",
+    "chapter": "第3章",
+    "title": "飞机后续支出",
+    "keywords": "A检 B检 C检 D检 资本化 费用化 大修理 后续支出",
+    "content": "飞机维修检查分类：A检（最低级别例行检查，费用化）、B检（中等检查，费用化）、C检（高级别检修，符合条件资本化）、D检（最高级别，每6-10年，需拆解机身，通常资本化）。判断原则：符合固定资产确认条件（延长使用寿命、提高性能）的资本化，否则费用化。"
+  },
+  {
+    "id": "kb11",
+    "chapter": "第3章",
+    "title": "飞机处置与报废",
+    "keywords": "飞机 处置 出售 报废 固定资产清理 资产处置损益 营业外支出",
+    "content": "飞机处置通过「固定资产清理」科目核算。出售净损益计入「资产处置损益」（影响营业利润）；报废净损失计入「营业外支出」。会计流程：转入清理→支付清理费用→取得价款→结转净损益。"
+  },
+  {
+    "id": "kb12",
+    "chapter": "第4章",
+    "title": "新租赁准则与使用权资产",
+    "keywords": "租赁 准则 CAS21 使用权资产 租赁负债 经营租赁 融资租赁 短期租赁",
+    "content": "新租赁准则（CAS 21）下，承租人不再区分经营租赁和融资租赁，除短期租赁（≤12个月）和低价值资产租赁外，均确认使用权资产和租赁负债。使用权资产成本=租赁负债初始金额+预付租金+初始直接费用+预计复原成本-租赁激励。"
+  },
+  {
+    "id": "kb13",
+    "chapter": "第4章",
+    "title": "租赁负债计量",
+    "keywords": "租赁负债 现值 实际利率法 利息费用 摊销 折现率",
+    "content": "租赁负债初始计量=租赁付款额的现值（折现率：租赁内含利率，无法确定时用增量借款利率）。后续采用实际利率法计算利息费用（计入财务费用）并调整摊余成本。租赁付款额包括固定付款额、基于指数的可变付款额、购买选择权行权价格、担保余值等。"
+  },
+  {
+    "id": "kb14",
+    "chapter": "第4章",
+    "title": "售后回租",
+    "keywords": "售后回租 销售成立 使用权资产 租赁负债 处置损益",
+    "content": "售后回租：销售成立时，卖方兼承租人终止确认原资产，按原账面价值中与保留使用权相关部分确认使用权资产，差额计入当期损益，同时确认租赁负债。销售不成立时，不终止确认资产，收到款项作为金融负债。售价与公允价值不等时需调整。"
+  },
+  {
+    "id": "kb15",
+    "chapter": "第5章",
+    "title": "航油成本核算",
+    "keywords": "航油 成本 最大 单项 20% 30% 加权平均 归集",
+    "content": "航油成本是航空公司最大的单项运营成本，占运营成本20%-30%。按实际加油量和实际油价归集，可采用加权平均法核算。航油成本包括燃油采购费用、加油服务费、运输储存费。航油套期保值可锁定成本。"
+  },
+  {
+    "id": "kb16",
+    "chapter": "第5章",
+    "title": "起降费与航路费",
+    "keywords": "起降费 最大起飞重量 MTOW 航路费 民航基础设施建设基金",
+    "content": "起降费按飞机最大起飞重量（MTOW）分档计费，重量越大费用越高。航路费（民航基础设施建设基金）按飞行里程征收。均属于直接营运费，计入运输成本。"
+  },
+  {
+    "id": "kb17",
+    "chapter": "第5章",
+    "title": "间接营运费分配",
+    "keywords": "间接营运费 分配 飞行小时 地面保障 运行指挥 培训",
+    "content": "间接营运费是为组织和管理运输生产发生的、不能直接归属某一航班的费用（地面保障、运行指挥、培训、安全管理等）。通常按飞行小时比例分配：分配率=间接营运费总额÷总飞行小时，某机型分配额=该机型飞行小时×分配率。"
+  },
+  {
+    "id": "kb18",
+    "chapter": "第5章",
+    "title": "航线成本计算",
+    "keywords": "航线成本 单位飞行小时成本 单位客公里成本 毛利率 直接营运费 间接营运费",
+    "content": "航线运输总成本=直接营运费+分配的间接营运费。单位飞行小时成本=运输总成本÷飞行小时数。单位客公里成本=客运成本÷旅客周转量（客公里）。航线毛利率=(航线收入-航线成本)÷航线收入×100%。"
+  },
+  {
+    "id": "kb19",
+    "chapter": "第6章",
+    "title": "国内票证结算与BSP",
+    "keywords": "国内票证结算 BSP 账单结算计划 客票 结算",
+    "content": "国内票证结算是民航特有科目，核算国内航线票证结算款项。BSP（Billing and Settlement Plan，账单结算计划）是IATA推行的中性票证结算系统，实现票款集中清算，减少航空公司间资金占用。"
+  },
+  {
+    "id": "kb20",
+    "chapter": "第6章",
+    "title": "国际票证结算与比例分摊",
+    "keywords": "国际票证结算 联运 比例分摊 IATA 多家承运人",
+    "content": "国际联运涉及多家航空公司共同完成运输，收入按IATA比例分摊手册（Prorate Manual）规定的比例在各承运人之间分配。使用「国际票证结算」科目核算，涉及外币结算。"
+  },
+  {
+    "id": "kb21",
+    "chapter": "第6章",
+    "title": "运输收入确认与合同负债",
+    "keywords": "收入确认 运输服务 合同负债 空中交通负债 售票 航班到达",
+    "content": "客运收入在运输服务提供时（航班到达）确认。售票时未运输的票款确认为合同负债（空中交通负债），是航空公司最大的流动负债项目之一。旅客误机且不可退票时，履约义务解除，转为收入。"
+  },
+  {
+    "id": "kb22",
+    "chapter": "第6章",
+    "title": "常旅客里程计划",
+    "keywords": "常旅客 里程 奖励 合同负债 收入分摊 单独售价 兑换",
+    "content": "常旅客奖励里程构成单项履约义务。票款按运输服务和奖励里程的单独售价比例分摊：运输服务分摊比例=运输服务单独售价÷(运输服务+奖励里程)单独售价。奖励里程部分确认为合同负债，兑换时转为运输收入，到期未兑换也转为收入。"
+  },
+  {
+    "id": "kb23",
+    "chapter": "第7章",
+    "title": "应付债券与可转换债券",
+    "keywords": "应付债券 实际利率法 折价 溢价 可转换债券 分拆 负债成分 权益成分",
+    "content": "应付债券折价或溢价采用实际利率法摊销。可转换公司债券初始确认时应分拆：负债成分=未来现金流量现值（不含转股权）→应付债券；权益成分=发行价格-负债成分→其他权益工具。转股时按账面价值结转，不确认损益。"
+  },
+  {
+    "id": "kb24",
+    "chapter": "第8章",
+    "title": "现金流量表",
+    "keywords": "现金流量表 经营活动 投资活动 筹资活动 飞机购置 票款 租赁本金",
+    "content": "经营活动：票款收入（流入）、航油/薪酬/起降费（流出）。投资活动：飞机购置（大额流出）、飞机处置（流入）。筹资活动：借款/发债（流入）、租赁本金偿还（流出）、股利（流出）。租赁本金偿还是筹资活动，利息可计入经营或筹资活动。"
+  },
+  {
+    "id": "kb25",
+    "chapter": "第9章",
+    "title": "民航财务分析指标",
+    "keywords": "客座率 载运率 飞机日利用率 资产负债率 利息保障倍数 航线毛利率 单位飞行小时利润",
+    "content": "民航特色运营指标：客座率=实际旅客周转量÷可提供客公里；载运率=实际总周转量÷可提供总周转量；飞机日利用率=日均飞行小时。财务指标：资产负债率（航司普遍70%左右）、利息保障倍数、航线毛利率、单位飞行小时利润、单位客公里利润。"
+  },
+  {
+    "id": "kb26",
+    "chapter": "第9章",
+    "title": "航油价格敏感性分析",
+    "keywords": "航油 敏感性 油价 利润 影响 套期保值",
+    "content": "航油价格敏感性分析测算油价变动±10%、±20%对利润的影响。航油成本占运营成本25%时，油价上涨20%可能导致利润下降50%。航空公司可通过航油套期保值、征收燃油附加费、优化机队等方式管理油价风险。"
+  },
+  {
+    "id": "kb27",
+    "chapter": "第10章",
+    "title": "外币交易核算",
+    "keywords": "外币 交易 即期汇率 期末调整 货币性项目 汇兑差额 财务费用",
+    "content": "外币交易初始确认采用交易发生日即期汇率。期末外币货币性项目按期末即期汇率调整，汇兑差额计入财务费用。以历史成本计量的外币非货币性项目期末不调整。"
+  },
+  {
+    "id": "kb28",
+    "chapter": "第10章",
+    "title": "外币报表折算与合并",
+    "keywords": "外币报表折算 期末汇率 其他综合收益 合并范围 控制",
+    "content": "境外经营财务报表折算：资产负债按期末即期汇率，收入费用按交易发生日汇率（或平均汇率），折算差额计入其他综合收益。合并财务报表以「控制」为基础确定合并范围。民航集团合并特点：跨境子公司多、关联交易复杂（代码共享、内部租赁）。"
+  }
+];
+const CHAPTER_CONTENT = {
+  "第1章 概论": {
+    "hours": "4学时",
+    "kp": [
+      "民航企业经营特点",
+      "民航会计核算特点",
+      "民航特殊会计科目"
+    ],
+    "content": "\n<h4>一、民航运输企业经营特点</h4>\n<p>民用航空运输企业是指使用民用航空器运送旅客、行李、邮件或货物的企业法人。核心业务是提供空中位移服务，不生产有形物质产品。</p>\n<div class=\"highlight\">行业特征：资本密集（单架飞机数亿元）、技术密集、高固定成本低边际成本、受油价汇率影响大、国际化程度高。</div>\n<h4>二、民航会计核算特点</h4>\n<p>1.不生产物质产品，提供位移服务；2.成本计算对象为航线/机型/航班；3.成本计算单位为飞行小时/吨公里/客公里；4.存货核算特殊；5.票证结算特殊；6.飞机折旧方法特殊。</p>\n<h4>三、民航特殊会计科目</h4>\n<div class=\"formula\">存货类：航材消耗件、高价周转件、机上供应品\n往来类：国内票证结算、国际票证结算</div>\n<h4>四、法规依据</h4>\n<p>《企业会计准则》《运输（民用航空）企业会计制度》《民航企业会计核算办法》（财会[2003]12号）。</p>"
+  },
+  "第2章 流动资产": {
+    "hours": "6学时",
+    "kp": [
+      "航材消耗件核算",
+      "高价周转件核算",
+      "机上供应品核算"
+    ],
+    "content": "\n<h4>一、航材消耗件</h4>\n<p>使用期限较短、单位价值较低、在使用中消耗或不可修复的航空器材。领用时计入运输成本（维修成本），可采用一次或分次摊销法。计划成本法下需分摊材料成本差异。</p>\n<h4>二、高价周转件</h4>\n<p>价值高、使用期限长、可多次周转使用的大型飞机部件（发动机、起落架、APU等）。按飞行小时摊销。</p>\n<div class=\"formula\">单位摊销额=(原值-预计净残值)÷预计总飞行小时\n本月摊销额=本月实际飞行小时×单位摊销额</div>\n<h4>三、机上供应品</h4>\n<p>餐食、饮料、报纸杂志、毛毯、耳机等。领用时计入运输成本，未使用可退回冲减。</p>"
+  },
+  "第3章 飞机发动机": {
+    "hours": "8学时",
+    "kp": [
+      "飞机初始计量",
+      "飞机折旧-年限平均法",
+      "飞机折旧-工作量法",
+      "飞机后续支出",
+      "飞机处置与报废"
+    ],
+    "content": "\n<h4>一、飞机初始计量</h4>\n<p>外购飞机入账价值=买价+关税+运输安装费等（进项税可抵扣）。融资租入按公允价值与最低租赁付款额现值孰低计量。</p>\n<h4>二、飞机折旧（核心）</h4>\n<div class=\"highlight\">机身：年限平均法，15-20年，净残值率5%。\n发动机替换件：工作量法，按飞行小时计提。</div>\n<div class=\"formula\">年限平均法：年折旧额=原值×(1-净残值率)÷使用年限\n工作量法：单位折旧额=(原值-净残值)÷预计总飞行小时</div>\n<h4>三、后续支出</h4>\n<p>A检/B检费用化；C检/D检符合条件资本化。</p>\n<h4>四、处置</h4>\n<p>通过「固定资产清理」核算，出售净损益→资产处置损益，报废净损失→营业外支出。</p>"
+  },
+  "第4章 飞机租赁": {
+    "hours": "6学时",
+    "kp": [
+      "租赁分类",
+      "使用权资产确认",
+      "租赁负债计量",
+      "售后回租"
+    ],
+    "content": "\n<h4>一、新租赁准则核心变化</h4>\n<div class=\"highlight\">承租人不再区分经营/融资租赁，除短期租赁（≤12月）和低价值租赁外，均确认使用权资产和租赁负债。</div>\n<h4>二、使用权资产</h4>\n<div class=\"formula\">成本=租赁负债初始金额+预付租金+初始直接费用+预计复原成本-租赁激励</div>\n<h4>三、租赁负债</h4>\n<p>初始=租赁付款额现值；后续=实际利率法摊销（利息计入财务费用）。</p>\n<h4>四、售后回租</h4>\n<p>销售成立：终止确认原资产+确认使用权资产和租赁负债；销售不成立：作为金融负债。</p>"
+  },
+  "第5章 运输成本": {
+    "hours": "8学时",
+    "kp": [
+      "成本核算对象",
+      "航油成本核算",
+      "起降费与航路费",
+      "机组薪酬核算",
+      "间接营运费分配",
+      "航线成本计算"
+    ],
+    "content": "\n<h4>一、成本核算体系</h4>\n<p>核算对象：航线/机型/航班。计算单位：飞行小时/吨公里/客公里。成本项目：直接营运费+间接营运费。</p>\n<h4>二、直接营运费</h4>\n<div class=\"highlight\">航油成本（最大，占20-30%）、起降费（按最大起飞重量）、机组薪酬（基本工资+飞行小时费）、飞机折旧及租赁、维修、机上供应品、航路费。</div>\n<h4>三、间接营运费分配</h4>\n<div class=\"formula\">分配率=间接营运费总额÷总飞行小时\n某机型分配额=该机型飞行小时×分配率</div>\n<h4>四、航线成本</h4>\n<div class=\"formula\">单位飞行小时成本=运输总成本÷飞行小时数\n单位客公里成本=客运成本÷旅客周转量</div>"
+  },
+  "第6章 票证收入": {
+    "hours": "6学时",
+    "kp": [
+      "国内票证结算",
+      "国际票证结算",
+      "运输收入确认",
+      "常旅客里程计划"
+    ],
+    "content": "\n<h4>一、票证结算</h4>\n<p>国内票证结算（BSP账单结算计划）、国际票证结算（联运比例分摊）。</p>\n<h4>二、收入确认</h4>\n<div class=\"highlight\">运输服务提供时（航班到达）确认收入。售票未运输票款→合同负债（空中交通负债）。</div>\n<h4>三、常旅客里程计划（重点）</h4>\n<div class=\"formula\">票款分摊：\n运输服务比例=运输服务单独售价÷(运输服务+奖励里程)单独售价\n奖励里程部分→合同负债，兑换时→主营业务收入</div>"
+  },
+  "第7章 负债权益": {
+    "hours": "4学时",
+    "kp": [
+      "流动负债",
+      "非流动负债",
+      "所有者权益"
+    ],
+    "content": "\n<h4>一、流动负债</h4>\n<p>短期借款、应付账款、应付职工薪酬、合同负债（民航特色大额项目）。</p>\n<h4>二、非流动负债</h4>\n<p>长期借款、应付债券（实际利率法）、可转换公司债券（分拆为负债+权益成分）、租赁负债。</p>\n<h4>三、所有者权益</h4>\n<p>实收资本（股本）、资本公积、其他综合收益、盈余公积、未分配利润。</p>"
+  },
+  "第8章 财务报告": {
+    "hours": "4学时",
+    "kp": [
+      "资产负债表编制",
+      "利润表编制",
+      "现金流量表编制",
+      "分部报告"
+    ],
+    "content": "\n<h4>一、资产负债表特殊列报</h4>\n<p>高价周转件→存货；合同负债→流动负债；使用权资产→非流动资产；租赁负债→分流动/非流动。</p>\n<h4>二、现金流量表</h4>\n<div class=\"highlight\">经营：票款流入、航油/薪酬流出；投资：飞机购置流出；筹资：借款流入、租赁本金流出。</div>\n<h4>三、分部报告</h4>\n<p>可按航线、地区、客运/货运维度编制。</p>"
+  },
+  "第9章 报表分析": {
+    "hours": "4学时",
+    "kp": [
+      "偿债能力分析",
+      "营运能力分析",
+      "盈利能力分析",
+      "航油敏感性分析"
+    ],
+    "content": "\n<h4>一、偿债能力</h4>\n<div class=\"formula\">资产负债率=负债总额÷资产总额\n利息保障倍数=息税前利润÷利息费用</div>\n<p>航司资产负债率普遍70%左右。</p>\n<h4>二、营运能力（民航特色）</h4>\n<div class=\"formula\">客座率=实际旅客周转量÷可提供客公里\n载运率=实际总周转量÷可提供总周转量</div>\n<h4>三、盈利能力</h4>\n<p>航线毛利率、单位飞行小时利润、单位客公里利润。</p>\n<h4>四、航油敏感性分析</h4>\n<p>测算油价变动对利润影响，航油占比25%时油价+20%可能导致利润-50%。</p>"
+  },
+  "第10章 外币合并": {
+    "hours": "2学时",
+    "kp": [
+      "外币交易核算",
+      "外币报表折算",
+      "合并报表基础"
+    ],
+    "content": "\n<h4>一、外币交易</h4>\n<p>初始确认用交易日即期汇率；期末货币性项目按期末汇率调整，汇兑差额计入财务费用。</p>\n<h4>二、外币报表折算</h4>\n<p>资产负债用期末汇率，收入费用用发生日汇率，差额计入其他综合收益。</p>\n<h4>三、合并报表</h4>\n<p>以「控制」为基础。民航集团特点：跨境子公司多、关联交易复杂、常旅客跨子公司。</p>"
+  }
+};
+const CHAPTERS = Object.keys(CHAPTER_CONTENT);
+
+// 模拟班级数据
+const CLASS_DATA = (function(){
+  const names=['张明','李华','王芳','赵强','陈静','刘洋','周敏','吴磊','郑艳','孙涛','钱进','冯雪','褚明','卫红','蒋勇','沈悦','韩冰','杨帆','朱琳','秦峰','尤佳','许超','何丽','吕刚','施婷','张磊','孔颖','曹阳','严华','金鹏','魏丽','陶然','姜华','戚芳','谢明','邹强','喻红','柏亮','水静','窦明','章华','云芳','苏强','潘丽','葛明'];
+  return names.map((n,i)=>({id:'2024'+String(i+1).padStart(3,'0'),name:n,
+    regular:Math.round(70+Math.random()*28),
+    mid:Math.round(55+Math.random()*40),
+    final:Math.round(50+Math.random()*45),
+    total:0})).map(s=>{s.total=Math.round(s.regular*0.3+s.mid*0.2+s.final*0.5);return s;});
+})();
+
+// ===== 状态 =====
+const STORAGE_KEY='aviation_accounting_v2';
+let state=loadState();
+function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));return s||{answers:{},wrong:[],exams:[]};}catch(e){return{answers:{},wrong:[],exams:[]};}}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function toast(msg,type='info'){const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;document.getElementById('toastContainer').appendChild(t);setTimeout(()=>t.remove(),2500);}
+
+// ===== 角色切换 =====
+document.querySelectorAll('.role-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const role=tab.dataset.role;
+    document.getElementById('studentNav').classList.toggle('hidden',role!=='student');
+    document.getElementById('teacherNav').classList.toggle('hidden',role!=='teacher');
+    // 切换到对应默认视图
+    document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+    if(role==='student'){document.getElementById('view-dashboard').classList.remove('hidden');document.querySelector('[data-view="dashboard"]').classList.add('active');renderDashboard();}
+    else{document.getElementById('view-t-dashboard').classList.remove('hidden');document.querySelector('[data-view="t-dashboard"]').classList.add('active');renderTeacherDashboard();}
+  });
+});
+
+// ===== 路由 =====
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+    item.classList.add('active');
+    const view=item.dataset.view;
+    document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+    document.getElementById('view-'+view).classList.remove('hidden');
+    if(view==='dashboard')renderDashboard();
+    if(view==='knowledge')renderKnowledge();
+    if(view==='quiz')renderQuiz();
+    if(view==='ai')renderAI();
+    if(view==='score')renderScore();
+    if(view==='wrong')renderWrong();
+    if(view==='t-dashboard')renderTeacherDashboard();
+    if(view==='t-bank')renderBank();
+    if(view==='t-class')renderClass();
+  });
+});
+
+// ===== 学生端：仪表盘 =====
+function renderDashboard(){
+  document.getElementById('statTotal').textContent=QUESTIONS.length;
+  const answered=Object.keys(state.answers).length;
+  const correct=Object.values(state.answers).filter(a=>a.correct).length;
+  document.getElementById('statDone').textContent=answered;
+  document.getElementById('statRate').textContent=answered>0?Math.round(correct/answered*100)+'%':'0%';
+  document.getElementById('statWrong').textContent=state.wrong.length;
+  document.getElementById('quizBadge').textContent=answered;
+  const list=document.getElementById('chapterList');
+  list.innerHTML='';
+  CHAPTERS.forEach((ch,i)=>{
+    const chQ=QUESTIONS.filter(q=>q.ch===ch);
+    const chA=chQ.filter(q=>state.answers[q.id]).length;
+    const chC=chQ.filter(q=>state.answers[q.id]?.correct).length;
+    const rate=chA>0?Math.round(chC/chA*100):0;
+    const item=document.createElement('div');
+    item.className='chapter-item';
+    item.innerHTML=`<div class="chapter-num">${i+1}</div><div class="chapter-info"><div class="title">${ch}</div><div class="meta">${CHAPTER_CONTENT[ch].hours} · ${chQ.length}题 · 已答${chA}题 · 正确率${rate}%</div></div><div class="chapter-progress"><div class="bar" style="width:${rate}%"></div></div><div style="color:var(--text-light);">›</div>`;
+    item.addEventListener('click',()=>{document.querySelector('[data-view="knowledge"]').click();document.getElementById('knowledgeChapterSelect').querySelector('select').value=ch;showKnowledgeChapter(ch);});
+    list.appendChild(item);
+  });
+}
+
+// ===== 知识学习 =====
+function renderKnowledge(){
+  const sel=document.getElementById('knowledgeChapterSelect');
+  sel.innerHTML='<select class="filter-btn active" id="chapterSelect" style="min-width:220px;">'+CHAPTERS.map(ch=>`<option value="${ch}">${ch}</option>`).join('')+'</select>';
+  document.getElementById('chapterSelect').addEventListener('change',e=>showKnowledgeChapter(e.target.value));
+  showKnowledgeChapter(CHAPTERS[0]);
+}
+function showKnowledgeChapter(ch){
+  const k=CHAPTER_CONTENT[ch];
+  document.getElementById('knowledgeContent').innerHTML=`<h3 style="margin-bottom:6px;">${ch}（${k.hours}）</h3><p style="color:var(--text-light);font-size:12px;margin-bottom:14px;">核心知识点：${k.kp.join(' · ')}</p><div class="knowledge-content">${k.content}</div>`;
+}
+
+// ===== 智能练习 =====
+let quizFilter={chapter:'全部',type:'全部'};
+function renderQuiz(){
+  const chF=document.getElementById('chapterFilter');
+  chF.innerHTML='<span style="font-size:12px;color:var(--text-light);">章节：</span>'+['全部',...CHAPTERS].map(ch=>`<button class="filter-btn ${quizFilter.chapter===ch?'active':''}" data-ch="${ch}">${ch==='全部'?'全部':ch.replace('第','').replace('章 ','')}</button>`).join('');
+  chF.querySelectorAll('[data-ch]').forEach(b=>b.addEventListener('click',()=>{quizFilter.chapter=b.dataset.ch;renderQuiz();}));
+  const types=['全部','单选题','多选题','判断题','分录题','计算分析题','简答题','名词解释','案例题'];
+  const tF=document.getElementById('typeFilter');
+  tF.innerHTML='<span style="font-size:12px;color:var(--text-light);">题型：</span>'+types.map(t=>`<button class="filter-btn ${quizFilter.type===t?'active':''}" data-type="${t}">${t}</button>`).join('');
+  tF.querySelectorAll('[data-type]').forEach(b=>b.addEventListener('click',()=>{quizFilter.type=b.dataset.type;renderQuiz();}));
+  let list=QUESTIONS;
+  if(quizFilter.chapter!=='全部')list=list.filter(q=>q.ch===quizFilter.chapter);
+  if(quizFilter.type!=='全部')list=list.filter(q=>q.type===quizFilter.type);
+  const ql=document.getElementById('quizList');
+  if(list.length===0){ql.innerHTML='<div class="card"><p style="text-align:center;color:var(--text-light);">该筛选条件下暂无题目</p></div>';return;}
+  ql.innerHTML=list.map(q=>renderQuizCard(q)).join('');
+  list.forEach(q=>bindQuizEvents(q));
+}
+
+function renderQuizCard(q){
+  const diffClass=q.diff==='易'?'diff-easy':q.diff==='中'?'diff-mid':'diff-hard';
+  const isObjective=['单选题','多选题','判断题'].includes(q.type);
+  const optLabels=['A','B','C','D'];
+  let optionsHtml='';
+  if(isObjective){
+    const opts=[q.A,q.B,q.C,q.D].filter(o=>o&&o.trim()!=='');
+    optionsHtml=`<div class="quiz-options">${opts.map((o,i)=>`<div class="quiz-option" data-opt="${optLabels[i]}"><span class="opt-label">${optLabels[i]}</span>${o}</div>`).join('')}</div>`;
+  }else{
+    optionsHtml=`<textarea class="subjective-area" placeholder="请输入你的答案（分录题请写借贷分录，计算题请写计算过程）..."></textarea>`;
+  }
+  return `<div class="quiz-card" id="quiz-${q.id}">
+    <div class="quiz-meta"><span class="tag chapter">${q.ch}</span><span class="tag type">${q.type}</span><span class="tag ${diffClass}">${q.diff}</span>${q.aviation==='是'?'<span class="tag aviation">民航特色</span>':''}<span style="margin-left:auto;font-size:11px;color:var(--text-light);">${q.kp} · ${q.score}分</span></div>
+    <div class="quiz-question">${q.q}</div>${optionsHtml}
+    <div class="quiz-actions"><button class="btn btn-primary btn-submit">${isObjective?'提交答案':'提交并初评'}</button></div>
+    <div class="quiz-result"></div></div>`;
+}
+
+function bindQuizEvents(q){
+  const card=document.getElementById('quiz-'+q.id);
+  if(!card)return;
+  const isObjective=['单选题','多选题','判断题'].includes(q.type);
+  let selected=[];
+  if(isObjective){
+    const options=card.querySelectorAll('.quiz-option');
+    options.forEach(opt=>{
+      opt.addEventListener('click',()=>{
+        if(q.type==='多选题'){opt.classList.toggle('selected');selected=Array.from(card.querySelectorAll('.quiz-option.selected')).map(o=>o.dataset.opt);}
+        else{options.forEach(o=>o.classList.remove('selected'));opt.classList.add('selected');selected=[opt.dataset.opt];}
+      });
+    });
+  }
+  card.querySelector('.btn-submit').addEventListener('click',()=>{
+    const result=card.querySelector('.quiz-result');
+    let isCorrect=false,score=0,maxScore=parseInt(q.score)||10;
+    if(isObjective){
+      if(selected.length===0){toast('请先选择答案','error');return;}
+      const userAnswer=selected.sort().join('');
+      isCorrect=userAnswer===q.answer;
+      score=isCorrect?maxScore:0;
+      const options=card.querySelectorAll('.quiz-option');
+      options.forEach(o=>{if(q.answer.includes(o.dataset.opt))o.classList.add('correct');if(selected.includes(o.dataset.opt)&&!q.answer.includes(o.dataset.opt))o.classList.add('wrong');});
+      result.classList.add('show',isCorrect?'correct':'wrong');
+      result.innerHTML=`<div class="result-title">${isCorrect?'✓ 回答正确（+'+maxScore+'分）':'✗ 回答错误'}</div><div>你的答案：${selected.join('、')} | 正确答案：${q.answer.split('').join('、')}</div><div class="result-explain">解析：${q.explain}</div>`;
+    }else{
+      // 主观题关键词匹配初评
+      const textarea=card.querySelector('.subjective-area');
+      const userText=textarea.value.trim();
+      if(userText===''){toast('请先输入答案','error');return;}
+      const keywords=q.keywords||[];
+      if(keywords.length===0){
+        // 无关键词时用长度和相似度粗略评估
+        const refLen=(q.explain||'').length;
+        const ratio=Math.min(userText.length/refLen,1);
+        score=Math.round(maxScore*ratio*0.7);
+        isCorrect=score>=maxScore*0.6;
+      }else{
+        let matched=0;
+        keywords.forEach(kw=>{if(userText.includes(kw))matched++;});
+        const matchRate=matched/keywords.length;
+        score=Math.round(maxScore*matchRate);
+        isCorrect=matchRate>=0.6;
+      }
+      const pct=Math.round(score/maxScore*100);
+      result.classList.add('show',isCorrect?'correct':'partial');
+      result.innerHTML=`<div class="result-title">${isCorrect?'✓ 初评通过（'+score+'/'+maxScore+'分）':'◐ 需完善（'+score+'/'+maxScore+'分，'+pct+'%）'}</div>
+        <div style="margin:6px 0;">关键词匹配：${keywords.filter(k=>userText.includes(k)).length}/${keywords.length}个 ${keywords.filter(k=>userText.includes(k)).map(k=>'<span class="tag type" style="margin:0 2px;">'+k+'</span>').join('')}</div>
+        <div class="result-explain"><strong>参考答案：</strong>${q.explain}</div>
+        <div style="font-size:11px;color:var(--text-light);margin-top:6px;">* 主观题为关键词匹配初评，最终成绩以教师复核为准</div>`;
+    }
+    state.answers[q.id]={correct:isCorrect,score:score,maxScore:maxScore,chapter:q.ch,kp:q.kp,type:q.type};
+    if(!isCorrect&&!state.wrong.includes(q.id))state.wrong.push(q.id);
+    if(isCorrect)state.wrong=state.wrong.filter(id=>id!==q.id);
+    saveState();
+    card.querySelector('.btn-submit').disabled=true;
+    card.querySelector('.btn-submit').textContent='已提交';
+  });
+}
+
+// ===== AI答疑（RAG检索增强）=====
+function renderAI(){
+  const msgs=document.getElementById('aiMessages');
+  if(msgs.children.length===0){
+    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。</div>`;
+  }
+  const sug=document.getElementById('aiSuggestions');
+  const suggestions=['飞机折旧为什么用两种方法？','常旅客里程怎么确认收入？','航油成本占比多少？','什么是BSP结算？','使用权资产怎么计量？','C检费用资本化还是费用化？'];
+  sug.innerHTML=suggestions.map(s=>`<span class="ai-suggestion" onclick="document.getElementById('aiInput').value='${s}';sendAI();">${s}</span>`).join('');
+}
+function sendAI(){
+  const input=document.getElementById('aiInput');
+  const q=input.value.trim();
+  if(!q)return;
+  const msgs=document.getElementById('aiMessages');
+  msgs.innerHTML+=`<div class="ai-msg user">${q}</div>`;
+  input.value='';
+  // RAG检索：关键词匹配知识库
+  setTimeout(()=>{
+    const answer=ragSearch(q);
+    msgs.innerHTML+=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },500);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='aiInput')sendAI();});
+
+function ragSearch(query){
+  // 简单RAG：对知识库每条计算关键词匹配分
+  const qWords=query.split(/[\s，。？、]+/).filter(w=>w.length>=2);
+  let scored=KNOWLEDGE_BASE.map(kb=>{
+    let score=0;
+    kb.keywords.forEach(kw=>{if(query.includes(kw)||qWords.some(w=>kw.includes(w)||w.includes(kw)))score++;});
+    return{...kb,score};
+  }).filter(k=>k.score>0).sort((a,b)=>b.score-a.score);
+  if(scored.length===0){
+    // 模糊匹配：搜索题目解析
+    const matchedQ=QUESTIONS.find(q=>q.explain&&q.explain.includes(query.substring(0,4)));
+    if(matchedQ){
+      return{text:`根据题库相关内容：\n\n${matchedQ.explain}\n\n这是「${matchedQ.ch}」中「${matchedQ.type}」的相关解析。如需更详细解答，请补充具体场景。`,sources:['题库-'+matchedQ.id]};
+    }
+    return{text:'抱歉，我在知识库中未找到与该问题直接相关的内容。请尝试换一种问法，或咨询以下常见问题：飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁、航线成本核算等。',sources:['知识库未命中']};
+  }
+  // 取top2-3条知识拼接回答
+  const top=scored.slice(0,3);
+  const text=top.map((k,i)=>`<strong>${i+1}. ${k.title}</strong>\n${k.content}`).join('\n\n');
+  return{text:text,sources:top.map(k=>k.chapter+'·'+k.title)};
+}
+
+// ===== 成绩分析 =====
+function renderScore(){
+  const answered=Object.keys(state.answers).length;
+  const correct=Object.values(state.answers).filter(a=>a.correct).length;
+  document.getElementById('totalAnswered').textContent=answered;
+  document.getElementById('totalCorrect').textContent=correct;
+  document.getElementById('overallRate').textContent=answered>0?Math.round(correct/answered*100)+'%':'0%';
+  const cs=document.getElementById('chapterScores');
+  cs.innerHTML=CHAPTERS.map(ch=>{
+    const qs=QUESTIONS.filter(q=>q.ch===ch);
+    const ans=qs.filter(q=>state.answers[q.id]);
+    const cor=ans.filter(q=>state.answers[q.id].correct).length;
+    const rate=ans.length>0?Math.round(cor/ans.length*100):0;
+    const color=rate>=80?'var(--success)':rate>=60?'var(--warning)':'var(--danger)';
+    return `<div class="chapter-score-row"><div class="cs-name">${ch}</div><div class="cs-bar"><div class="cs-fill" style="width:${rate}%;background:${color};"></div></div><div class="cs-score" style="color:${color}">${ans.length>0?rate+'%':'未答'}</div></div>`;
+  }).join('');
+  const kpStats={};
+  Object.values(state.answers).forEach(a=>{if(!kpStats[a.kp])kpStats[a.kp]={total:0,correct:0};kpStats[a.kp].total++;if(a.correct)kpStats[a.kp].correct++;});
+  const kpEl=document.getElementById('kpMastery');
+  const entries=Object.entries(kpStats).sort((a,b)=>(a[1].correct/a[1].total)-(b[1].correct/b[1].total));
+  if(entries.length===0){kpEl.innerHTML='<p style="color:var(--text-light);">暂无答题数据</p>';return;}
+  kpEl.innerHTML=entries.map(([kp,s])=>{const rate=Math.round(s.correct/s.total*100);const status=rate>=80?'掌握良好':rate>=60?'基本掌握':'需要加强';const color=rate>=80?'var(--success)':rate>=60?'var(--warning)':'var(--danger)';return `<div class="chapter-score-row"><div class="cs-name">${kp}</div><div class="cs-bar"><div class="cs-fill" style="width:${rate}%;background:${color};"></div></div><div class="cs-score" style="color:${color};font-size:11px;">${status}(${rate}%)</div></div>`;}).join('');
+}
+
+// ===== 错题本 =====
+function renderWrong(){
+  const list=document.getElementById('wrongList');
+  if(state.wrong.length===0){list.innerHTML='<div class="card"><p style="text-align:center;color:var(--success);">太棒了！暂无错题</p></div>';return;}
+  list.innerHTML=state.wrong.map(id=>{
+    const q=QUESTIONS.find(x=>x.id===id);if(!q)return '';
+    const ans=state.answers[id];
+    return `<div class="wrong-item"><div class="wq"><strong>${q.ch} · ${q.type}</strong> ${q.q}</div><div class="wa">${ans?.userAnswer?'你的答案：'+ans.userAnswer+' | ':''}正确答案：${q.answer}</div><div class="wa" style="margin-top:4px;color:var(--text);">解析：${q.explain}</div><button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="removeWrong('${id}')">已掌握，移除</button></div>`;
+  }).join('');
+}
+function removeWrong(id){state.wrong=state.wrong.filter(w=>w!==id);saveState();renderWrong();toast('已从错题本移除','success');}
+
+// ===== 教师端：教学概览 =====
+function renderTeacherDashboard(){
+  document.getElementById('tTotal').textContent=QUESTIONS.length;
+  const rates=CLASS_DATA.map(s=>s.total);
+  const avg=Math.round(rates.reduce((a,b)=>a+b,0)/rates.length);
+  document.getElementById('tAvgRate').textContent=avg+'%';
+  document.getElementById('tExamCount').textContent=state.exams.length;
+  // 题库分布
+  const typeCount={};
+  QUESTIONS.forEach(q=>{typeCount[q.type]=(typeCount[q.type]||0)+1;});
+  document.getElementById('bankDistribution').innerHTML=Object.entries(typeCount).map(([t,c])=>`<div class="chapter-score-row"><div class="cs-name">${t}</div><div class="cs-bar"><div class="cs-fill" style="width:${c/QUESTIONS.length*100}%;background:var(--primary);"></div></div><div class="cs-score">${c}题</div></div>`).join('');
+  // 班级成绩分布
+  const ranges=['0-59','60-69','70-79','80-89','90-100'];
+  const counts=ranges.map(r=>{const[lo,hi]=r.split('-').map(Number);return CLASS_DATA.filter(s=>s.total>=lo&&s.total<=hi).length;});
+  const maxC=Math.max(...counts,1);
+  document.getElementById('classChart').innerHTML=ranges.map((r,i)=>`<div class="bar-item"><div class="bar" style="height:${counts[i]/maxC*200}px;"><span class="bar-val">${counts[i]}</span></div><div class="bar-label">${r}</div></div>`).join('');
+}
+
+// ===== 教师端：题库管理 =====
+let bankFilter={chapter:'全部',type:'全部'};
+function renderBank(){
+  const chF=document.getElementById('bankChapterFilter');
+  chF.innerHTML='<span style="font-size:12px;color:var(--text-light);">章节：</span>'+['全部',...CHAPTERS].map(ch=>`<button class="filter-btn ${bankFilter.chapter===ch?'active':''}" data-bch="${ch}">${ch==='全部'?'全部':ch.replace('第','').replace('章 ','')}</button>`).join('');
+  chF.querySelectorAll('[data-bch]').forEach(b=>b.addEventListener('click',()=>{bankFilter.chapter=b.dataset.bch;renderBank();}));
+  const types=['全部','单选题','多选题','判断题','分录题','计算分析题','简答题','名词解释','案例题'];
+  const tF=document.getElementById('bankTypeFilter');
+  tF.innerHTML='<span style="font-size:12px;color:var(--text-light);">题型：</span>'+types.map(t=>`<button class="filter-btn ${bankFilter.type===t?'active':''}" data-btype="${t}">${t}</button>`).join('');
+  tF.querySelectorAll('[data-btype]').forEach(b=>b.addEventListener('click',()=>{bankFilter.type=b.dataset.btype;renderBank();}));
+  let list=QUESTIONS;
+  if(bankFilter.chapter!=='全部')list=list.filter(q=>q.ch===bankFilter.chapter);
+  if(bankFilter.type!=='全部')list=list.filter(q=>q.type===bankFilter.type);
+  document.getElementById('bankCount').textContent=list.length;
+  const tbody=document.querySelector('#bankTable tbody');
+  tbody.innerHTML=list.slice(0,100).map(q=>`<tr><td>${q.id}</td><td>${q.ch.replace('第','').replace('章 ','')}</td><td>${q.type}</td><td>${q.diff}</td><td style="max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${q.q}</td><td>${q.score}</td><td>${q.aviation==='是'?'✓':''}</td></tr>`).join('');
+  if(list.length>100)tbody.innerHTML+=`<tr><td colspan="7" style="text-align:center;color:var(--text-light);">仅显示前100条，共${list.length}条，请使用筛选缩小范围</td></tr>`;
+}
+
+// ===== 教师端：自动组卷 =====
+function generateExam(){
+  const name=document.getElementById('examName').value;
+  const duration=document.getElementById('examDuration').value;
+  const chapter=document.getElementById('examChapter').value;
+  const diff=document.getElementById('examDiff').value;
+  const nSingle=parseInt(document.getElementById('nSingle').value)||0;
+  const nMulti=parseInt(document.getElementById('nMulti').value)||0;
+  const nJudge=parseInt(document.getElementById('nJudge').value)||0;
+  const nSubj=parseInt(document.getElementById('nSubj').value)||0;
+  let pool=QUESTIONS;
+  if(chapter!=='全部')pool=pool.filter(q=>q.ch===chapter);
+  // 难度权重
+  const diffWeight={balanced:{易:3,中:5,难:2},easy:{易:5,中:4,难:1},hard:{易:1,中:4,难:5}}[diff];
+  function pick(type,count){
+    let candidates=pool.filter(q=>q.type===type);
+    // 按难度加权随机
+    const weighted=[];
+    candidates.forEach(q=>{const w=diffWeight[q.diff]||1;for(let i=0;i<w;i++)weighted.push(q);});
+    const picked=[];const used=new Set();
+    for(let i=0;i<count&&weighted.length>0;i++){
+      let tries=0;
+      while(tries<20){const idx=Math.floor(Math.random()*weighted.length);const q=weighted[idx];if(!used.has(q.id)){picked.push(q);used.add(q.id);break;}tries++;}
+    }
+    return picked;
+  }
+  const exam=[...pick('单选题',nSingle),...pick('多选题',nMulti),...pick('判断题',nJudge),
+    ...pick('分录题',Math.ceil(nSubj*0.4)),...pick('计算分析题',Math.ceil(nSubj*0.3)),
+    ...pick('简答题',Math.ceil(nSubj*0.2)),...pick('名词解释',Math.ceil(nSubj*0.1)),...pick('案例题',1)];
+  const totalScore=exam.reduce((s,q)=>s+(parseInt(q.score)||0),0);
+  const examData={name,duration,chapter,questions:exam.map(q=>q.id),totalScore,createdAt:new Date().toLocaleString()};
+  state.exams.push(examData);saveState();
+  // 预览
+  const result=document.getElementById('examResult');
+  result.classList.remove('hidden');
+  document.getElementById('examPreview').innerHTML=`
+    <div style="margin-bottom:14px;padding:12px;background:var(--primary-light);border-radius:8px;">
+      <strong>${name}</strong> · 时长${duration}分钟 · 共${exam.length}题 · 总分${totalScore}分 · ${chapter==='全部'?'全部章节':chapter}
+    </div>
+    ${exam.map((q,i)=>`<div class="exam-q"><span class="eq-num">${i+1}.</span>【${q.type}·${q.score}分】${q.q}${q.A?`<div style="margin-top:6px;padding-left:20px;font-size:12px;color:var(--text-light);">A.${q.A} B.${q.B}${q.C?' C.':''}${q.C||''}${q.D?' D.':''}${q.D||''}</div>`:''}<div style="margin-top:4px;font-size:11px;color:var(--text-light);">答案：${q.answer} | ${q.ch}</div></div>`).join('')}`;
+  toast(`试卷生成成功！共${exam.length}题，${totalScore}分`,'success');
+}
+function exportExam(){
+  if(state.exams.length===0){toast('请先生成试卷','error');return;}
+  const exam=state.exams[state.exams.length-1];
+  const qs=exam.questions.map(id=>QUESTIONS.find(q=>q.id===id)).filter(Boolean);
+  let text=`${exam.name}\n时长：${exam.duration}分钟  总分：${exam.totalScore}分\n\n`;
+  qs.forEach((q,i)=>{text+=`${i+1}.【${q.type}】${q.q}（${q.score}分）\n`;if(q.A)text+=`  A.${q.A}  B.${q.B}  C.${q.C||''}  D.${q.D||''}\n`;text+=`\n参考答案：${q.answer}\n解析：${q.explain}\n\n`;});
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=exam.name+'.txt';a.click();
+  toast('试卷已导出','success');
+}
+
+// ===== 教师端：班级成绩 =====
+function renderClass(){
+  // 成绩分布
+  const ranges=['0-59','60-69','70-79','80-89','90-100'];
+  const counts=ranges.map(r=>{const[lo,hi]=r.split('-').map(Number);return CLASS_DATA.filter(s=>s.total>=lo&&s.total<=hi).length;});
+  const maxC=Math.max(...counts,1);
+  document.getElementById('scoreDistChart').innerHTML=ranges.map((r,i)=>`<div class="bar-item"><div class="bar" style="height:${counts[i]/maxC*220}px;"><span class="bar-val">${counts[i]}</span></div><div class="bar-label">${r}</div></div>`).join('');
+  // 排名表
+  const sorted=[...CLASS_DATA].sort((a,b)=>b.total-a.total);
+  const tbody=document.querySelector('#classRankTable tbody');
+  tbody.innerHTML=sorted.map((s,i)=>{const grade=s.total>=90?'优':s.total>=80?'良':s.total>=70?'中':s.total>=60?'及格':'不及格';const color=s.total>=90?'var(--success)':s.total>=60?'var(--primary)':'var(--danger)';return `<tr><td>${i+1}</td><td>${s.id}</td><td>${s.name}</td><td>${s.regular}</td><td>${s.mid}</td><td>${s.final}</td><td><strong>${s.total}</strong></td><td style="color:${color};font-weight:600;">${grade}</td></tr>`;}).join('');
+  // 各章班级正确率（模拟）
+  const chapterRates=CHAPTERS.map((ch,i)=>({ch,rate:Math.round(55+Math.random()*40)}));
+  document.getElementById('classChapterRate').innerHTML=chapterRates.map(c=>{const color=c.rate>=80?'var(--success)':c.rate>=60?'var(--warning)':'var(--danger)';return `<div class="chapter-score-row"><div class="cs-name">${c.ch}</div><div class="cs-bar"><div class="cs-fill" style="width:${c.rate}%;background:${color};"></div></div><div class="cs-score" style="color:${color}">${c.rate}%</div></div>`;}).join('');
+}
+
+// 初始化
+renderDashboard();
+</script>
+</body>
+</html>
