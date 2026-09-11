@@ -1,0 +1,2 @@
+# 零外部依赖：仅使用 Python 标准库（Python 3.8+ 自带）
+# 此文件保留用于兼容 Render/Railway/HuggingFace 的构建检测

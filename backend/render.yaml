@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: minhang-ai-proxy
+    runtime: python
+    plan: free
+    region: oregon            # 可改为 singapore 等离国内更近的区
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python hx_llm_server.py"
+    healthCheckPath: /api/config
+    envVars:
+      - key: LLM_API_BASE
+        value: https://api.deepseek.com/v1
+      - key: LLM_MODEL
+        value: deepseek-chat
+      - key: LLM_TEMPERATURE
+        value: "0.7"
+      - key: ALLOWED_ORIGIN
+        value: https://tigeryoung555-ui.github.io
+      - key: LLM_API_KEY
+        sync: false            # 部署时在 Render 控制台手动填写 DeepSeek API Key
