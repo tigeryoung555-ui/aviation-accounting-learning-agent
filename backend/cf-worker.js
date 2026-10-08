@@ -340,8 +340,8 @@ async function handleStudent(path, request, env, auth) {
 
 async function handleSetup(env) {
   if (!env.DB) return json({ error: "database not configured" }, 500);
-  await env.DB.exec(`
-    CREATE TABLE IF NOT EXISTS users (
+  const stmts = [
+    `CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT UNIQUE,
       role TEXT,
@@ -349,36 +349,39 @@ async function handleSetup(env) {
       pwd_salt TEXT,
       class_id INTEGER,
       created_at TEXT
-    );
-    CREATE TABLE IF NOT EXISTS classes (
+    )`,
+    `CREATE TABLE IF NOT EXISTS classes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
       teacher_id INTEGER
-    );
-    CREATE TABLE IF NOT EXISTS attempts (
+    )`,
+    `CREATE TABLE IF NOT EXISTS attempts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER,
       question_id TEXT,
       selected TEXT,
       correct INTEGER,
       ts TEXT
-    );
-    CREATE TABLE IF NOT EXISTS assignments (
+    )`,
+    `CREATE TABLE IF NOT EXISTS assignments (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       class_id INTEGER,
       title TEXT,
       question_ids TEXT,
       due_at TEXT
-    );
-    CREATE TABLE IF NOT EXISTS feedback (
+    )`,
+    `CREATE TABLE IF NOT EXISTS feedback (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       attempt_id INTEGER,
       teacher_id INTEGER,
       comment TEXT,
       score INTEGER,
       ts TEXT
-    );
-  `);
+    )`
+  ];
+  for (const sql of stmts) {
+    await env.DB.prepare(sql).run();
+  }
   return json({ ok: true, message: "tables created" });
 }
 
