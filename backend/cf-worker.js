@@ -26,18 +26,8 @@ const SYNONYMS = {
   "维修": ["修理", "MRO", "维护"]
 };
 
-// Service Worker entry (CF injects DB / LLM_API_KEY / SESSION_SECRET / LLM_MODEL as globals)
-addEventListener('fetch', (event) => {
-  const env = {
-    DB: typeof DB !== 'undefined' ? DB : undefined,
-    LLM_API_KEY: typeof LLM_API_KEY !== 'undefined' ? LLM_API_KEY : undefined,
-    SESSION_SECRET: typeof SESSION_SECRET !== 'undefined' ? SESSION_SECRET : undefined,
-    LLM_MODEL: typeof LLM_MODEL !== 'undefined' ? LLM_MODEL : undefined
-  };
-  event.respondWith(handleFetch(event.request, env));
-});
-
-async function handleFetch(request, env) {
+export default {
+  async fetch(request, env) {
   const url = new URL(request.url);
   if (request.method === "OPTIONS") return corsPreflight();
   try {
@@ -75,7 +65,8 @@ async function handleFetch(request, env) {
   } catch (e) {
     return json({ error: e.message }, 500);
   }
-}
+  }
+};
 
 /* ---------------- HTTP helpers ---------------- */
 
