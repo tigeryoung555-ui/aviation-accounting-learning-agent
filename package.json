@@ -1,0 +1,10 @@
+{
+  "name": "aviation-accounting-agent",
+  "version": "2.0.0",
+  "private": true,
+  "description": "民航运输企业会计学习智能体 — EdgeOne Pages (Pages Functions + KV Storage)",
+  "type": "module",
+  "scripts": {
+    "dev": "edgeone pages dev"
+  }
+}
