@@ -322,6 +322,8 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .toast{position:fixed;top:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:13px;z-index:9999;animation:fadeIn 0.3s;}
 .toast.success{background:var(--success);}.toast.error{background:var(--danger);}.toast.info{background:var(--primary);}
 .auth-overlay{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary-dark),var(--primary));display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;}
+.diag-box{margin-top:12px;background:rgba(0,0,0,0.35);border-radius:8px;padding:12px;font-size:11px;line-height:1.7;color:#e2e8f0;max-height:220px;overflow:auto;word-break:break-all;font-family:Menlo,Consolas,monospace;}
+.diag-box .ok{color:#7ee2a8;} .diag-box .bad{color:#ff9b9b;} .diag-box .warn{color:#ffd479;}
 .auth-box{width:100%;max-width:420px;background:#fff;border-radius:16px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
 .auth-header{text-align:center;margin-bottom:24px;}
 .auth-header h2{font-size:20px;color:var(--primary-dark);margin-bottom:6px;}
@@ -363,6 +365,10 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
       <button class="btn btn-primary" id="btnRegister" style="width:100%;">注册教师账号</button>
     </div>
     <div id="authMsg" class="auth-msg"></div>
+    <div style="text-align:center;margin-top:14px;">
+      <a href="#" id="btnDiag" style="font-size:12px;color:rgba(255,255,255,0.75);text-decoration:underline;">连不上？点此诊断后端连接</a>
+    </div>
+    <div id="diagBox" class="diag-box hidden"></div>
   </div>
 </div>
 
@@ -663,6 +669,42 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
   updateUserInfo();
   applyRole(res.role);
   toast('教师注册成功', 'success');
+});
+
+// ===== 后端连接诊断 =====
+document.getElementById('btnDiag').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const box = document.getElementById('diagBox');
+  box.classList.remove('hidden');
+  const lines = [];
+  const put = (cls, txt) => { lines.push('<span class="' + cls + '">' + txt + '</span>'); box.innerHTML = lines.join('<br>'); };
+
+  put('warn', '[1] API_BASE = ' + API_BASE);
+  put('warn', '[2] config.js 加载 = ' + (window.APP_API_BASE ? '已加载' : '未加载(用内置默认)'));
+  put('warn', '[3] 页面 origin = ' + location.origin);
+  put('warn', '[4] 正在 GET ' + API_BASE + '/api/config ...');
+
+  const t0 = Date.now();
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 10000);
+    const r = await fetch(API_BASE + '/api/config', { signal: ctrl.signal, cache: 'no-store' });
+    clearTimeout(timer);
+    const txt = await r.text();
+    put('ok', '[5] HTTP ' + r.status + '  (' + (Date.now() - t0) + 'ms)');
+    put('ok', '[6] 响应体: ' + txt.slice(0, 300));
+    const acao = r.headers.get('Access-Control-Allow-Origin');
+    if (acao) put('ok', '[7] CORS 允许来源: ' + acao);
+    else put('warn', '[7] 无 CORS 头（浏览器可能拦截）');
+    if (r.ok) { put('ok', '=> 后端可达，可正常登录'); return; }
+    put('bad', '=> 后端返回异常状态，请截图本框');
+  } catch (err) {
+    const name = err && err.name ? err.name : 'Error';
+    put('bad', '[5] 请求失败: ' + name + ' — ' + (err && err.message ? err.message : ''));
+    if (name === 'AbortError') put('bad', '    => 10 秒无响应，Worker 可能未部署或被墙');
+    else put('bad', '    => 典型原因：跨域被拦 / DNS 解析失败 / 网络不通');
+    put('warn', '[提示] 请把本框截图发给开发者');
+  }
 });
 
 // ===== 路由 =====
