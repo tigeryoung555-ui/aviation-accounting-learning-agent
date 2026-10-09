@@ -324,6 +324,10 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .auth-overlay{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary-dark),var(--primary));display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;}
 .diag-box{margin-top:12px;background:rgba(0,0,0,0.35);border-radius:8px;padding:12px;font-size:11px;line-height:1.7;color:#e2e8f0;max-height:220px;overflow:auto;word-break:break-all;font-family:Menlo,Consolas,monospace;}
 .diag-box .ok{color:#7ee2a8;} .diag-box .bad{color:#ff9b9b;} .diag-box .warn{color:#ffd479;}
+.local-hint{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6;margin-top:-8px;margin-bottom:16px;}
+.btn-ghost{background:rgba(255,255,255,0.14);color:#fff;border:1px solid rgba(255,255,255,0.35);}
+.btn-ghost:hover{background:rgba(255,255,255,0.24);}
+.offline-badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:9px;background:var(--warning);color:#fff;font-weight:600;margin-left:6px;vertical-align:middle;}
 .auth-box{width:100%;max-width:420px;background:#fff;border-radius:16px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
 .auth-header{text-align:center;margin-bottom:24px;}
 .auth-header h2{font-size:20px;color:var(--primary-dark);margin-bottom:6px;}
@@ -350,6 +354,8 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
       <h2>民航运输企业会计学习智能体</h2>
       <p>请登录后使用</p>
     </div>
+    <button class="btn btn-ghost" id="btnLocalMode" style="width:100%;margin-bottom:16px;">直接进入（本地模式，无需登录）</button>
+    <div class="local-hint">本地模式可使用全部题库与判分功能，数据存在本机浏览器；AI 答疑与班级管理需联网后端。</div>
     <div class="auth-tabs">
       <div class="auth-tab active" data-auth="login">登录</div>
       <div class="auth-tab" data-auth="register">教师注册</div>
@@ -533,6 +539,17 @@ const KNOWLEDGE_BASE = __KB_JSON__;
 const CHAPTER_CONTENT = __CHAPTER_JSON__;
 const CHAPTERS = Object.keys(CHAPTER_CONTENT);
 
+// Normalize keywords to a string[] — source data may hold a space/comma
+// separated string, but every consumer treats it as an array (.join/.map).
+KNOWLEDGE_BASE.forEach(kb => {
+  if (typeof kb.keywords === 'string') kb.keywords = kb.keywords.split(/[,，、;；\s]+/).filter(Boolean);
+  else if (!Array.isArray(kb.keywords)) kb.keywords = [];
+});
+QUESTIONS.forEach(q => {
+  if (typeof q.keywords === 'string') q.keywords = q.keywords.split(/[,，、;；\s]+/).filter(Boolean);
+  else if (!Array.isArray(q.keywords)) q.keywords = [];
+});
+
 // 模拟班级数据
 const CLASS_DATA = (function(){
   const names=['张明','李华','王芳','赵强','陈静','刘洋','周敏','吴磊','郑艳','孙涛','钱进','冯雪','褚明','卫红','蒋勇','沈悦','韩冰','杨帆','朱琳','秦峰','尤佳','许超','何丽','吕刚','施婷','张磊','孔颖','曹阳','严华','金鹏','魏丽','陶然','姜华','戚芳','谢明','邹强','喻红','柏亮','水静','窦明','章华','云芳','苏强','潘丽','葛明'];
@@ -582,6 +599,7 @@ function showAuth(msg, type){
   el.className = 'auth-msg ' + (type || '');
 }
 function logout(){
+  try { localStorage.removeItem(LOCAL_KEY); } catch(e){}
   saveAuth(null);
   location.reload();
 }
@@ -613,7 +631,8 @@ function updateUserInfo(){
   const el = document.getElementById('userInfo');
   if (!el) return;
   if (auth) {
-    el.innerHTML = `<strong>${auth.role === 'teacher' ? '教师' : '学生'}：</strong>${auth.username} <a href="#" id="logoutLink" style="color:#fff;text-decoration:underline;margin-left:8px;">退出</a>`;
+    const isLocal = auth.local ? '<span class="offline-badge">本地模式</span>' : '';
+    el.innerHTML = `<strong>${auth.role === 'teacher' ? '教师' : '学生'}：</strong>${auth.username}${isLocal} <a href="#" id="logoutLink" style="color:#fff;text-decoration:underline;margin-left:8px;">退出</a>`;
     document.getElementById('logoutLink').addEventListener('click', e => { e.preventDefault(); logout(); });
   } else {
     el.textContent = '未登录';
@@ -890,7 +909,7 @@ async function checkAIStatus(){
 function renderAI(){
   const msgs=document.getElementById('aiMessages');
   if(msgs.children.length===0){
-    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。本地模式下使用知识库RAG；若启动本地LLM代理，可获得更强的生成式回答。</div>`;
+    msgs.innerHTML=`<div class="ai-msg bot">你好！我是民航会计AI答疑助手，基于民航运输企业会计知识库为你解答问题。你可以问我关于飞机折旧、常旅客计划、航油成本、票证结算、飞机租赁等任何民航会计问题。</div>`;
   }
   const sug=document.getElementById('aiSuggestions');
   const suggestions=['飞机折旧为什么用两种方法？','常旅客里程怎么确认收入？','航油成本占比多少？','什么是BSP结算？','使用权资产怎么计量？','C检费用资本化还是费用化？'];
@@ -926,7 +945,8 @@ async function sendAI(){
     }catch(e){AI_BACKEND_AVAILABLE=null;}
   }
   if(!answer) answer=ragSearch(q);
-  document.getElementById(loadingId).outerHTML=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}</div></div>`;
+  const viaLocal = (AI_BACKEND_AVAILABLE===false);
+  document.getElementById(loadingId).outerHTML=`<div class="ai-msg bot">${answer.text}<div class="src">📚 来源：${answer.sources.join(' · ')}${viaLocal?'<br>⚠️ 当前为本地知识库检索模式（联网后端不可用），回答基于知识库匹配，非大模型生成':''}</div></div>`;
   msgs.scrollTop=msgs.scrollHeight;
 }
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.activeElement.id==='aiInput')sendAI();});
@@ -1185,11 +1205,26 @@ document.getElementById('btnExportReport').addEventListener('click', () => {
 });
 document.getElementById('opClassSelect').addEventListener('change', refreshClassStats);
 
+// ===== 本地模式（不依赖后端）=====
+const LOCAL_KEY = 'aviation_local_mode';
+function enterLocalMode(){
+  auth = { token: null, role: 'student', username: '本地用户', userId: null, local: true };
+  try { localStorage.setItem(LOCAL_KEY, '1'); } catch(e){}
+  document.getElementById('authOverlay').classList.add('hidden');
+  updateUserInfo();
+  applyRole('student');
+  toast('已进入本地模式：题库与判分全部可用', 'success');
+}
+document.getElementById('btnLocalMode').addEventListener('click', enterLocalMode);
+
 // 初始化
+const localMode = (function(){ try { return localStorage.getItem(LOCAL_KEY) === '1'; } catch(e){ return false; } })();
 if (auth && auth.token) {
   document.getElementById('authOverlay').classList.add('hidden');
   updateUserInfo();
   applyRole(auth.role || 'student');
+} else if (localMode) {
+  enterLocalMode();
 } else {
   document.getElementById('authOverlay').classList.remove('hidden');
 }
