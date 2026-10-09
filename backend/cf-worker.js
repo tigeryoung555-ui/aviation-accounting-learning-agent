@@ -26,47 +26,56 @@ const SYNONYMS = {
   "维修": ["修理", "MRO", "维护"]
 };
 
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    if (request.method === "OPTIONS") return corsPreflight();
-    try {
-      const p = url.pathname;
+// Service Worker entry (CF injects DB / LLM_API_KEY / SESSION_SECRET / LLM_MODEL as globals)
+addEventListener('fetch', (event) => {
+  const env = {
+    DB: typeof DB !== 'undefined' ? DB : undefined,
+    LLM_API_KEY: typeof LLM_API_KEY !== 'undefined' ? LLM_API_KEY : undefined,
+    SESSION_SECRET: typeof SESSION_SECRET !== 'undefined' ? SESSION_SECRET : undefined,
+    LLM_MODEL: typeof LLM_MODEL !== 'undefined' ? LLM_MODEL : undefined
+  };
+  event.respondWith(handleFetch(event.request, env));
+});
 
-      if (p === "/") return txt("minhang-ai-proxy OK", 200);
+async function handleFetch(request, env) {
+  const url = new URL(request.url);
+  if (request.method === "OPTIONS") return corsPreflight();
+  try {
+    const p = url.pathname;
 
-      if (p === "/api/config") {
-        return json({
-          available: true,
-          model: env.LLM_MODEL || "deepseek-chat",
-          backend: "cloudflare-workers",
-          auth: !!env.DB
-        });
-      }
+    if (p === "/") return txt("minhang-ai-proxy OK", 200);
 
-      // one-time schema setup (call manually after deploy)
-      if (p === "/api/setup") return await handleSetup(env);
-
-      // auth routes (no role required)
-      if (p.startsWith("/api/auth/")) return await handleAuth(p, request, env);
-
-      // protected routes require a valid session token
-      if (p.startsWith("/api/teacher/")) {
-        return await requireAuth(request, env, "teacher", (u) => handleTeacher(p, request, env, u));
-      }
-      if (p.startsWith("/api/student/")) {
-        return await requireAuth(request, env, "student", (u) => handleStudent(p, request, env, u));
-      }
-
-      // AI chat proxy (public, used by the frontend)
-      if (p === "/api/chat" && request.method === "POST") return await handleChat(request, env);
-
-      return txt("Not found", 404);
-    } catch (e) {
-      return json({ error: e.message }, 500);
+    if (p === "/api/config") {
+      return json({
+        available: true,
+        model: env.LLM_MODEL || "deepseek-chat",
+        backend: "cloudflare-workers",
+        auth: !!env.DB
+      });
     }
+
+    // one-time schema setup (call manually after deploy)
+    if (p === "/api/setup") return await handleSetup(env);
+
+    // auth routes (no role required)
+    if (p.startsWith("/api/auth/")) return await handleAuth(p, request, env);
+
+    // protected routes require a valid session token
+    if (p.startsWith("/api/teacher/")) {
+      return await requireAuth(request, env, "teacher", (u) => handleTeacher(p, request, env, u));
+    }
+    if (p.startsWith("/api/student/")) {
+      return await requireAuth(request, env, "student", (u) => handleStudent(p, request, env, u));
+    }
+
+    // AI chat proxy (public, used by the frontend)
+    if (p === "/api/chat" && request.method === "POST") return await handleChat(request, env);
+
+    return txt("Not found", 404);
+  } catch (e) {
+    return json({ error: e.message }, 500);
   }
-};
+}
 
 /* ---------------- HTTP helpers ---------------- */
 
