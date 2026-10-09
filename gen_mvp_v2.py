@@ -324,16 +324,55 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .view{animation:fadeIn 0.3s ease;}.hidden{display:none;}
 .toast{position:fixed;top:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:13px;z-index:9999;animation:fadeIn 0.3s;}
 .toast.success{background:var(--success);}.toast.error{background:var(--danger);}.toast.info{background:var(--primary);}
+.auth-overlay{position:fixed;inset:0;background:linear-gradient(135deg,var(--primary-dark),var(--primary));display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;}
+.auth-box{width:100%;max-width:420px;background:#fff;border-radius:16px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
+.auth-header{text-align:center;margin-bottom:24px;}
+.auth-header h2{font-size:20px;color:var(--primary-dark);margin-bottom:6px;}
+.auth-header p{color:var(--text-light);font-size:13px;}
+.auth-tabs{display:flex;gap:8px;margin-bottom:20px;background:var(--bg);padding:4px;border-radius:8px;}
+.auth-tab{flex:1;text-align:center;padding:10px 0;font-size:14px;border-radius:6px;cursor:pointer;color:var(--text-light);}
+.auth-tab.active{background:#fff;color:var(--primary);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;color:var(--text-light);margin-bottom:6px;}
+.form-group input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;}
+.form-group input:focus{outline:none;border-color:var(--primary);}
+.auth-msg{margin-top:14px;font-size:13px;text-align:center;min-height:20px;}
+.auth-msg.error{color:var(--danger);}
+.auth-msg.success{color:var(--success);}
+.user-info{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.15);font-size:12px;opacity:0.9;}
+.user-info strong{color:#fff;}
 </style>
 </head>
 <body>
+<!-- 登录/注册层 -->
+<div id="authOverlay" class="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-header">
+      <h2>民航运输企业会计学习智能体</h2>
+      <p>请登录后使用</p>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-auth="login">登录</div>
+      <div class="auth-tab" data-auth="register">教师注册</div>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><label>账号</label><input type="text" id="loginUsername" placeholder="请输入账号"></div>
+      <div class="form-group"><label>密码</label><input type="password" id="loginPassword" placeholder="请输入密码"></div>
+      <button class="btn btn-primary" id="btnLogin" style="width:100%;">登录</button>
+    </div>
+    <div id="registerForm" class="hidden">
+      <div class="form-group"><label>教师账号</label><input type="text" id="regUsername" placeholder="用于登录的账号"></div>
+      <div class="form-group"><label>密码</label><input type="password" id="regPassword" placeholder="至少6位"></div>
+      <button class="btn btn-primary" id="btnRegister" style="width:100%;">注册教师账号</button>
+    </div>
+    <div id="authMsg" class="auth-msg"></div>
+  </div>
+</div>
+
 <div class="app">
 <aside class="sidebar">
 <div class="logo"><h1>民航运输企业会计</h1><p>学习智能体 v2.0</p></div>
-<div class="role-tabs">
-<div class="role-tab active" data-role="student">学生端</div>
-<div class="role-tab" data-role="teacher">教师端</div>
-</div>
+<div class="user-info" id="userInfo">未登录</div>
 <nav class="nav" id="studentNav">
 <div class="nav-section">学习中心</div>
 <div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>学习仪表盘</span></div>
@@ -348,7 +387,7 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 <div class="nav-item" data-view="t-dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>教学概览</span></div>
 <div class="nav-item" data-view="t-bank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>题库管理</span></div>
 <div class="nav-item" data-view="t-exam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg><span>自动组卷</span></div>
-<div class="nav-item" data-view="t-class"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>班级成绩</span></div>
+<div class="nav-item" data-view="t-class"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg><span>班级管理</span></div>
 </nav>
 </aside>
 <main class="main">
@@ -451,15 +490,34 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 </div>
 
 <div id="view-t-class" class="view hidden">
-<div class="page-header"><h2>班级成绩分析</h2><p>模拟班级数据 · 学生成绩排名 · 知识点掌握热力图</p></div>
-<div class="score-overview">
-<div class="score-card"><div class="score-num">78.5</div><div class="score-label">班级平均分</div></div>
-<div class="score-card"><div class="score-num">85%</div><div class="score-label">及格率</div></div>
-<div class="score-card"><div class="score-num">12.3</div><div class="score-label">标准差</div></div>
+<div class="page-header"><h2>班级管理</h2><p>创建班级、批量生成学生账号、查看学习进度、导出报表</p></div>
+<div class="card">
+  <h3>创建班级</h3>
+  <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+    <div class="config-group" style="margin-bottom:0;flex:1;min-width:200px;"><label>班级名称</label><input type="text" id="newClassName" placeholder="例如：2024级会计1班"></div>
+    <button class="btn btn-primary" id="btnCreateClass">创建班级</button>
+  </div>
 </div>
-<div class="card"><h3>成绩分布直方图</h3><div class="bar-chart" id="scoreDistChart"></div></div>
-<div class="card"><h3>学生成绩排名</h3><div class="table-wrap"><table class="data-table" id="classRankTable"><thead><tr><th>排名</th><th>学号</th><th>姓名</th><th>平时成绩</th><th>期中成绩</th><th>期末成绩</th><th>总评</th><th>等级</th></tr></thead><tbody></tbody></table></div></div>
-<div class="card"><h3>各章班级正确率（知识点掌握热力图）</h3><div id="classChapterRate"></div></div>
+<div class="card">
+  <h3>我的班级</h3>
+  <div id="myClasses" style="margin-bottom:16px;"><p style="color:var(--text-light);">暂无班级，请先创建</p></div>
+</div>
+<div class="card" id="classOpsCard" style="display:none;">
+  <h3>班级操作</h3>
+  <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;">
+    <div class="config-group" style="margin-bottom:0;flex:1;min-width:120px;"><label>当前班级</label><select id="opClassSelect" class="filter-btn" style="min-width:180px;"></select></div>
+    <div class="config-group" style="margin-bottom:0;flex:1;min-width:120px;"><label>账号前缀</label><input type="text" id="stuPrefix" value="stu" style="max-width:120px;"></div>
+    <div class="config-group" style="margin-bottom:0;flex:1;min-width:120px;"><label>生成人数</label><input type="number" id="stuCount" value="10" min="1" max="200" style="max-width:100px;"></div>
+    <button class="btn btn-primary" id="btnCreateStudents">批量生成学生</button>
+    <button class="btn btn-outline" id="btnExportReport">导出 CSV 报表</button>
+  </div>
+  <div id="newStudentsBox" style="display:none;background:var(--primary-light);padding:12px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+    <strong>新账号列表（请截图保存）：</strong>
+    <div id="newStudentsList" style="margin-top:8px;max-height:160px;overflow:auto;"></div>
+  </div>
+  <h4 style="margin:16px 0 10px;font-size:14px;">学生学习统计</h4>
+  <div class="table-wrap"><table class="data-table" id="realClassTable"><thead><tr><th>学号</th><th>答题次数</th><th>正确数</th><th>正确率</th></tr></thead><tbody></tbody></table></div>
+</div>
 </div>
 </main>
 </div>
@@ -482,6 +540,33 @@ const CLASS_DATA = (function(){
     total:0})).map(s=>{s.total=Math.round(s.regular*0.3+s.mid*0.2+s.final*0.5);return s;});
 })();
 
+// ===== API & Auth =====
+const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE) ? window.APP_API_BASE : 'http://localhost:8000';
+let auth = null;
+try { auth = JSON.parse(localStorage.getItem('auth_v2')); } catch (e) { auth = null; }
+function saveAuth(a){ auth = a; if (a) localStorage.setItem('auth_v2', JSON.stringify(a)); else localStorage.removeItem('auth_v2'); }
+function authHeaders(){ return { 'Content-Type':'application/json', 'Authorization': auth ? 'Bearer ' + auth.token : '' }; }
+async function apiGet(path){
+  const r = await fetch(API_BASE + path, { headers:{ 'Authorization': auth ? 'Bearer ' + auth.token : '' } });
+  if (r.status === 401) { logout(); throw new Error('登录已过期'); }
+  return await r.json().catch(() => ({}));
+}
+async function apiPost(path, body){
+  const r = await fetch(API_BASE + path, { method:'POST', headers:authHeaders(), body:JSON.stringify(body || {}) });
+  if (r.status === 401) { logout(); throw new Error('登录已过期'); }
+  return await r.json().catch(() => ({}));
+}
+function showAuth(msg, type){
+  const el = document.getElementById('authMsg');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'auth-msg ' + (type || '');
+}
+function logout(){
+  saveAuth(null);
+  location.reload();
+}
+
 // ===== 状态 =====
 const STORAGE_KEY='aviation_accounting_v2';
 let state=loadState();
@@ -490,19 +575,69 @@ function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
 function toast(msg,type='info'){const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;document.getElementById('toastContainer').appendChild(t);setTimeout(()=>t.remove(),2500);}
 
 // ===== 角色切换 =====
-document.querySelectorAll('.role-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.role-tab').forEach(t=>t.classList.remove('active'));
+function applyRole(role){
+  document.getElementById('studentNav').classList.toggle('hidden', role !== 'student');
+  document.getElementById('teacherNav').classList.toggle('hidden', role !== 'teacher');
+  document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  if (role === 'student') {
+    document.getElementById('view-dashboard').classList.remove('hidden');
+    document.querySelector('[data-view="dashboard"]').classList.add('active');
+    renderDashboard();
+  } else {
+    document.getElementById('view-t-dashboard').classList.remove('hidden');
+    document.querySelector('[data-view="t-dashboard"]').classList.add('active');
+    renderTeacherDashboard();
+  }
+}
+function updateUserInfo(){
+  const el = document.getElementById('userInfo');
+  if (!el) return;
+  if (auth) {
+    el.innerHTML = `<strong>${auth.role === 'teacher' ? '教师' : '学生'}：</strong>${auth.username} <a href="#" id="logoutLink" style="color:#fff;text-decoration:underline;margin-left:8px;">退出</a>`;
+    document.getElementById('logoutLink').addEventListener('click', e => { e.preventDefault(); logout(); });
+  } else {
+    el.textContent = '未登录';
+  }
+}
+
+// ===== Auth UI events =====
+document.querySelectorAll('.auth-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    const role=tab.dataset.role;
-    document.getElementById('studentNav').classList.toggle('hidden',role!=='student');
-    document.getElementById('teacherNav').classList.toggle('hidden',role!=='teacher');
-    // 切换到对应默认视图
-    document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
-    document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
-    if(role==='student'){document.getElementById('view-dashboard').classList.remove('hidden');document.querySelector('[data-view="dashboard"]').classList.add('active');renderDashboard();}
-    else{document.getElementById('view-t-dashboard').classList.remove('hidden');document.querySelector('[data-view="t-dashboard"]').classList.add('active');renderTeacherDashboard();}
+    const mode = tab.dataset.auth;
+    document.getElementById('loginForm').classList.toggle('hidden', mode !== 'login');
+    document.getElementById('registerForm').classList.toggle('hidden', mode !== 'register');
+    showAuth('', '');
   });
+});
+document.getElementById('btnLogin').addEventListener('click', async () => {
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value;
+  if (!u || !p) { showAuth('请输入账号和密码', 'error'); return; }
+  showAuth('登录中...', 'info');
+  const res = await apiPost('/api/auth/login', { username: u, password: p });
+  if (res.error) { showAuth(res.error, 'error'); return; }
+  saveAuth({ token: res.token, role: res.role, username: u, userId: res.userId });
+  document.getElementById('authOverlay').classList.add('hidden');
+  updateUserInfo();
+  applyRole(res.role);
+  toast('登录成功', 'success');
+});
+document.getElementById('btnRegister').addEventListener('click', async () => {
+  const u = document.getElementById('regUsername').value.trim();
+  const p = document.getElementById('regPassword').value;
+  if (!u || !p) { showAuth('请输入账号和密码', 'error'); return; }
+  if (p.length < 6) { showAuth('密码至少6位', 'error'); return; }
+  showAuth('注册中...', 'info');
+  const res = await apiPost('/api/auth/register', { username: u, password: p, role: 'teacher' });
+  if (res.error) { showAuth(res.error, 'error'); return; }
+  saveAuth({ token: res.token, role: res.role, username: u, userId: res.userId });
+  document.getElementById('authOverlay').classList.add('hidden');
+  updateUserInfo();
+  applyRole(res.role);
+  toast('教师注册成功', 'success');
 });
 
 // ===== 路由 =====
@@ -615,9 +750,10 @@ function bindQuizEvents(q){
   card.querySelector('.btn-submit').addEventListener('click',()=>{
     const result=card.querySelector('.quiz-result');
     let isCorrect=false,score=0,maxScore=parseInt(q.score)||10;
+    let userAnswer='';
     if(isObjective){
       if(selected.length===0){toast('请先选择答案','error');return;}
-      const userAnswer=selected.sort().join('');
+      userAnswer=selected.sort().join('');
       isCorrect=userAnswer===q.answer;
       score=isCorrect?maxScore:0;
       const options=card.querySelectorAll('.quiz-option');
@@ -627,18 +763,18 @@ function bindQuizEvents(q){
     }else{
       // 主观题关键词匹配初评
       const textarea=card.querySelector('.subjective-area');
-      const userText=textarea.value.trim();
-      if(userText===''){toast('请先输入答案','error');return;}
+      userAnswer=textarea.value.trim();
+      if(userAnswer===''){toast('请先输入答案','error');return;}
       const keywords=q.keywords||[];
       if(keywords.length===0){
         // 无关键词时用长度和相似度粗略评估
         const refLen=(q.explain||'').length;
-        const ratio=Math.min(userText.length/refLen,1);
+        const ratio=Math.min(userAnswer.length/refLen,1);
         score=Math.round(maxScore*ratio*0.7);
         isCorrect=score>=maxScore*0.6;
       }else{
         let matched=0;
-        keywords.forEach(kw=>{if(userText.includes(kw))matched++;});
+        keywords.forEach(kw=>{if(userAnswer.includes(kw))matched++;});
         const matchRate=matched/keywords.length;
         score=Math.round(maxScore*matchRate);
         isCorrect=matchRate>=0.6;
@@ -646,14 +782,17 @@ function bindQuizEvents(q){
       const pct=Math.round(score/maxScore*100);
       result.classList.add('show',isCorrect?'correct':'partial');
       result.innerHTML=`<div class="result-title">${isCorrect?'✓ 初评通过（'+score+'/'+maxScore+'分）':'◐ 需完善（'+score+'/'+maxScore+'分，'+pct+'%）'}</div>
-        <div style="margin:6px 0;">关键词匹配：${keywords.filter(k=>userText.includes(k)).length}/${keywords.length}个 ${keywords.filter(k=>userText.includes(k)).map(k=>'<span class="tag type" style="margin:0 2px;">'+k+'</span>').join('')}</div>
+        <div style="margin:6px 0;">关键词匹配：${keywords.filter(k=>userAnswer.includes(k)).length}/${keywords.length}个 ${keywords.filter(k=>userAnswer.includes(k)).map(k=>'<span class="tag type" style="margin:0 2px;">'+k+'</span>').join('')}</div>
         <div class="result-explain"><strong>参考答案：</strong>${q.explain}</div>
         <div style="font-size:11px;color:var(--text-light);margin-top:6px;">* 主观题为关键词匹配初评，最终成绩以教师复核为准</div>`;
     }
-    state.answers[q.id]={correct:isCorrect,score:score,maxScore:maxScore,chapter:q.ch,kp:q.kp,type:q.type};
+    state.answers[q.id]={correct:isCorrect,score:score,maxScore:maxScore,chapter:q.ch,kp:q.kp,type:q.type,userAnswer:userAnswer};
     if(!isCorrect&&!state.wrong.includes(q.id))state.wrong.push(q.id);
     if(isCorrect)state.wrong=state.wrong.filter(id=>id!==q.id);
     saveState();
+    if(auth && auth.role==='student'){
+      apiPost('/api/student/attempt',{questionId:q.id,selected:userAnswer,correct:isCorrect}).catch(e=>console.error('sync attempt failed',e));
+    }
     card.querySelector('.btn-submit').disabled=true;
     card.querySelector('.btn-submit').textContent='已提交';
   });
@@ -661,7 +800,6 @@ function bindQuizEvents(q){
 
 // ===== AI答疑（RAG检索增强 + 可选真实LLM后端）=====
 let AI_BACKEND_AVAILABLE=null;
-const API_BASE=(window.APP_API_BASE&&!String(window.APP_API_BASE).includes('REPLACE'))?window.APP_API_BASE:'http://localhost:8000';
 const AI_FAQ={
   '航油成本占比多少':['航油成本通常是航空公司最大的单一成本项目，占营业成本的25%-35%，甚至更高。','它受国际油价、航线结构、机队燃油效率、航距等多因素影响。'],
   '飞机租赁一般采用说明方式':['飞机租赁在民航会计中通常采用融资租赁或经营租赁两种方式。','融资租赁需确认使用权资产和租赁负债，按实际利率法计提折旧和利息；经营租赁则将租金按直线法计入当期成本费用。'],
@@ -823,19 +961,19 @@ function removeWrong(id){state.wrong=state.wrong.filter(w=>w!==id);saveState();r
 // ===== 教师端：教学概览 =====
 function renderTeacherDashboard(){
   document.getElementById('tTotal').textContent=QUESTIONS.length;
-  const rates=CLASS_DATA.map(s=>s.total);
-  const avg=Math.round(rates.reduce((a,b)=>a+b,0)/rates.length);
-  document.getElementById('tAvgRate').textContent=avg+'%';
   document.getElementById('tExamCount').textContent=state.exams.length;
   // 题库分布
   const typeCount={};
   QUESTIONS.forEach(q=>{typeCount[q.type]=(typeCount[q.type]||0)+1;});
   document.getElementById('bankDistribution').innerHTML=Object.entries(typeCount).map(([t,c])=>`<div class="chapter-score-row"><div class="cs-name">${t}</div><div class="cs-bar"><div class="cs-fill" style="width:${c/QUESTIONS.length*100}%;background:var(--primary);"></div></div><div class="cs-score">${c}题</div></div>`).join('');
-  // 班级成绩分布
-  const ranges=['0-59','60-69','70-79','80-89','90-100'];
-  const counts=ranges.map(r=>{const[lo,hi]=r.split('-').map(Number);return CLASS_DATA.filter(s=>s.total>=lo&&s.total<=hi).length;});
-  const maxC=Math.max(...counts,1);
-  document.getElementById('classChart').innerHTML=ranges.map((r,i)=>`<div class="bar-item"><div class="bar" style="height:${counts[i]/maxC*200}px;"><span class="bar-val">${counts[i]}</span></div><div class="bar-label">${r}</div></div>`).join('');
+  // 异步加载班级数量
+  apiGet('/api/teacher/classes').then(data=>{
+    const cls=(data.classes||[]).length;
+    const tAvg=document.getElementById('tAvgRate');
+    if(tAvg) tAvg.textContent = cls + '个';
+  }).catch(()=>{});
+  // 班级成绩分布（占位）
+  document.getElementById('classChart').innerHTML='<p style="color:var(--text-light);font-size:13px;">班级统计请前往「班级管理」查看</p>';
 }
 
 // ===== 教师端：题库管理 =====
@@ -910,24 +1048,78 @@ function exportExam(){
   toast('试卷已导出','success');
 }
 
-// ===== 教师端：班级成绩 =====
-function renderClass(){
-  // 成绩分布
-  const ranges=['0-59','60-69','70-79','80-89','90-100'];
-  const counts=ranges.map(r=>{const[lo,hi]=r.split('-').map(Number);return CLASS_DATA.filter(s=>s.total>=lo&&s.total<=hi).length;});
-  const maxC=Math.max(...counts,1);
-  document.getElementById('scoreDistChart').innerHTML=ranges.map((r,i)=>`<div class="bar-item"><div class="bar" style="height:${counts[i]/maxC*220}px;"><span class="bar-val">${counts[i]}</span></div><div class="bar-label">${r}</div></div>`).join('');
-  // 排名表
-  const sorted=[...CLASS_DATA].sort((a,b)=>b.total-a.total);
-  const tbody=document.querySelector('#classRankTable tbody');
-  tbody.innerHTML=sorted.map((s,i)=>{const grade=s.total>=90?'优':s.total>=80?'良':s.total>=70?'中':s.total>=60?'及格':'不及格';const color=s.total>=90?'var(--success)':s.total>=60?'var(--primary)':'var(--danger)';return `<tr><td>${i+1}</td><td>${s.id}</td><td>${s.name}</td><td>${s.regular}</td><td>${s.mid}</td><td>${s.final}</td><td><strong>${s.total}</strong></td><td style="color:${color};font-weight:600;">${grade}</td></tr>`;}).join('');
-  // 各章班级正确率（模拟）
-  const chapterRates=CHAPTERS.map((ch,i)=>({ch,rate:Math.round(55+Math.random()*40)}));
-  document.getElementById('classChapterRate').innerHTML=chapterRates.map(c=>{const color=c.rate>=80?'var(--success)':c.rate>=60?'var(--warning)':'var(--danger)';return `<div class="chapter-score-row"><div class="cs-name">${c.ch}</div><div class="cs-bar"><div class="cs-fill" style="width:${c.rate}%;background:${color};"></div></div><div class="cs-score" style="color:${color}">${c.rate}%</div></div>`;}).join('');
+// ===== 教师端：班级管理 =====
+let teacherClasses = [];
+async function loadTeacherClasses(){
+  const data = await apiGet('/api/teacher/classes');
+  teacherClasses = data.classes || [];
+  return teacherClasses;
 }
+function renderClass(){
+  loadTeacherClasses().then(list => {
+    const box = document.getElementById('myClasses');
+    if (list.length === 0) {
+      box.innerHTML = '<p style="color:var(--text-light);">暂无班级，请先创建</p>';
+      document.getElementById('classOpsCard').style.display = 'none';
+      return;
+    }
+    box.innerHTML = list.map(c => `<div style="display:inline-block;background:var(--primary-light);color:var(--primary);padding:6px 12px;border-radius:6px;margin:0 8px 8px 0;font-size:13px;font-weight:500;">${c.name}</div>`).join('');
+    const sel = document.getElementById('opClassSelect');
+    sel.innerHTML = list.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    document.getElementById('classOpsCard').style.display = 'block';
+    refreshClassStats();
+  }).catch(e => { toast('加载班级失败', 'error'); console.error(e); });
+}
+async function refreshClassStats(){
+  const classId = document.getElementById('opClassSelect').value;
+  if (!classId) return;
+  const data = await apiGet('/api/teacher/stats?classId=' + encodeURIComponent(classId));
+  const rows = data.stats || [];
+  const tbody = document.querySelector('#realClassTable tbody');
+  tbody.innerHTML = rows.map(s => {
+    const att = s.attempts || 0;
+    const cor = s.correct || 0;
+    const acc = att ? Math.round(cor / att * 100) + '%' : '0%';
+    return `<tr><td>${s.username}</td><td>${att}</td><td>${cor}</td><td>${acc}</td></tr>`;
+  }).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text-light);">暂无学生答题数据</td></tr>';
+}
+document.getElementById('btnCreateClass').addEventListener('click', async () => {
+  const name = document.getElementById('newClassName').value.trim();
+  if (!name) { toast('请输入班级名称', 'error'); return; }
+  const res = await apiPost('/api/teacher/class', { name });
+  if (res.error) { toast(res.error, 'error'); return; }
+  toast('班级创建成功', 'success');
+  document.getElementById('newClassName').value = '';
+  renderClass();
+});
+document.getElementById('btnCreateStudents').addEventListener('click', async () => {
+  const classId = document.getElementById('opClassSelect').value;
+  const prefix = document.getElementById('stuPrefix').value.trim() || 'stu';
+  const count = parseInt(document.getElementById('stuCount').value) || 10;
+  if (!classId) { toast('请先选择班级', 'error'); return; }
+  const res = await apiPost('/api/teacher/students', { classId: parseInt(classId), count, prefix });
+  if (res.error) { toast(res.error, 'error'); return; }
+  const list = res.created || [];
+  document.getElementById('newStudentsList').innerHTML = list.map(s => `<div>账号：${s.username}　密码：${s.password}</div>`).join('');
+  document.getElementById('newStudentsBox').style.display = 'block';
+  toast(`成功创建 ${list.length} 个学生账号`, 'success');
+  refreshClassStats();
+});
+document.getElementById('btnExportReport').addEventListener('click', () => {
+  const classId = document.getElementById('opClassSelect').value;
+  if (!classId) { toast('请先选择班级', 'error'); return; }
+  window.open(API_BASE + '/api/teacher/export?classId=' + encodeURIComponent(classId), '_blank');
+});
+document.getElementById('opClassSelect').addEventListener('change', refreshClassStats);
 
 // 初始化
-renderDashboard();
+if (auth && auth.token) {
+  document.getElementById('authOverlay').classList.add('hidden');
+  updateUserInfo();
+  applyRole(auth.role || 'student');
+} else {
+  document.getElementById('authOverlay').classList.remove('hidden');
+}
 </script>
 </body>
 </html>'''
