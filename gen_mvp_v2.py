@@ -172,7 +172,7 @@ html_template = r'''<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>民航运输企业会计学习智能体 v2.0</title>
-<script>window.APP_API_BASE="http://localhost:8000";</script>
+<script>window.APP_API_BASE=window.APP_API_BASE||"https://minhang-ai-proxy2.tigeryoung555.workers.dev";</script>
 <script src="config.js"></script>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
 <style>
@@ -538,20 +538,36 @@ const CLASS_DATA = (function(){
 })();
 
 // ===== API & Auth =====
-const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE) ? window.APP_API_BASE : 'http://localhost:8000';
+const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE && window.APP_API_BASE.indexOf('REPLACE') === -1) ? window.APP_API_BASE : 'https://minhang-ai-proxy2.tigeryoung555.workers.dev';
 let auth = null;
 try { auth = JSON.parse(localStorage.getItem('auth_v2')); } catch (e) { auth = null; }
 function saveAuth(a){ auth = a; if (a) localStorage.setItem('auth_v2', JSON.stringify(a)); else localStorage.removeItem('auth_v2'); }
 function authHeaders(){ return { 'Content-Type':'application/json', 'Authorization': auth ? 'Bearer ' + auth.token : '' }; }
 async function apiGet(path){
-  const r = await fetch(API_BASE + path, { headers:{ 'Authorization': auth ? 'Bearer ' + auth.token : '' } });
+  const r = await apiFetch(API_BASE + path, { method:'GET', headers:{ 'Authorization': auth ? 'Bearer ' + auth.token : '' } });
   if (r.status === 401) { logout(); throw new Error('登录已过期'); }
   return await r.json().catch(() => ({}));
 }
 async function apiPost(path, body){
-  const r = await fetch(API_BASE + path, { method:'POST', headers:authHeaders(), body:JSON.stringify(body || {}) });
+  const r = await apiFetch(API_BASE + path, { method:'POST', headers:authHeaders(), body:JSON.stringify(body || {}) });
   if (r.status === 401) { logout(); throw new Error('登录已过期'); }
   return await r.json().catch(() => ({}));
+}
+// Wrap fetch with a timeout + normalized error so a dead/blocked backend
+// surfaces a message instead of hanging the UI on "登录中..." forever.
+async function apiFetch(url, opts){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    return await fetch(url, Object.assign({}, opts, { signal: ctrl.signal }));
+  } catch (e) {
+    if (e && e.name === 'AbortError') {
+      throw new Error('请求超时（15秒），后端无响应，请检查网络后重试');
+    }
+    throw new Error('无法连接后端服务：' + (e && e.message ? e.message : '网络错误') + '（API: ' + url + '）');
+  } finally {
+    clearTimeout(timer);
+  }
 }
 function showAuth(msg, type){
   const el = document.getElementById('authMsg');
@@ -614,8 +630,14 @@ document.getElementById('btnLogin').addEventListener('click', async () => {
   const p = document.getElementById('loginPassword').value;
   if (!u || !p) { showAuth('请输入账号和密码', 'error'); return; }
   showAuth('登录中...', 'info');
-  const res = await apiPost('/api/auth/login', { username: u, password: p });
-  if (res.error) { showAuth(res.error, 'error'); return; }
+  let res;
+  try {
+    res = await apiPost('/api/auth/login', { username: u, password: p });
+  } catch (err) {
+    showAuth(err.message || '登录失败', 'error');
+    return;
+  }
+  if (!res || res.error) { showAuth((res && res.error) || '登录失败：后端无响应', 'error'); return; }
   saveAuth({ token: res.token, role: res.role, username: u, userId: res.userId });
   document.getElementById('authOverlay').classList.add('hidden');
   updateUserInfo();
@@ -628,8 +650,14 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
   if (!u || !p) { showAuth('请输入账号和密码', 'error'); return; }
   if (p.length < 6) { showAuth('密码至少6位', 'error'); return; }
   showAuth('注册中...', 'info');
-  const res = await apiPost('/api/auth/register', { username: u, password: p, role: 'teacher' });
-  if (res.error) { showAuth(res.error, 'error'); return; }
+  let res;
+  try {
+    res = await apiPost('/api/auth/register', { username: u, password: p, role: 'teacher' });
+  } catch (err) {
+    showAuth(err.message || '注册失败', 'error');
+    return;
+  }
+  if (!res || res.error) { showAuth((res && res.error) || '注册失败：后端无响应', 'error'); return; }
   saveAuth({ token: res.token, role: res.role, username: u, userId: res.userId });
   document.getElementById('authOverlay').classList.add('hidden');
   updateUserInfo();
@@ -1070,7 +1098,9 @@ function renderClass(){
 async function refreshClassStats(){
   const classId = document.getElementById('opClassSelect').value;
   if (!classId) return;
-  const data = await apiGet('/api/teacher/stats?classId=' + encodeURIComponent(classId));
+  let data;
+  try { data = await apiGet('/api/teacher/stats?classId=' + encodeURIComponent(classId)); }
+  catch (err) { toast(err.message || '统计加载失败', 'error'); return; }
   const rows = data.stats || [];
   const tbody = document.querySelector('#realClassTable tbody');
   tbody.innerHTML = rows.map(s => {
@@ -1083,8 +1113,10 @@ async function refreshClassStats(){
 document.getElementById('btnCreateClass').addEventListener('click', async () => {
   const name = document.getElementById('newClassName').value.trim();
   if (!name) { toast('请输入班级名称', 'error'); return; }
-  const res = await apiPost('/api/teacher/class', { name });
-  if (res.error) { toast(res.error, 'error'); return; }
+  let res;
+  try { res = await apiPost('/api/teacher/class', { name }); }
+  catch (err) { toast(err.message || '创建失败', 'error'); return; }
+  if (!res || res.error) { toast((res && res.error) || '创建失败', 'error'); return; }
   toast('班级创建成功', 'success');
   document.getElementById('newClassName').value = '';
   renderClass();
@@ -1094,8 +1126,10 @@ document.getElementById('btnCreateStudents').addEventListener('click', async () 
   const prefix = document.getElementById('stuPrefix').value.trim() || 'stu';
   const count = parseInt(document.getElementById('stuCount').value) || 10;
   if (!classId) { toast('请先选择班级', 'error'); return; }
-  const res = await apiPost('/api/teacher/students', { classId: parseInt(classId), count, prefix });
-  if (res.error) { toast(res.error, 'error'); return; }
+  let res;
+  try { res = await apiPost('/api/teacher/students', { classId: parseInt(classId), count, prefix }); }
+  catch (err) { toast(err.message || '创建失败', 'error'); return; }
+  if (!res || res.error) { toast((res && res.error) || '创建失败', 'error'); return; }
   const list = res.created || [];
   document.getElementById('newStudentsList').innerHTML = list.map(s => `<div>账号：${s.username}　密码：${s.password}</div>`).join('');
   document.getElementById('newStudentsBox').style.display = 'block';

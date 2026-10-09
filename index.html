@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>民航运输企业会计学习智能体 v2.0</title>
-<script>window.APP_API_BASE="http://localhost:8000";</script>
+<script>window.APP_API_BASE=window.APP_API_BASE||"https://minhang-ai-proxy2.tigeryoung555.workers.dev";</script>
 <script src="config.js"></script>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
 <style>
@@ -596,12 +596,12 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "国际票证结算",
-      "高价周转件",
-      "飞行小时",
-      "国内票证结算",
+      "折旧",
       "航材消耗件",
-      "折旧"
+      "国际票证结算",
+      "国内票证结算",
+      "飞行小时",
+      "高价周转件"
     ]
   },
   {
@@ -620,8 +620,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "10亿元",
-      "5亿元"
+      "5亿元",
+      "10亿元"
     ]
   },
   {
@@ -864,8 +864,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "主营业务成本",
-      "航材消耗件",
-      "材料成本差异"
+      "材料成本差异",
+      "航材消耗件"
     ]
   },
   {
@@ -884,11 +884,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "摊销",
       "高价周转件",
-      "主营业务成本",
       "折旧",
-      "高价周转件摊销"
+      "高价周转件摊销",
+      "主营业务成本",
+      "摊销"
     ]
   },
   {
@@ -907,8 +907,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "机上供应品"
+      "机上供应品",
+      "主营业务成本"
     ]
   },
   {
@@ -927,15 +927,15 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "摊销",
       "14.25万元",
-      "高价周转件",
-      "主营业务成本",
-      "475元",
       "0.0475万元",
-      "飞行小时",
       "折旧",
-      "高价周转件摊销"
+      "主营业务成本",
+      "飞行小时",
+      "475元",
+      "高价周转件摊销",
+      "高价周转件",
+      "摊销"
     ]
   },
   {
@@ -956,8 +956,8 @@ const QUESTIONS = [
     "keywords": [
       "飞行小时",
       "高价周转件",
-      "航材消耗件",
-      "摊销"
+      "摊销",
+      "航材消耗件"
     ]
   },
   {
@@ -1044,13 +1044,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "累计折旧",
-      "380元",
-      "7.6万元",
       "0.038万元",
-      "主营业务成本",
+      "7.6万元",
+      "累计折旧",
+      "折旧",
       "飞行小时",
-      "折旧"
+      "380元",
+      "主营业务成本"
     ]
   },
   {
@@ -1397,8 +1397,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "飞行小时",
-      "年限平均法",
-      "折旧"
+      "折旧",
+      "年限平均法"
     ]
   },
   {
@@ -1417,14 +1417,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "5%",
-      "57387.5万元",
-      "237.5万元",
       "累计折旧",
-      "主营业务成本",
+      "57387.5万元",
       "2612.5万元",
+      "折旧",
+      "5%",
       "2850万元",
-      "折旧"
+      "主营业务成本",
+      "237.5万元"
     ]
   },
   {
@@ -1443,9 +1443,9 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
+      "累计折旧",
       "银行存款",
       "在建工程",
-      "累计折旧",
       "折旧",
       "固定资产-飞机"
     ]
@@ -1469,9 +1469,9 @@ const QUESTIONS = [
       "1999.9万元",
       "银行存款",
       "累计折旧",
-      "固定资产清理",
-      "资产处置损益",
       "折旧",
+      "资产处置损益",
+      "固定资产清理",
       "固定资产-飞机"
     ]
   },
@@ -1491,13 +1491,13 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "4491.25万元",
-      "166.25万元",
-      "142.5万元",
       "0.0475万元",
-      "飞行小时",
+      "142.5万元",
+      "折旧",
       "3691.25万元",
-      "折旧"
+      "飞行小时",
+      "166.25万元",
+      "4491.25万元"
     ]
   },
   {
@@ -1884,11 +1884,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "租赁负债-租赁付款额",
-      "租赁负债",
       "银行存款",
+      "租赁负债-租赁付款额",
+      "8520万元",
       "使用权资产",
-      "8520万元"
+      "租赁负债"
     ]
   },
   {
@@ -1907,14 +1907,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "租赁负债-租赁付款额",
       "租赁负债",
-      "447.11万元",
       "7451.76万元",
-      "租赁负债-未确认融资费用",
-      "财务费用",
+      "租赁负债-租赁付款额",
+      "447.11万元",
       "使用权资产",
-      "6%"
+      "租赁负债-未确认融资费用",
+      "6%",
+      "财务费用"
     ]
   },
   {
@@ -1933,11 +1933,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "租赁负债",
-      "使用权资产",
+      "0.5亿元",
       "资产处置损益",
       "现值",
-      "0.5亿元"
+      "使用权资产",
+      "租赁负债"
     ]
   },
   {
@@ -2385,11 +2385,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
+      "90万元",
       "间接营运费",
       "30万元",
-      "主营业务成本",
-      "90万元",
-      "0.15万元"
+      "0.15万元",
+      "主营业务成本"
     ]
   },
   {
@@ -2409,8 +2409,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "1.8万元",
-      "80%",
       "115.2万元",
+      "80%",
       "飞行小时",
       "144万元",
       "0.288元"
@@ -2432,12 +2432,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "2325001.5元",
-      "232.5万元",
       "5166.67元",
-      "主营业务成本",
+      "航材消耗件-航油",
+      "2325001.5元",
       "航材消耗件",
-      "航材消耗件-航油"
+      "232.5万元",
+      "主营业务成本"
     ]
   },
   {
@@ -2456,11 +2456,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "1.8万元",
+      "1.6万元",
       "150万元",
-      "250万元",
+      "1.8万元",
       "0.5万元",
-      "1.6万元"
+      "250万元"
     ]
   },
   {
@@ -2499,9 +2499,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
+      "20%",
       "10%",
-      "30%",
-      "20%"
+      "30%"
     ]
   },
   {
@@ -2540,8 +2540,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "飞行小时"
+      "飞行小时",
+      "主营业务成本"
     ]
   },
   {
@@ -2611,14 +2611,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "合同负债",
-      "主营业务收入",
-      "银行存款",
       "主营业务收入-运输收入",
-      "900万元",
-      "银行存款/应收账款",
+      "10%",
+      "合同负债",
+      "银行存款",
+      "主营业务收入",
       "90%",
-      "10%"
+      "银行存款/应收账款",
+      "900万元"
     ]
   },
   {
@@ -2915,9 +2915,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
+      "主营业务收入-运输收入",
       "主营业务收入",
       "国内票证结算",
-      "主营业务收入-运输收入",
       "银行存款"
     ]
   },
@@ -2937,8 +2937,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "主营业务收入",
       "主营业务收入-运输收入",
+      "主营业务收入",
       "合同负债-常旅客奖励",
       "合同负债"
     ]
@@ -2959,15 +2959,15 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
-      "合同负债",
-      "5%",
-      "银行存款",
-      "47.5亿元",
       "主营业务收入-运输收入",
-      "95%",
+      "47.5亿元",
+      "合同负债",
+      "银行存款",
+      "主营业务收入",
+      "5%",
       "2.5亿元",
-      "银行存款/应收账款",
-      "主营业务收入"
+      "95%",
+      "银行存款/应收账款"
     ]
   },
   {
@@ -2986,12 +2986,12 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
-      "合同负债",
-      "680万元",
-      "银行存款",
-      "320万元",
       "主营业务收入-运输收入",
-      "主营业务收入"
+      "合同负债",
+      "银行存款",
+      "主营业务收入",
+      "320万元",
+      "680万元"
     ]
   },
   {
@@ -3255,17 +3255,17 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "5%",
-      "应付债券",
       "银行存款",
-      "应付债券-面值",
-      "摊销",
-      "应付利息",
       "116.4万元",
+      "应付债券-面值",
+      "5%",
+      "应付利息",
+      "应付债券",
+      "6%",
+      "100万元",
       "财务费用",
       "16.4万元",
-      "100万元",
-      "6%"
+      "摊销"
     ]
   },
   {
@@ -3284,8 +3284,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "资本公积-股本溢价",
-      "股本"
+      "股本",
+      "资本公积-股本溢价"
     ]
   },
   {
@@ -3525,12 +3525,12 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
-      "租赁负债",
       "合同负债",
+      "航材消耗件",
       "国际票证结算",
-      "高价周转件",
       "使用权资产",
-      "航材消耗件"
+      "租赁负债",
+      "高价周转件"
     ]
   },
   {
@@ -3566,11 +3566,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "是",
     "keywords": [
+      "800万元",
+      "5000万元",
       "2000万元",
       "款收到的现金）",
-      "5000万元",
-      "3000万元",
-      "800万元"
+      "3000万元"
     ]
   },
   {
@@ -3589,10 +3589,10 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "1700万元",
-      "1720万元",
       "1320万元",
+      "1720万元",
       "管理费用",
+      "1700万元",
       "财务费用"
     ]
   },
@@ -3816,9 +3816,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "100%",
+      "客座率",
       "载运率",
-      "客座率"
+      "100%"
     ]
   },
   {
@@ -3876,12 +3876,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "是",
     "keywords": [
+      "0.4元",
       "100%",
+      "飞行小时",
       "24%",
       "1.2万元",
-      "120万元",
-      "0.4元",
-      "飞行小时"
+      "120万元"
     ]
   },
   {
@@ -3900,10 +3900,10 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "是",
     "keywords": [
+      "50亿元",
       "25%",
-      "100%",
       "20%",
-      "50亿元"
+      "100%"
     ]
   },
   {
@@ -3923,8 +3923,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "飞行小时",
-      "载运率",
-      "客座率"
+      "客座率",
+      "载运率"
     ]
   },
   {
@@ -3944,8 +3944,8 @@ const QUESTIONS = [
     "aviation": "是",
     "keywords": [
       "飞行小时",
-      "折旧",
-      "客座率"
+      "客座率",
+      "折旧"
     ]
   },
   {
@@ -4135,12 +4135,12 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "主营业务收入-运输收入",
-      "财务费用",
+      "主营业务收入",
       "汇兑差额",
+      "730万元",
       "10万元",
       "财务费用-汇兑差额",
-      "主营业务收入",
-      "730万元"
+      "财务费用"
     ]
   },
   {
@@ -4894,14 +4894,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
+      "0万元",
+      "银行存款",
+      "信用减值损失",
       "6万元",
       "5%",
-      "信用减值损失",
-      "银行存款",
-      "方）",
-      "应收账款",
       "坏账准备",
-      "0万元"
+      "方）",
+      "应收账款"
     ]
   },
   {
@@ -4920,11 +4920,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "99910元",
+      "9%",
       "103000元",
       "3090元",
-      "9%",
-      "6%"
+      "6%",
+      "99910元"
     ]
   },
   {
@@ -4943,10 +4943,10 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "库存现金",
-      "其他应收款-出纳员",
+      "待处理财产损溢-待处理流动资产损溢",
       "管理费用",
-      "待处理财产损溢-待处理流动资产损溢"
+      "其他应收款-出纳员",
+      "库存现金"
     ]
   },
   {
@@ -5308,11 +5308,11 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "轮胎摊销",
-      "11元",
       "主营业务成本-运输成本",
-      "摊销",
+      "880元",
+      "11元",
       "主营业务成本",
-      "880元"
+      "摊销"
     ]
   },
   {
@@ -5331,11 +5331,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "摊销",
-      "50%",
       "管理费用",
+      "管理费用/主营业务成本",
+      "50%",
       "主营业务成本",
-      "管理费用/主营业务成本"
+      "摊销"
     ]
   },
   {
@@ -5354,9 +5354,9 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
+      "待处理财产损溢-待处理流动资产损溢",
       "管理费用",
-      "原材料-燃料",
-      "待处理财产损溢-待处理流动资产损溢"
+      "原材料-燃料"
     ]
   },
   {
@@ -5717,10 +5717,10 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "48000元",
-      "100%",
       "40%",
-      "折旧"
+      "48000元",
+      "折旧",
+      "100%"
     ]
   },
   {
@@ -5740,12 +5740,12 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "银行存款",
-      "8000元",
       "累计折旧",
-      "固定资产清理",
+      "8000元",
+      "折旧",
       "资产处置损益",
-      "固定资产",
-      "折旧"
+      "固定资产清理",
+      "固定资产"
     ]
   },
   {
@@ -5764,14 +5764,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "银行存款/应付职工薪酬等",
-      "研发支出-资本化支出",
-      "费用化",
-      "无形资产",
-      "银行存款",
-      "管理费用",
       "研发支出-费用化支出",
-      "资本化"
+      "管理费用",
+      "研发支出-资本化支出",
+      "银行存款",
+      "资本化",
+      "无形资产",
+      "费用化",
+      "银行存款/应付职工薪酬等"
     ]
   },
   {
@@ -6130,14 +6130,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
+      "累计折旧",
+      "银行存款",
+      "165000元",
       "主营业务成本-运输成本",
       "折旧",
-      "银行存款",
-      "累计折旧",
-      "主营业务成本",
-      "165000元",
       "33元",
-      "应付职工薪酬"
+      "应付职工薪酬",
+      "主营业务成本"
     ]
   },
   {
@@ -6156,11 +6156,11 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "主营业务成本-运输成本",
       "40000元",
-      "主营业务成本",
       "20000元",
-      "营运间接费用"
+      "主营业务成本-运输成本",
+      "营运间接费用",
+      "主营业务成本"
     ]
   },
   {
@@ -6179,12 +6179,12 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "折旧",
-      "累计折旧",
       "管理费用",
-      "主营业务成本",
+      "累计折旧",
+      "折旧",
       "原材料-燃料",
-      "应付职工薪酬"
+      "应付职工薪酬",
+      "主营业务成本"
     ]
   },
   {
@@ -6543,13 +6543,13 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "银行存款",
-      "应付利息",
-      "短期借款",
-      "财务费用",
       "1000元",
-      "入：",
-      "6%"
+      "银行存款",
+      "短期借款",
+      "应付利息",
+      "6%",
+      "财务费用",
+      "入："
     ]
   },
   {
@@ -6568,16 +6568,16 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "8%",
-      "主营业务成本-运输成本",
-      "8000元",
-      "应付职工薪酬-社会保险费",
+      "10%",
       "管理费用",
-      "主营业务成本",
-      "2%",
+      "应付职工薪酬-社会保险费",
       "应付职工薪酬-工资",
+      "8000元",
+      "主营业务成本-运输成本",
+      "8%",
       "10000元",
-      "10%"
+      "2%",
+      "主营业务成本"
     ]
   },
   {
@@ -6596,15 +6596,15 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "34600元",
+      "9%",
+      "主营业务收入",
+      "应付职工薪酬-职工福利费",
       "银行存款",
-      "13%",
-      "2600元",
       "45000元",
       "原材料-燃料",
-      "主营业务收入",
-      "9%",
-      "应付职工薪酬-职工福利费"
+      "13%",
+      "34600元",
+      "2600元"
     ]
   },
   {
@@ -6912,8 +6912,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "否",
     "keywords": [
-      "管理费用",
-      "财务费用"
+      "财务费用",
+      "管理费用"
     ]
   },
   {
@@ -6950,8 +6950,8 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "300000元",
-      "250000元",
-      "295000元"
+      "295000元",
+      "250000元"
     ]
   },
   {
@@ -6970,17 +6970,17 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "5%",
-      "25000元",
-      "50000元",
-      "盈余公积-法定盈余公积",
-      "利润分配-未分配利润",
-      "利润分配-提取法定盈余公积",
       "10%",
-      "325000元",
       "应付股利",
+      "利润分配-未分配利润",
+      "325000元",
+      "利润分配-应付现金股利",
+      "利润分配-提取法定盈余公积",
+      "5%",
       "本年利润",
-      "利润分配-应付现金股利"
+      "25000元",
+      "盈余公积-法定盈余公积",
+      "50000元"
     ]
   },
   {
@@ -6999,11 +6999,11 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "100%",
-      "120000元",
+      "40%",
       "合同资产/应收账款",
       "主营业务收入",
-      "40%"
+      "100%",
+      "120000元"
     ]
   },
   {
@@ -7379,8 +7379,8 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "90000元",
-      "135000元"
+      "135000元",
+      "90000元"
     ]
   },
   {
@@ -7400,9 +7400,9 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "300000元",
-      "90000元",
       "240000元",
-      "450000元"
+      "450000元",
+      "90000元"
     ]
   },
   {
@@ -7574,8 +7574,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "否",
     "keywords": [
-      "汇兑差额",
-      "财务费用"
+      "财务费用",
+      "汇兑差额"
     ]
   },
   {
@@ -7594,12 +7594,12 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "银行存款",
-      "财务费用",
       "1000元",
-      "汇兑差额",
+      "银行存款",
       "原材料-燃料",
-      "财务费用-汇兑差额"
+      "汇兑差额",
+      "财务费用-汇兑差额",
+      "财务费用"
     ]
   },
   {
@@ -7618,15 +7618,15 @@ const QUESTIONS = [
     "score": 20,
     "aviation": "否",
     "keywords": [
-      "190元",
-      "银行存款",
-      "21840元",
-      "主营业务成本",
       "财务费用",
+      "银行存款",
+      "主营业务收入",
       "汇兑差额",
-      "21650元",
+      "190元",
+      "21840元",
       "财务费用-汇兑差额",
-      "主营业务收入"
+      "21650元",
+      "主营业务成本"
     ]
   },
   {
@@ -8036,9 +8036,9 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "170万元",
       "130万元",
-      "300万元"
+      "300万元",
+      "170万元"
     ]
   },
   {
@@ -9398,11 +9398,11 @@ const QUESTIONS = [
     "score": 8,
     "aviation": "否",
     "keywords": [
-      "2000元",
       "银行存款",
+      "2000元",
       "3000元",
-      "应收账款",
-      "坏账准备"
+      "坏账准备",
+      "应收账款"
     ]
   },
   {
@@ -9421,13 +9421,13 @@ const QUESTIONS = [
     "score": 8,
     "aviation": "否",
     "keywords": [
-      "5%",
-      "信用减值损失",
-      "1%",
-      "23000元",
+      "10%",
       "30%",
-      "坏账准备",
-      "10%"
+      "信用减值损失",
+      "23000元",
+      "5%",
+      "1%",
+      "坏账准备"
     ]
   },
   {
@@ -9446,13 +9446,13 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "200000元",
       "银行存款",
-      "应收票据",
       "4000元",
+      "应收票据",
+      "200000元",
       "196000元",
-      "财务费用",
-      "6%"
+      "6%",
+      "财务费用"
     ]
   },
   {
@@ -9847,8 +9847,8 @@ const QUESTIONS = [
     "score": 8,
     "aviation": "否",
     "keywords": [
-      "待处理财产损溢",
-      "管理费用"
+      "管理费用",
+      "待处理财产损溢"
     ]
   },
   {
@@ -9867,14 +9867,14 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
+      "轮胎—在库",
+      "轮胎—在用",
       "银行存款",
       "燃料—汽油",
       "摊销",
-      "主营业务成本",
       "轮胎—摊销）",
-      "轮胎—在用",
-      "低值易耗品",
-      "轮胎—在库"
+      "主营业务成本",
+      "低值易耗品"
     ]
   },
   {
@@ -9893,12 +9893,12 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
+      "主营业务成本—燃料",
       "银行存款",
-      "摊销",
+      "000元",
       "燃料",
       "主营业务成本",
-      "000元",
-      "主营业务成本—燃料"
+      "摊销"
     ]
   },
   {
@@ -9917,15 +9917,15 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
+      "轮胎—在库",
+      "轮胎—在用",
+      "0.0475元",
       "5%",
       "摊销",
       "主营业务成本—轮胎",
       "380元",
-      "轮胎—摊销",
       "主营业务成本",
-      "0.0475元",
-      "轮胎—在用",
-      "轮胎—在库"
+      "轮胎—摊销"
     ]
   },
   {
@@ -10360,8 +10360,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "9120元",
       "5%",
+      "9120元",
       "折旧"
     ]
   },
@@ -10381,11 +10381,11 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "100%",
-      "9.375%",
       "3750元",
+      "45000元",
+      "9.375%",
       "折旧",
-      "45000元"
+      "100%"
     ]
   },
   {
@@ -10404,12 +10404,12 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "5000元",
-      "费用化",
       "管理费用",
-      "26666.67元",
       "资本化",
       "折旧",
+      "5000元",
+      "26666.67元",
+      "费用化",
       "60000元"
     ]
   },
@@ -10429,10 +10429,10 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
+      "资产处置损益",
       "方）。",
-      "累计折旧",
       "折旧",
-      "资产处置损益"
+      "累计折旧"
     ]
   },
   {
@@ -11292,14 +11292,14 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "应付职工薪酬—工资",
-      "16%",
-      "38.8%",
-      "生产成本/管理费用等",
+      "10%",
       "管理费用",
+      "38.8%",
+      "应付职工薪酬—工资",
       "0.8%",
       "12%",
-      "10%"
+      "16%",
+      "生产成本/管理费用等"
     ]
   },
   {
@@ -11318,13 +11318,13 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "应交税费—应交城市维护建设税",
       "0.99万元",
-      "3%",
       "2.31万元",
+      "税金及附加",
+      "应交税费—应交城市维护建设税",
       "2%",
       "7%",
-      "税金及附加"
+      "3%"
     ]
   },
   {
@@ -11343,13 +11343,13 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "应付职工薪酬—工资",
-      "银行存款",
-      "500元",
       "40.1%",
-      "其他应付款—代扣社保公积金",
+      "22.5%",
+      "银行存款",
+      "应付职工薪酬—工资",
       "000元",
-      "22.5%"
+      "500元",
+      "其他应付款—代扣社保公积金"
     ]
   },
   {
@@ -11370,8 +11370,8 @@ const QUESTIONS = [
     "keywords": [
       "入：借：银行存款",
       "银行存款",
-      "银行存款；同时支付剩余利息。",
       "短期借款",
+      "银行存款；同时支付剩余利息。",
       "财务费用"
     ]
   },
@@ -12000,8 +12000,8 @@ const QUESTIONS = [
     "score": 10,
     "aviation": "否",
     "keywords": [
-      "方明细",
-      "000元"
+      "000元",
+      "方明细"
     ]
   },
   {
@@ -12071,11 +12071,11 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "500元",
-      "管理费用",
       "25%",
-      "财务费用",
-      "000元"
+      "管理费用",
+      "000元",
+      "500元",
+      "财务费用"
     ]
   },
   {
@@ -12846,9 +12846,9 @@ const QUESTIONS = [
     "score": 4,
     "aviation": "否",
     "keywords": [
-      "其他综合收益",
       "资本化",
-      "财务费用"
+      "财务费用",
+      "其他综合收益"
     ]
   },
   {
@@ -12884,10 +12884,10 @@ const QUESTIONS = [
     "score": 8,
     "aviation": "否",
     "keywords": [
-      "7.20元",
-      "银行存款",
       "7.22元",
+      "银行存款",
       "主营业务收入",
+      "7.20元",
       "固定资产——集装箱"
     ]
   },
@@ -12927,9 +12927,9 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "000元",
-      "银行存款",
+      "财务费用",
       "财务费用——汇兑损益",
-      "财务费用"
+      "银行存款"
     ]
   },
   {
@@ -12948,11 +12948,11 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "财务费用——汇兑损益",
       "银行存款",
+      "财务费用——汇兑损益",
+      "000元",
       "500元",
-      "财务费用",
-      "000元"
+      "财务费用"
     ]
   },
   {
@@ -12972,10 +12972,10 @@ const QUESTIONS = [
     "aviation": "否",
     "keywords": [
       "400元",
-      "财务费用——汇兑损益",
       "银行存款",
-      "财务费用",
-      "000元"
+      "财务费用——汇兑损益",
+      "000元",
+      "财务费用"
     ]
   },
   {
@@ -12994,8 +12994,8 @@ const QUESTIONS = [
     "score": 12,
     "aviation": "否",
     "keywords": [
-      "方）。",
       "000元",
+      "方）。",
       "其他综合收益"
     ]
   },
@@ -13015,14 +13015,14 @@ const QUESTIONS = [
     "score": 15,
     "aviation": "否",
     "keywords": [
-      "800元",
       "400元",
-      "财务费用——汇兑损益",
-      "财务费用",
-      "000元",
-      "200元",
       "主营业务收入",
-      "固定资产——集装箱"
+      "财务费用——汇兑损益",
+      "000元",
+      "固定资产——集装箱",
+      "200元",
+      "财务费用",
+      "800元"
     ]
   },
   {
@@ -13428,10 +13428,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
-      "主营业务成本/制造费用",
       "累计折旧",
-      "折旧"
+      "主营业务成本",
+      "折旧",
+      "主营业务成本/制造费用"
     ]
   },
   {
@@ -16737,8 +16737,8 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "应收账款",
-      "主营业务收入"
+      "主营业务收入",
+      "应收账款"
     ]
   },
   {
@@ -16878,9 +16878,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
       "主营业务成本——运输成本",
-      "应付职工薪酬"
+      "应付职工薪酬",
+      "主营业务成本"
     ]
   },
   {
@@ -17953,9 +17953,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "原材料——航油",
+      "主营业务成本",
       "主营业务成本——运输成本",
-      "主营业务成本"
+      "原材料——航油"
     ]
   },
   {
@@ -18095,9 +18095,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "原材料——航油",
       "主营业务成本",
       "主营业务成本——航油成本",
+      "原材料——航油",
       "银行存款"
     ]
   },
@@ -18340,10 +18340,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "租赁负债",
-      "租赁负债——租赁付款额",
+      "银行存款",
       "财务费用",
-      "银行存款"
+      "租赁负债",
+      "租赁负债——租赁付款额"
     ]
   },
   {
@@ -18624,9 +18624,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
+      "主营业务成本",
       "主营业务成本——航线成本",
-      "原材料——航油",
-      "主营业务成本"
+      "原材料——航油"
     ]
   },
   {
@@ -18766,9 +18766,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "主营业务成本——航班成本",
+      "主营业务成本",
       "原材料——航油",
-      "主营业务成本"
+      "主营业务成本——航班成本"
     ]
   },
   {
@@ -19392,10 +19392,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "主营业务成本",
       "主营业务收入",
       "15%",
-      "本年利润"
+      "本年利润",
+      "主营业务成本"
     ]
   },
   {
@@ -19739,9 +19739,9 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "款：借：银行存款",
-      "60%",
       "长期借款",
+      "60%",
+      "款：借：银行存款",
       "银行存款"
     ]
   },
@@ -20634,10 +20634,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "主营业务成本——航线成本",
-      "原材料——航油",
       "2元",
-      "主营业务成本"
+      "主营业务成本",
+      "主营业务成本——航线成本",
+      "原材料——航油"
     ]
   },
   {
@@ -20879,10 +20879,10 @@ const QUESTIONS = [
     "score": 5,
     "aviation": "是",
     "keywords": [
-      "原材料——航油",
-      "主营业务成本",
+      "54.55%",
       "主营业务成本——航油成本",
-      "54.55%"
+      "原材料——航油",
+      "主营业务成本"
     ]
   },
   {
@@ -23303,20 +23303,36 @@ const CLASS_DATA = (function(){
 })();
 
 // ===== API & Auth =====
-const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE) ? window.APP_API_BASE : 'http://localhost:8000';
+const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE && window.APP_API_BASE.indexOf('REPLACE') === -1) ? window.APP_API_BASE : 'https://minhang-ai-proxy2.tigeryoung555.workers.dev';
 let auth = null;
 try { auth = JSON.parse(localStorage.getItem('auth_v2')); } catch (e) { auth = null; }
 function saveAuth(a){ auth = a; if (a) localStorage.setItem('auth_v2', JSON.stringify(a)); else localStorage.removeItem('auth_v2'); }
 function authHeaders(){ return { 'Content-Type':'application/json', 'Authorization': auth ? 'Bearer ' + auth.token : '' }; }
 async function apiGet(path){
-  const r = await fetch(API_BASE + path, { headers:{ 'Authorization': auth ? 'Bearer ' + auth.token : '' } });
+  const r = await apiFetch(API_BASE + path, { method:'GET', headers:{ 'Authorization': auth ? 'Bearer ' + auth.token : '' } });
   if (r.status === 401) { logout(); throw new Error('登录已过期'); }
   return await r.json().catch(() => ({}));
 }
 async function apiPost(path, body){
-  const r = await fetch(API_BASE + path, { method:'POST', headers:authHeaders(), body:JSON.stringify(body || {}) });
+  const r = await apiFetch(API_BASE + path, { method:'POST', headers:authHeaders(), body:JSON.stringify(body || {}) });
   if (r.status === 401) { logout(); throw new Error('登录已过期'); }
   return await r.json().catch(() => ({}));
+}
+// Wrap fetch with a timeout + normalized error so a dead/blocked backend
+// surfaces a message instead of hanging the UI on "登录中..." forever.
+async function apiFetch(url, opts){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    return await fetch(url, Object.assign({}, opts, { signal: ctrl.signal }));
+  } catch (e) {
+    if (e && e.name === 'AbortError') {
+      throw new Error('请求超时（15秒），后端无响应，请检查网络后重试');
+    }
+    throw new Error('无法连接后端服务：' + (e && e.message ? e.message : '网络错误') + '（API: ' + url + '）');
+  } finally {
+    clearTimeout(timer);
+  }
 }
 function showAuth(msg, type){
   const el = document.getElementById('authMsg');
@@ -23379,8 +23395,14 @@ document.getElementById('btnLogin').addEventListener('click', async () => {
   const p = document.getElementById('loginPassword').value;
   if (!u || !p) { showAuth('请输入账号和密码', 'error'); return; }
   showAuth('登录中...', 'info');
-  const res = await apiPost('/api/auth/login', { username: u, password: p });
-  if (res.error) { showAuth(res.error, 'error'); return; }
+  let res;
+  try {
+    res = await apiPost('/api/auth/login', { username: u, password: p });
+  } catch (err) {
+    showAuth(err.message || '登录失败', 'error');
+    return;
+  }
+  if (!res || res.error) { showAuth((res && res.error) || '登录失败：后端无响应', 'error'); return; }
   saveAuth({ token: res.token, role: res.role, username: u, userId: res.userId });
   document.getElementById('authOverlay').classList.add('hidden');
   updateUserInfo();
@@ -23393,8 +23415,14 @@ document.getElementById('btnRegister').addEventListener('click', async () => {
   if (!u || !p) { showAuth('请输入账号和密码', 'error'); return; }
   if (p.length < 6) { showAuth('密码至少6位', 'error'); return; }
   showAuth('注册中...', 'info');
-  const res = await apiPost('/api/auth/register', { username: u, password: p, role: 'teacher' });
-  if (res.error) { showAuth(res.error, 'error'); return; }
+  let res;
+  try {
+    res = await apiPost('/api/auth/register', { username: u, password: p, role: 'teacher' });
+  } catch (err) {
+    showAuth(err.message || '注册失败', 'error');
+    return;
+  }
+  if (!res || res.error) { showAuth((res && res.error) || '注册失败：后端无响应', 'error'); return; }
   saveAuth({ token: res.token, role: res.role, username: u, userId: res.userId });
   document.getElementById('authOverlay').classList.add('hidden');
   updateUserInfo();
@@ -23835,7 +23863,9 @@ function renderClass(){
 async function refreshClassStats(){
   const classId = document.getElementById('opClassSelect').value;
   if (!classId) return;
-  const data = await apiGet('/api/teacher/stats?classId=' + encodeURIComponent(classId));
+  let data;
+  try { data = await apiGet('/api/teacher/stats?classId=' + encodeURIComponent(classId)); }
+  catch (err) { toast(err.message || '统计加载失败', 'error'); return; }
   const rows = data.stats || [];
   const tbody = document.querySelector('#realClassTable tbody');
   tbody.innerHTML = rows.map(s => {
@@ -23848,8 +23878,10 @@ async function refreshClassStats(){
 document.getElementById('btnCreateClass').addEventListener('click', async () => {
   const name = document.getElementById('newClassName').value.trim();
   if (!name) { toast('请输入班级名称', 'error'); return; }
-  const res = await apiPost('/api/teacher/class', { name });
-  if (res.error) { toast(res.error, 'error'); return; }
+  let res;
+  try { res = await apiPost('/api/teacher/class', { name }); }
+  catch (err) { toast(err.message || '创建失败', 'error'); return; }
+  if (!res || res.error) { toast((res && res.error) || '创建失败', 'error'); return; }
   toast('班级创建成功', 'success');
   document.getElementById('newClassName').value = '';
   renderClass();
@@ -23859,8 +23891,10 @@ document.getElementById('btnCreateStudents').addEventListener('click', async () 
   const prefix = document.getElementById('stuPrefix').value.trim() || 'stu';
   const count = parseInt(document.getElementById('stuCount').value) || 10;
   if (!classId) { toast('请先选择班级', 'error'); return; }
-  const res = await apiPost('/api/teacher/students', { classId: parseInt(classId), count, prefix });
-  if (res.error) { toast(res.error, 'error'); return; }
+  let res;
+  try { res = await apiPost('/api/teacher/students', { classId: parseInt(classId), count, prefix }); }
+  catch (err) { toast(err.message || '创建失败', 'error'); return; }
+  if (!res || res.error) { toast((res && res.error) || '创建失败', 'error'); return; }
   const list = res.created || [];
   document.getElementById('newStudentsList').innerHTML = list.map(s => `<div>账号：${s.username}　密码：${s.password}</div>`).join('');
   document.getElementById('newStudentsBox').style.display = 'block';
