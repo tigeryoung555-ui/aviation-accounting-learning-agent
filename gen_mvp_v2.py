@@ -184,9 +184,6 @@ body{font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans
 .sidebar .logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.15);}
 .sidebar .logo h1{font-size:17px;font-weight:700;line-height:1.4;}
 .sidebar .logo p{font-size:11px;opacity:0.7;margin-top:4px;}
-.sidebar .role-tabs{display:flex;padding:12px 16px;gap:6px;}
-.sidebar .role-tab{flex:1;padding:6px 0;text-align:center;font-size:12px;border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);transition:all 0.2s;}
-.sidebar .role-tab.active{background:var(--accent);font-weight:600;}
 .nav{padding:8px 0;}
 .nav-section{font-size:11px;text-transform:uppercase;opacity:0.5;padding:12px 24px 6px;letter-spacing:1px;}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 24px;cursor:pointer;transition:all 0.2s;font-size:13px;color:rgba(255,255,255,0.8);border-left:3px solid transparent;}
@@ -319,7 +316,7 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 .bar{width:100%;max-width:50px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:4px 4px 0 0;transition:height 0.5s;position:relative;}
 .bar .bar-val{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;color:var(--primary-dark);}
 .bar-label{font-size:11px;color:var(--text-light);text-align:center;}
-@media(max-width:768px){.sidebar{width:56px;}.sidebar .logo h1,.sidebar .logo p,.nav-item span,.nav-badge,.nav-section,.role-tab{display:none;}.main{margin-left:56px;padding:14px;}.stats-grid,.teacher-stats{grid-template-columns:repeat(2,1fr);}.score-overview{grid-template-columns:1fr;}.exam-config{grid-template-columns:1fr;}}
+@media(max-width:768px){.sidebar{width:56px;}.sidebar .logo h1,.sidebar .logo p,.nav-item span,.nav-badge,.nav-section{display:none;}.main{margin-left:56px;padding:14px;}.stats-grid,.teacher-stats{grid-template-columns:repeat(2,1fr);}.score-overview{grid-template-columns:1fr;}.exam-config{grid-template-columns:1fr;}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .view{animation:fadeIn 0.3s ease;}.hidden{display:none;}
 .toast{position:fixed;top:20px;right:20px;padding:12px 20px;border-radius:8px;color:#fff;font-size:13px;z-index:9999;animation:fadeIn 0.3s;}
