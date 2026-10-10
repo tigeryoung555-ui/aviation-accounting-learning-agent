@@ -1,3 +1,4 @@
-// 公网 LLM 代理地址（由 Cloudflare Worker 提供，无需信用卡、免费）
-// 部署后端后把下面改成你的 Worker 地址即可；留空或含 REPLACE 占位符时，前端自动回退本机 http://localhost:8000（本地 RAG 模式）
-window.APP_API_BASE = "https://minhang-ai-proxy2.tigeryoung555.workers.dev";
+// 公网后端地址（腾讯云 EdgeOne Pages Functions，国内可访问，免费免绑卡）
+// 注意：EdgeOne 默认域名仅 3 小时限时预览，长期使用需在控制台绑定自定义域名。
+// 换域名时只需改这一行，其他文件不用动。
+window.APP_API_BASE = "https://aviation-accounting-learning-agent-dpmekigk6uh.edgeone.app";

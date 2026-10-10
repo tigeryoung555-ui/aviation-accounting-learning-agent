@@ -172,7 +172,7 @@ html_template = r'''<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>民航运输企业会计学习智能体 v2.0</title>
-<script>window.APP_API_BASE=window.APP_API_BASE||"https://minhang-ai-proxy2.tigeryoung555.workers.dev";</script>
+<script>window.APP_API_BASE=window.APP_API_BASE||"https://aviation-accounting-learning-agent-dpmekigk6uh.edgeone.app";</script>
 <script src="config.js"></script>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
 <style>
@@ -561,7 +561,7 @@ const CLASS_DATA = (function(){
 })();
 
 // ===== API & Auth =====
-const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE && window.APP_API_BASE.indexOf('REPLACE') === -1) ? window.APP_API_BASE : 'https://minhang-ai-proxy2.tigeryoung555.workers.dev';
+const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE && window.APP_API_BASE.indexOf('REPLACE') === -1) ? window.APP_API_BASE : 'https://aviation-accounting-learning-agent-dpmekigk6uh.edgeone.app';
 let auth = null;
 try { auth = JSON.parse(localStorage.getItem('auth_v2')); } catch (e) { auth = null; }
 function saveAuth(a){ auth = a; if (a) localStorage.setItem('auth_v2', JSON.stringify(a)); else localStorage.removeItem('auth_v2'); }
@@ -720,8 +720,8 @@ document.getElementById('btnDiag').addEventListener('click', async (e) => {
   } catch (err) {
     const name = err && err.name ? err.name : 'Error';
     put('bad', '[5] 请求失败: ' + name + ' — ' + (err && err.message ? err.message : ''));
-    if (name === 'AbortError') put('bad', '    => 10 秒无响应，Worker 可能未部署或被墙');
-    else put('bad', '    => 典型原因：跨域被拦 / DNS 解析失败 / 网络不通');
+    if (name === 'AbortError') put('bad', '    => 10 秒无响应，后端可能未部署或网络不通');
+    else put('bad', '    => 典型原因：跨域被拒 / 后端未部署 / KV 未绑定');
     put('warn', '[提示] 请把本框截图发给开发者');
   }
 });
