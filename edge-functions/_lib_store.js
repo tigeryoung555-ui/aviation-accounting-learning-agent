@@ -9,17 +9,28 @@
  * NOT reachable via context.env. See kvGet/kvPut wrappers below.
  * ============================================================ */
 
-// Resolve the bound KV namespace. The binding name is configurable;
-// we probe a few known names so one project works regardless of
-// which name the operator picked in the console.
+// Resolve the bound KV namespace.
+//
+// IMPORTANT (EdgeOne Pages Functions): KV bindings AND environment
+// variables are delivered through `context.env[<bindingName>]`, NOT a
+// global variable. (Confirmed against EdgeOne docs: the KV example uses
+// `env[KV_NAMESPACE].get(...)` where KV_NAMESPACE is the binding name.)
+// We probe the same candidate names on `env` first, then fall back to
+// `globalThis` for any runtime that does expose them globally.
 function getKV(env) {
   const candidates = ['aviation_kv', 'AVIATION_KV', 'kv', 'KV'];
+  if (env) {
+    for (const name of candidates) {
+      if (env[name]) return env[name];
+    }
+    // Allow explicit override: KV_BINDING_NAME holds the binding name.
+    const named = env.KV_BINDING_NAME && env[env.KV_BINDING_NAME];
+    if (named) return named;
+  }
   for (const name of candidates) {
     if (typeof globalThis[name] !== 'undefined' && globalThis[name]) return globalThis[name];
   }
-  // Allow explicit override via environment variable holding the name.
-  const named = env && env.KV_BINDING_NAME && globalThis[env.KV_BINDING_NAME];
-  return named || null;
+  return null;
 }
 
 async function kvGetJSON(kv, key) {
