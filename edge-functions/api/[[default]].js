@@ -55,12 +55,20 @@ export async function onRequest(context) {
 
     if (p === '/' || p === '/api') return withCors(txt('minhang-api OK (EdgeOne)'), origin);
     if (p === '/api/config') {
+      const secretSet = !!(env && env.SESSION_SECRET);
+      const llmSet = !!(env && env.LLM_API_KEY);
+      const kv = !!getKV(env);
+      // 仅暴露环境变量「键名」，绝不输出值，便于排查配置是否生效。
+      const envKeys = env ? Object.keys(env) : [];
       return withCors(json({
         available: true,
         model: (env && env.LLM_MODEL) || 'deepseek-chat',
         backend: 'edgeone-pages-functions',
-        auth: !!getKV(env),
-        kv: !!getKV(env)
+        auth: secretSet,            // SESSION_SECRET 是否就绪（登录/注册）
+        llmKey: llmSet,             // LLM_API_KEY 是否就绪（AI 答疑）
+        kv: kv,                     // KV 命名空间是否绑定（班级管理/档案）
+        envKeyCount: envKeys.length,
+        envKeys: envKeys
       }), origin);
     }
     if (p.startsWith('/api/auth/')) return await handleAuth(p, request, env, origin);
