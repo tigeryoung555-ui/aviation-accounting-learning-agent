@@ -172,7 +172,7 @@ html_template = r'''<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>民航运输企业会计学习智能体 v2.0</title>
-<script>window.APP_API_BASE=window.APP_API_BASE||"https://aviation-accounting-learning-agent-dpmekigk6uh.edgeone.app";</script>
+<script>window.APP_API_BASE=window.APP_API_BASE||"https://minhang-kuaiji-ssafmk1d.edgeone.cool";</script>
 <script src="config.js"></script>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
 <style>
@@ -562,7 +562,7 @@ const CLASS_DATA = (function(){
 })();
 
 // ===== API & Auth =====
-const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE && window.APP_API_BASE.indexOf('REPLACE') === -1) ? window.APP_API_BASE : 'https://aviation-accounting-learning-agent-dpmekigk6uh.edgeone.app';
+const API_BASE = (typeof window.APP_API_BASE === 'string' && window.APP_API_BASE && window.APP_API_BASE.indexOf('REPLACE') === -1) ? window.APP_API_BASE : 'https://minhang-kuaiji-ssafmk1d.edgeone.cool';
 let auth = null;
 try { auth = JSON.parse(localStorage.getItem('auth_v2')); } catch (e) { auth = null; }
 function saveAuth(a){ auth = a; if (a) localStorage.setItem('auth_v2', JSON.stringify(a)); else localStorage.removeItem('auth_v2'); }
