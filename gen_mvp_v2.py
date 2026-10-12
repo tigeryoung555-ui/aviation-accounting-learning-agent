@@ -349,7 +349,8 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 <body>
 <!-- 登录/注册层 -->
 <div id="authOverlay" class="auth-overlay">
-  <div class="auth-box">
+  <div class="auth-box" style="position:relative;">
+    <span id="btnCloseAuth" style="position:absolute;top:12px;right:16px;font-size:22px;color:var(--text-light);cursor:pointer;z-index:1;">×</span>
     <div class="auth-header">
       <h2>民航运输企业会计学习智能体</h2>
       <p>请登录后使用</p>
@@ -381,7 +382,7 @@ select.filter-btn{appearance:none;padding-right:24px;background-image:url("data:
 <div class="app">
 <aside class="sidebar">
 <div class="logo"><h1>民航运输企业会计</h1><p>学习智能体 v2.0</p></div>
-<div class="user-info" id="userInfo">未登录</div>
+<div class="user-info" id="userInfo">本地模式 · <a href="#" id="loginLink" style="color:#fff;text-decoration:underline;">登录</a></div>
 <nav class="nav" id="studentNav">
 <div class="nav-section">学习中心</div>
 <div class="nav-item active" data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>学习仪表盘</span></div>
@@ -599,9 +600,9 @@ function showAuth(msg, type){
   el.className = 'auth-msg ' + (type || '');
 }
 function logout(){
-  try { localStorage.removeItem(LOCAL_KEY); } catch(e){}
   saveAuth(null);
-  location.reload();
+  enterLocalMode();
+  toast('已退出到本地模式', 'info');
 }
 
 // ===== 状态 =====
@@ -630,12 +631,13 @@ function applyRole(role){
 function updateUserInfo(){
   const el = document.getElementById('userInfo');
   if (!el) return;
-  if (auth) {
-    const isLocal = auth.local ? '<span class="offline-badge">本地模式</span>' : '';
-    el.innerHTML = `<strong>${auth.role === 'teacher' ? '教师' : '学生'}：</strong>${auth.username}${isLocal} <a href="#" id="logoutLink" style="color:#fff;text-decoration:underline;margin-left:8px;">退出</a>`;
+  if (auth && !auth.local) {
+    el.innerHTML = `<strong>${auth.role === 'teacher' ? '教师' : '学生'}：</strong>${auth.username} <a href="#" id="logoutLink" style="color:#fff;text-decoration:underline;margin-left:8px;">退出</a>`;
     document.getElementById('logoutLink').addEventListener('click', e => { e.preventDefault(); logout(); });
   } else {
-    el.textContent = '未登录';
+    el.innerHTML = `本地模式 · <a href="#" id="loginLink" style="color:#fff;text-decoration:underline;">登录</a>`;
+    const loginLink = document.getElementById('loginLink');
+    if (loginLink) loginLink.addEventListener('click', e => { e.preventDefault(); document.getElementById('authOverlay').classList.remove('hidden'); });
   }
 }
 
@@ -1217,16 +1219,17 @@ function enterLocalMode(){
 }
 document.getElementById('btnLocalMode').addEventListener('click', enterLocalMode);
 
-// 初始化
-const localMode = (function(){ try { return localStorage.getItem(LOCAL_KEY) === '1'; } catch(e){ return false; } })();
+document.getElementById('btnCloseAuth').addEventListener('click', () => {
+  document.getElementById('authOverlay').classList.add('hidden');
+});
+
+// 初始化：默认进入本地模式，登录改为手动触发
 if (auth && auth.token) {
   document.getElementById('authOverlay').classList.add('hidden');
   updateUserInfo();
   applyRole(auth.role || 'student');
-} else if (localMode) {
-  enterLocalMode();
 } else {
-  document.getElementById('authOverlay').classList.remove('hidden');
+  enterLocalMode();
 }
 </script>
 </body>
